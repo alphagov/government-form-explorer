@@ -1,0 +1,8 @@
+{
+  "name": "Government Form Explorer",
+  "description": "Explore offline forms found on GOV.UK.",
+  "image": "heroku/python",
+  "repository": "https://github.com/alphagov/government-forms-explorer",
+  "keywords": ["GOV.UK", "registers", "python", "django"],
+  "addons": [ "heroku-postgresql" ]
+}

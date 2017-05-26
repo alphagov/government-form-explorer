@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="container">
+
+<h2>Organisations</h2>
+
+<table>
+<tr>
+  <th>organisation</th>
+  <th>name</th>
+</tr>
+
+{% for organisation in organisations %}
+    <tr>
+      <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.organisation }}</a></td>
+      <td><a href="{{ organisation.website }}">{{ organisation.name }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

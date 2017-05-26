@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+
+<h2>Organisation</h2>
+
+<dl>
+  <dt>organisation</dt>
+  <dd>{{ organisation.organisation }}</dd>
+
+  <dt>name</dt>
+  <dd><a href="{{ organisation.website }}">{{ organisation.name }}</a></dd>
+</dl>
+
+
+{% endblock %}
