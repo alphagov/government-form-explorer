@@ -19,8 +19,12 @@ load:
 flake8:
 	flake8
 
-clean:
+clean::
 	rm -f db.sqlite3
 	rm -rf explorer/staticfiles
 	find . -name '*.pyc' | xargs rm -f
 	find . -name '__pycache__' | xargs rm -rf
+
+# until we deploy ..
+clean::
+	rm -rf pages/migrations

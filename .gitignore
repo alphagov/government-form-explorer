@@ -6,3 +6,6 @@ db.sqlite3
 tmp
 .DS_Store
 cache
+
+# until we deploy ..
+migrations
