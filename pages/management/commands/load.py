@@ -4,6 +4,7 @@ import csv
 
 from ...models import Organisation, Page
 
+field_sep = ';'
 sep = '\t'
 
 
@@ -20,8 +21,11 @@ def load_organisations():
 
 def load_pages():
     for row in register_reader('page'):
-        o = Page(page=row['page'], name=row['name'])
+        o = Page(page=row['page'], name=row['name'], url=row['url'])
         o.save()
+        for organisation in row['organisations'].split(field_sep):
+            print(row['page'], organisation)
+            o.organisations.add(organisation)
 
 
 class Command(BaseCommand):

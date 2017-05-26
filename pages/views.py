@@ -14,7 +14,8 @@ def pages(request):
 
 def page(request, key=None):
     page = Page.objects.get(page=key)
-    return render(request, 'page.html', {'page': page})
+    organisations = Organisation.objects.filter(organisation__in=page.organisations.all())
+    return render(request, 'page.html', {'page': page, 'organisations': organisations})
 
 
 def organisations(request):
@@ -24,4 +25,5 @@ def organisations(request):
 
 def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
-    return render(request, 'organisation.html', {'organisation': organisation})
+    pages = Page.objects.filter(organisations__organisation=key)
+    return render(request, 'organisation.html', {'organisation': organisation, 'pages': pages})
