@@ -1,16 +1,24 @@
-Django app for exploring the offline forms found on GOV.UK
+[Django](https://www.djangoproject.com/) app for exploring offline forms found on GOV.UK using data
+loaded from [government-form-data](https://github.com/openregister/government-form-data).
 
-Reference data from GOV.UK and registers is loaded from [government-form-data](https://github.com/openregister/government-form-data).
-
-## Running Locally
+# Building
 
 Depends upon [Python 3](http://install.python-guide.org)
+– we recommend using a [Python virtual environment](http://virtualenvwrapper.readthedocs.org/en/latest/):
 
 ```sh
+$ mkvirtualenv -p python3 government-form-explorer
+$ workon government-form-explorer
 $ make clean
 
 $ make init
-$ make migrate
+$ make flake8
+```
 
+
+# Running locally
+
+```sh
+$ make migrate
 $ make server
 ```
