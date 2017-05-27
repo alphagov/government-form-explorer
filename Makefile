@@ -1,6 +1,6 @@
 all:	flake8
 
-refresh:	clean init migrate load server
+refresh:	clean init migrate load
 
 server:
 	python manage.py runserver
