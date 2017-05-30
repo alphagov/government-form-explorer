@@ -10,9 +10,14 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^organisations/$', pages.views.organisations, name='organisation'),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/$', pages.views.organisation, name='organisation'),
+
     url(r'^pages/$', pages.views.pages, name='page'),
     url(r'^page/(?P<key>[:\w\d_-]{1,256})/$', pages.views.page, name='page'),
 
-    url(r'^organisations/$', pages.views.organisations, name='organisation'),
-    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/$', pages.views.organisation, name='organisation'),
+    url(r'^attachments/$', pages.views.attachments, name='attachment'),
+    url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
+
+    url(r'^suffix/(?P<key>[\w\d]{1,16})$', pages.views.suffix, name='suffix'),
 ]

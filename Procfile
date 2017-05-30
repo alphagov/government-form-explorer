@@ -1,1 +1,1 @@
-web: gunicorn explorer.wsgi --log-file -
+web: python manage.py migrate && waitress-serve --port=$PORT explorer.wsgi:application

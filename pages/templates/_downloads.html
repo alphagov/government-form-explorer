@@ -1,0 +1,16 @@
+<table class="downloads">
+<tr>
+  <th>attachment</th>
+  <th>month</th>
+  <th>count</th>
+</tr>
+
+{% for download in downloads %}
+    <tr>
+      <td><a href="/attachment/{{ download.attachment.attachment }}/">{{ download.attachment.attachment }}</a></td>
+      <td>{{ download.month }}</a></td>
+      <td>{{ download.count }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>

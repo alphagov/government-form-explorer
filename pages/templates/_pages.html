@@ -1,0 +1,15 @@
+<table class="pages">
+<tr>
+  <th>page</th>
+  <th>name</th>
+</tr>
+
+{% for page in pages %}
+    <tr>
+      <td><a href="/page/{{ page.page }}/">{{ page.page }}</a></td>
+      <td><a href="{{ page.url }}">{{ page.name }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+

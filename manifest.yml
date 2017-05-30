@@ -1,0 +1,5 @@
+---
+applications:
+- name: government-form-explorer
+  memory: 512M
+  buildpack: python_buildpack

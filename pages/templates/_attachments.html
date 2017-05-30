@@ -1,0 +1,20 @@
+<table class="attachments">
+<tr>
+  <th>page</th>
+  <th>attachment</th>
+  <th>suffix</th>
+  <th>size</th>
+  <th>name</th>
+</tr>
+
+{% for attachment in attachments %}
+    <tr>
+      <td><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.page }}</a></td>
+      <td><a href="/attachment/{{ attachment.attachment }}/">{{ attachment.attachment }}</a></td>
+      <td><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dt>
+      <td>{{ attachment.size }}</td>
+      <td><a href="{{ attachment.url }}">{{ attachment.name }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>

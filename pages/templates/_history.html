@@ -1,0 +1,16 @@
+<table class="history">
+<tr>
+  <th>page</th>
+  <th>timestamp</th>
+  <th>text</th>
+</tr>
+
+{% for h in history %}
+    <tr>
+      <td><a href="/page/{{ h.page.page }}/">{{ h.page.page }}</a></td>
+      <td>{{ h.timestamp }}</a></td>
+      <td>{{ h.text }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>

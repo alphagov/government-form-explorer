@@ -1,0 +1,25 @@
+<dl class="attachment">
+  <dt>attachment</dt>
+  <dd>{{ attachment.attachment }}</dd>
+
+  <dt>name</dt>
+  <dd><a href="{{ attachment.url }}/">{{ attachment.name }}</a></dd>
+
+  <dt>filename</dt>
+  <dd>{{ attachment.filename }}</dd>
+
+  <dt>page</dt>
+  <dd><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.page }}</a></dd>
+
+  <dt>suffix</dt>
+  <dd><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dd>
+
+  <dt>mime</dt>
+  <dd><a href="/mime/{{attachment.mime}}">{{ attachment.mime }}</a></dd>
+
+  <dt>magic</dt>
+  <dd>{{ attachment.magic }}</dd>
+
+  <dt>size</dt>
+  <dd>{{ attachment.size }}</dd>
+</dl>

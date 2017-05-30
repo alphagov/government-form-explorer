@@ -14,23 +14,6 @@
   <dd><a href="{{ organisation.website }}">{{ organisation.name }}</a></dd>
 </dl>
 
-
-<table>
-<tr>
-  <th>page</th>
-  <th>name</th>
-</tr>
-
-{% for page in pages %}
-    <tr>
-      <td><a href="/page/{{ page.page }}/">{{ page.page }}</a></td>
-      <td><a href="https://www.gov.uk/government/publications/{{ page.page }}">{{ page.name }}</a></td>
-    </tr>
-{% endfor %}
-
-</table>
-
-
-
+{% include "_pages.html" %}
 
 {% endblock %}

@@ -4,30 +4,20 @@
 {% block content %}
 <div class="container">
 
-<h2><a href="/pages/">Page</a></h2>
+<h2>Page</h2>
 
 <dl>
   <dt>page</dt>
   <dd>{{ page.page }}</dd>
 
   <dt>name</dt>
-  <dd><a href="https://www.gov.uk/government/publications/{{ page.page }}">{{ page.name }}</a></dd>
+  <dd><a href="{{ page.url }}">{{ page.name }}</a></dd>
 </dl>
-
-<table>
-<tr>
-  <th>organisation</th>
-  <th>name</th>
-</tr>
-
-{% for organisation in organisations %}
-    <tr>
-      <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.organisation }}</a></td>
-      <td><a href="{{ organisation.website }}">{{ organisation.name }}</a></td>
-    </tr>
-{% endfor %}
 
 </table>
 
+{% include "_organisations.html" %}
+{% include "_attachments.html" %}
+{% include "_history.html" %}
 
 {% endblock %}
