@@ -14,7 +14,11 @@ migrate:
 	python manage.py migrate
 
 load:
-	python manage.py load
+	python manage.py load organisations
+	python manage.py load pages
+	python manage.py load attachments
+	python manage.py load history
+	python manage.py load downloads
 
 flake8:
 	flake8
