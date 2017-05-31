@@ -12,7 +12,7 @@ class Form(models.Model):
 
 
 class Organisation(models.Model):
-    organisation = models.CharField(max_length=16, primary_key=True)
+    organisation = models.CharField(max_length=128, primary_key=True)
     name = models.CharField(max_length=256)
     website = models.CharField(max_length=256)
 
