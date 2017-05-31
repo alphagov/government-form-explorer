@@ -29,6 +29,7 @@ class Attachment(models.Model):
     filename = models.CharField(max_length=256)
     page = models.ForeignKey(Page)
     name = models.CharField(max_length=256)
+    ref = models.CharField(max_length=256)
     url = models.CharField(max_length=256)
     size = models.IntegerField()
     mime = models.CharField(max_length=128)

@@ -4,6 +4,7 @@
   <th>attachment</th>
   <th>suffix</th>
   <th>size</th>
+  <th>ref</th>
   <th>name</th>
 </tr>
 
@@ -13,6 +14,7 @@
       <td><a href="/attachment/{{ attachment.attachment }}/">{{ attachment.attachment }}</a></td>
       <td><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dt>
       <td>{{ attachment.size }}</td>
+      <td><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></dt>
       <td><a href="{{ attachment.url }}">{{ attachment.name }}</a></td>
     </tr>
 {% endfor %}

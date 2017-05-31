@@ -42,6 +42,7 @@ def load_attachments():
                        filename=row['filename'],
                        page=page,
                        name=row['name'],
+                       ref=row['ref'],
                        url=row['url'],
                        size=int(row['size']),
                        mime=row['mime'],

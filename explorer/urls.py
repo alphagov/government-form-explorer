@@ -21,4 +21,7 @@ urlpatterns = [
 
     url(r'^suffixes/$', pages.views.suffixes, name='suffix'),
     url(r'^suffix/(?P<key>[\w\d]{1,16})$', pages.views.suffix, name='suffix'),
+
+    url(r'^refs/$', pages.views.refs, name='ref'),
+    url(r'^ref/(?P<key>.{1,256})$', pages.views.ref, name='ref'),
 ]

@@ -1,0 +1,5 @@
+<ul>
+{% for ref, count in refs %}
+  <li><a href="/ref/{{ref}}">{{ref}}</a> ({{count}})</li>
+{% endfor %}
+</ul>

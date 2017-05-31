@@ -55,3 +55,18 @@ def suffixes(request):
 def suffix(request, key=None):
     attachments = Attachment.objects.filter(suffix=key)
     return render(request, 'suffix.html', {'suffix': key, 'attachments': attachments})
+
+
+def refs(request):
+    attachments = Attachment.objects.all()
+    refs = {}
+    for attachment in attachments:
+        refs[attachment.ref] = refs.get(attachment.ref, 0) + 1
+    refs = sorted(refs.items())
+
+    return render(request, 'refs.html', {'refs': refs})
+
+
+def ref(request, key=None):
+    attachments = Attachment.objects.filter(ref=key)
+    return render(request, 'ref.html', {'ref': key, 'attachments': attachments})
