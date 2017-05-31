@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^attachments/$', pages.views.attachments, name='attachment'),
     url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
 
+    url(r'^suffixes/$', pages.views.suffixes, name='suffix'),
     url(r'^suffix/(?P<key>[\w\d]{1,16})$', pages.views.suffix, name='suffix'),
 ]

@@ -1,0 +1,5 @@
+<ul>
+{% for suffix, count in suffixes %}
+  <li><a href="/suffix/{{suffix}}">{{suffix}}</a> ({{count}})</li>
+{% endfor %}
+</ul>

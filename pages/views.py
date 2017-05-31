@@ -42,6 +42,16 @@ def attachment(request, key=None):
     return render(request, 'attachment.html', {'attachment': attachment, 'downloads': downloads})
 
 
+def suffixes(request):
+    attachments = Attachment.objects.all()
+    suffixes = {}
+    for attachment in attachments:
+        suffixes[attachment.suffix] = suffixes.get(attachment.suffix, 0) + 1
+    suffixes = sorted(suffixes.items())
+
+    return render(request, 'suffixes.html', {'suffixes': suffixes})
+
+
 def suffix(request, key=None):
     attachments = Attachment.objects.filter(suffix=key)
-    return render(request, 'attachments.html', {'attachments': attachments})
+    return render(request, 'suffix.html', {'suffix': key, 'attachments': attachments})
