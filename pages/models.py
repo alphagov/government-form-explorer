@@ -12,7 +12,7 @@ class Form(models.Model):
 
 
 class Organisation(models.Model):
-    organisation = models.CharField(max_length=128, primary_key=True)
+    organisation = models.CharField(max_length=32, primary_key=True)
     name = models.CharField(max_length=256)
     website = models.CharField(max_length=256)
 
@@ -33,7 +33,7 @@ class Attachment(models.Model):
     url = models.CharField(max_length=256)
     size = models.IntegerField()
     mime = models.CharField(max_length=128)
-    magic = models.CharField(max_length=256)
+    magic = models.CharField(max_length=1024)
     suffix = models.CharField(max_length=16)
     form = models.ForeignKey(Form, null=True)
 
@@ -41,7 +41,7 @@ class Attachment(models.Model):
 class History(models.Model):
     page = models.ForeignKey(Page)
     timestamp = models.DateTimeField()
-    text = models.CharField(max_length=512)
+    text = models.CharField(max_length=1024)
 
 
 class Download(models.Model):
