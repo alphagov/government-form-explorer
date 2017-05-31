@@ -56,8 +56,8 @@ def load_history():
     for row in register_reader('history'):
         page = Page.objects.get(page=row['page'])
         o = History(page=page,
-                     timestamp=parse_datetime(row['timestamp']),
-                     text=row['text'])
+                    timestamp=parse_datetime(row['timestamp']),
+                    text=row['text'])
         o.save()
 
 

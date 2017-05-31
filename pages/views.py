@@ -28,7 +28,11 @@ def page(request, key=None):
     organisations = Organisation.objects.filter(organisation__in=page.organisations.all())
     attachments = Attachment.objects.filter(page=key)
     history = History.objects.filter(page=key)
-    return render(request, 'page.html', {'page': page, 'organisations': organisations, 'attachments': attachments, 'history': history})
+    return render(request, 'page.html', {
+        'page': page,
+        'organisations': organisations,
+        'attachments': attachments,
+        'history': history})
 
 
 def attachments(request):
