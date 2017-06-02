@@ -6,7 +6,8 @@
   Organisation: {{organisation.name}}
 </h1>
 
-{% include "_organisation.html" %}
+<p>Pages published by <a href="{{ organisation.website }}">{{ organisation.name }}</a>.</p>
+
 {% include "_pages.html" %}
 
 {% endblock %}

@@ -53,8 +53,9 @@ def attachments(request):
 
 def attachment(request, key=None):
     attachment = Attachment.objects.get(attachment=key)
+    organisations = Organisation.objects.filter(organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
-    return render(request, 'attachment.html', {'attachment': attachment, 'downloads': downloads})
+    return render(request, 'attachment.html', {'attachment': attachment, 'organisations': organisations, 'downloads': downloads})
 
 
 def suffixes(request):

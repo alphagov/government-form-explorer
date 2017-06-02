@@ -9,20 +9,22 @@
 </h1>
 
 <dl class="attachment">
-  <dt>Attachment</dt>
-  <dd>{{ attachment.attachment }}</dd>
-
-  <dt>Name</dt>
-  <dd><a href="{{ attachment.url }}/">{{ attachment.name }}</a></dd>
-
-  <dt>Filename</dt>
-  <dd>{{ attachment.filename }}</dd>
+  <dt>Published by</dt>
+  <dd>{% for organisation in organisations %}
+      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
+  {% endfor %}
+  </dd>
 
   <dt>Page</dt>
   <dd><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.name }}</a></dd>
 
+  <dt>Attachment</dt>
+  <dd><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></dd>
+
+  {% if attachment.ref %}
   <dt>Ref</dt>
   <dd><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></dd>
+  {% endif %}
 
   <dt>Suffix</dt>
   <dd><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dd>
@@ -30,11 +32,18 @@
   <dt>Mime</dt>
   <dd><a href="/mime/{{attachment.mime}}">{{ attachment.mime }}</a></dd>
 
-  <dt>Magic</dt>
-  <dd>{{ attachment.magic }}</dd>
 
   <dt>Size</dt>
   <dd>{{ attachment.size }}</dd>
+
+  <dt>Magic</dt>
+<dd>
+<div class="panel panel-border-wide">
+  <p>{{ attachment.magic }}</p>
+</div>
+</div>
+</dd>
+
 </dl>
 
 
