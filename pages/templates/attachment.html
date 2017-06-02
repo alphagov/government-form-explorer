@@ -2,10 +2,17 @@
 {% load staticfiles %}
 
 {% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/pages">Pages</a></li>
+        <li><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.name }}</a></li>
+    </ol>
+  </div>
 
 <h1 class="heading-xlarge">
-  <span class="heading-secondary">Form</span>
-  Attachment: {{attachment.name}}
+  <span class="heading-secondary">Attachment</span>
+  {{attachment.name}}
 </h1>
 
 <dl class="attachment">
@@ -15,8 +22,6 @@
   {% endfor %}
   </dd>
 
-  <dt>Page</dt>
-  <dd><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.name }}</a></dd>
 
   <dt>Attachment</dt>
   <dd><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></dd>
@@ -47,7 +52,7 @@
 </dl>
 
 
-<h2 class="heading-medium">Attachment downloads</h2>
+<h2 class="heading-medium">Downloads</h2>
 <table class="downloads">
 <thead>
   <tr>

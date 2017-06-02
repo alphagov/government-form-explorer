@@ -2,10 +2,18 @@
 {% load staticfiles %}
 
 {% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/attachments">Attachments</a></li>
+        <li><a href="/refs">References</a></li>
+    </ol>
+  </div>
+
 
 <h1 class="heading-xlarge">
-  <span class="heading-secondary">Attachment</span>
-  Reference: {{ref}}
+  <span class="heading-secondary">Reference</span>
+  {{ref}}
 </h1>
 
 

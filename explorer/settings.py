@@ -24,6 +24,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 if 'SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ['SECRET_KEY']
+    DEBUG = False
 else:
     SECRET_KEY = 'i+acxn5(akgsn!sr4^qgf(^m&*@+g1@u^t@=8s@axc41ml*f=s'
     DEBUG = True

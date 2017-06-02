@@ -2,10 +2,15 @@
 
 {% block pages_active %} class="active"{% endblock %}
 {% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+    </ol>
+  </div>
 
-<h1 class="heading-xlarge">
-  Pages
-</h1>
+  <h1 class="heading-xlarge">
+    Pages
+  </h1>
 
 {% include "_pages.html" %}
 

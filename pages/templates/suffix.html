@@ -2,10 +2,17 @@
 {% load staticfiles %}
 
 {% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/attachments">Attachments</a></li>
+        <li><a href="/suffixes">Suffixes</a></li>
+    </ol>
+  </div>
 
 <h1 class="heading-xlarge">
-  <span class="heading-secondary">Attachment</span>
-  Suffix: {{ suffix }}
+  <span class="heading-secondary">Suffix</span>
+  {{ suffix }}
 </h1>
 
 

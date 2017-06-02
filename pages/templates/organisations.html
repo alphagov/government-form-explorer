@@ -1,16 +1,37 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block organisations_active %} class="active"{% endblock %}
 
 {% block content %}
 
-<h1 class="heading-xlarge">
-  Organisations
-</h1>
-
 <div class="grid-row">
   <div class="column-full">
-  {% include "_organisations.html" %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+    </ol>
+  </div>
+
+  <h1 class="heading-xlarge">
+    Organisations
+  </h1>
+
+  <table class="organisations">
+  <tr>
+    <th>Organisation</th>
+    <th class="numeric">Pages</th>
+    <th class="numeric">Attachments</th>
+  </tr>
+  {% for organisation in organisations %}
+      <tr>
+        <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a></td>
+        <td class="numeric"><a href="/organisation/{{ organisation.organisation }}#pages">{{ organisation.page__count | intcomma }}</a></td>
+        <td class="numeric"><a href="/organisation/{{ organisation.organisation }}/attachments">{{ organisation.attachment__count | intcomma }}</a></td>
+      </tr>
+  {% endfor %}
+  </table>
+
   </div>
 </div>
 

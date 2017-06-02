@@ -2,8 +2,16 @@
 {% load staticfiles %}
 
 {% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/organisations">Organisations</a></li>
+    </ol>
+  </div>
+
 <h1 class="heading-xlarge">
-  Organisation: {{organisation.name}}
+  <span class="heading-secondary">Organisation</span>
+  {{organisation.name}}
 </h1>
 
 <p>Pages published by <a href="{{ organisation.website }}">{{ organisation.name }}</a>.</p>

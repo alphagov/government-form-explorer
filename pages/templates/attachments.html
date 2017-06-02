@@ -2,11 +2,16 @@
 
 {% block attachments_active %} class="active"{% endblock %}
 {% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/pages">Pages</a></li>
+    </ol>
+  </div>
 
-<h1 class="heading-xlarge">
-  <span class="heading-secondary">Page</span>
-  Attachments
-</h1>
+  <h1 class="heading-xlarge">
+    Attachments
+  </h1>
 
 {% include "_attachments.html" %}
 
