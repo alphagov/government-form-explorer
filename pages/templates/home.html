@@ -3,4 +3,40 @@
 
 {% block content %}
 
+<h1 class="heading-xlarge">
+  Form explorer
+</h1>
+
+<div class="grid-row">
+
+  <div class="column-one-quarter">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/organisations">{{ count.organisations }}</a></span>
+      <span class="data-item bold-xsmall">Organisations</span>
+    </div>
+  </div>
+
+  <div class="column-one-quarter">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/pages">{{ count.pages }}</a></span>
+      <span class="data-item bold-xsmall">Pages</span>
+    </div>
+  </div>
+
+  <div class="column-one-quarter">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/attachments">{{ count.attachments }}</a></span>
+      <span class="data-item bold-xsmall">Attachments</span>
+    </div>
+  </div>
+
+  <div class="column-one-quarter">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/suffixes">{{ count.suffixes }}</a></span>
+      <span class="data-item bold-xsmall">Suffixes</span>
+    </div>
+  </div>
+</div>
+
+
 {% endblock %}

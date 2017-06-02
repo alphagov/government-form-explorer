@@ -2,8 +2,8 @@
 <thead>
 <tr>
   <th scope="col">Page</th>
-  <th scope="col" class="numeric">Updates</th>
   <th scope="col" class="numeric">Attachments</th>
+  <th scope="col" class="numeric">Updates</th>
 </tr>
 </thead>
 <tbody>
@@ -11,8 +11,8 @@
 {% for page in pages %}
     <tr>
       <td><a href="/page/{{ page.page }}/">{{ page.name }}</a></td>
-      <td class="numeric">{{ page.updates }}</td>
       <td class="numeric">{{ page.attachments }}</td>
+      <td class="numeric">{{ page.updates }}</td>
     </tr>
 {% endfor %}
 

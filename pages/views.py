@@ -4,8 +4,18 @@ from django.db.models import Count
 from .models import Organisation, Page, Attachment, Download, History
 
 
+def count_pages(pages):
+    return pages.annotate(attachments=Count('attachment', distinct=True)).annotate(updates=Count('history', distinct=True)).order_by('-attachments')
+
+
 def home(request):
-    return render(request, 'home.html')
+    count = {
+        'organisations': Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).count(),
+        'pages': Page.objects.count(),
+        'attachments': Attachment.objects.count(),
+        'suffixes': Attachment.objects.values('suffix').distinct().count(),
+    }
+    return render(request, 'home.html', {'count': count})
 
 
 def organisations(request):
@@ -15,12 +25,12 @@ def organisations(request):
 
 def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
-    pages = Page.objects.filter(organisations__organisation=key)
+    pages = count_pages(Page.objects.filter(organisations__organisation=key))
     return render(request, 'organisation.html', {'organisation': organisation, 'pages': pages})
 
 
 def pages(request):
-    pages = Page.objects.annotate(attachments=Count('attachment', distinct=True)).annotate(updates=Count('history', distinct=True)).order_by('-attachments')
+    pages = count_pages(Page.objects)
     return render(request, 'pages.html', {'pages': pages})
 
 
