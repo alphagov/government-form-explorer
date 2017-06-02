@@ -18,11 +18,14 @@
   </h1>
 
   <table class="organisations">
-  <tr>
-    <th>Organisation</th>
-    <th class="numeric">Pages</th>
-    <th class="numeric">Attachments</th>
-  </tr>
+    <thead>
+      <tr>
+        <th>Organisation</th>
+        <th class="numeric">Pages</th>
+        <th class="numeric">Attachments</th>
+      </tr>
+  </thead>
+  <tbody>
   {% for organisation in organisations %}
       <tr>
         <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a></td>
@@ -30,6 +33,7 @@
         <td class="numeric"><a href="/organisation/{{ organisation.organisation }}/attachments">{{ organisation.attachment__count | intcomma }}</a></td>
       </tr>
   {% endfor %}
+  </tbody>
   </table>
 
   </div>

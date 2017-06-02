@@ -9,7 +9,7 @@
   <!--[if IE 7]><link href="{% static 'stylesheets/govuk-elements-styles-ie7.css?1' %}" rel="stylesheet" type="text/css" /><![endif]-->
   <!--[if IE 8]><link href="{% static 'stylesheets/govuk-elements-styles-ie8.css?1' %}" rel="stylesheet" type="text/css" /><![endif]-->
 
-  <link href="{% static 'stylesheets/styles.css' %}"  rel="stylesheet" type="text/css">
+  <link href="{% static 'stylesheets/styles.css?1' %}"  rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block proposition_header %}
@@ -52,4 +52,14 @@
 
     {% block content %}{% endblock %}
 </main>
+{% endblock %}
+
+{% block body_end %}
+<script type="text/javascript" src="/static/vendor/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="/static/vendor/jquery.tablesorter.min.js"></script>
+<script>
+$(function () {
+  $("table").tablesorter();
+});
+</script>
 {% endblock %}

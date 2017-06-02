@@ -7,3 +7,7 @@ dt {
 dt::after {
   content: ":";
 }
+
+th {
+  cursor: pointer;
+}
