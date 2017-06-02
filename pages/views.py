@@ -5,7 +5,9 @@ from .models import Organisation, Page, Attachment, Download, History
 
 
 def count_pages(pages):
-    return pages.annotate(attachments=Count('attachment', distinct=True)).annotate(updates=Count('history', distinct=True)).order_by('-attachments')
+    return pages \
+            .annotate(attachments=Count('attachment', distinct=True)) \
+            .annotate(updates=Count('history', distinct=True)).order_by('-attachments')
 
 
 def home(request):
@@ -55,7 +57,10 @@ def attachment(request, key=None):
     attachment = Attachment.objects.get(attachment=key)
     organisations = Organisation.objects.filter(organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
-    return render(request, 'attachment.html', {'attachment': attachment, 'organisations': organisations, 'downloads': downloads})
+    return render(request, 'attachment.html', {
+        'attachment': attachment,
+        'organisations': organisations,
+        'downloads': downloads})
 
 
 def suffixes(request):
@@ -69,7 +74,12 @@ def suffix(request, key=None):
 
 
 def refs(request):
-    refs = Attachment.objects.values('ref').exclude(ref__isnull=True).exclude(ref__exact='').order_by().annotate(Count('ref')).order_by("-ref__count")
+    refs = Attachment \
+        .objects.values('ref') \
+        .exclude(ref__isnull=True) \
+        .exclude(ref__exact='') \
+        .order_by().annotate(Count('ref')) \
+        .order_by("-ref__count")
     return render(request, 'refs.html', {'refs': refs})
 
 
