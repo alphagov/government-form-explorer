@@ -9,7 +9,7 @@ init:
 	pip install -r requirements.txt
 
 static:
-	python manage.py collectstatic
+	python manage.py collectstatic --noinput --clear
 
 migrate:
 	python manage.py makemigrations pages
