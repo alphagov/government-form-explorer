@@ -2,22 +2,29 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="container">
 
-<h2>{{page.name}}</h2>
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Page</span>
+  {{page.name}}
+</h1>
+
 
 <dl>
-  <dt>page</dt>
-  <dd>{{ page.page }}</dd>
-
-  <dt>name</dt>
+  <dt>Page</dt>
   <dd><a href="{{ page.url }}">{{ page.name }}</a></dd>
+
+  <dt>Published by</dt>
+  <dd>{% for organisation in organisations %}
+      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
+  {% endfor %}
+  </dd>
 </dl>
 
-</table>
 
-{% include "_organisations.html" %}
+<h2 class="heading-medium">Page attachments</h2>
 {% include "_attachments.html" %}
+
+<h2 class="heading-medium">Page history</h2>
 {% include "_history.html" %}
 
 {% endblock %}

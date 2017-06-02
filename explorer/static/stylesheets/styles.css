@@ -1,0 +1,9 @@
+dt {
+  margin-top: 1.05263em;
+  line-height: 1.31579;
+  min-width: 120px;
+}
+
+dt::after {
+  content: ":";
+}

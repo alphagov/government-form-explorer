@@ -1,22 +1,28 @@
+{% load humanize %}
+
+<div class="grid-row">
+  <div class="column-full">
 <table class="attachments">
-<tr>
-  <th>page</th>
-  <th>attachment</th>
-  <th>suffix</th>
-  <th>size</th>
-  <th>ref</th>
-  <th>name</th>
-</tr>
+<thead>
+  <tr>
+    <th scope='col'>Attachment</th>
+    <th scope='col'>Ref</th>
+    <th scope='col'>Suffix</th>
+    <th scope='col' class="numeric">Size (Bytes)</th>
+  </tr>
+</thead>
+<tbody>
 
 {% for attachment in attachments %}
     <tr>
-      <td><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.page }}</a></td>
-      <td><a href="/attachment/{{ attachment.attachment }}/">{{ attachment.attachment }}</a></td>
-      <td><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dt>
-      <td>{{ attachment.size }}</td>
+      <td><a href="/attachment/{{ attachment.attachment }}/">{{ attachment.name }}</a></td>
       <td><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></dt>
-      <td><a href="{{ attachment.url }}">{{ attachment.name }}</a></td>
+      <td><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dt>
+      <td class="numeric">{{ attachment.size | intcomma }}</td>
     </tr>
 {% endfor %}
 
+</tbody>
 </table>
+  </div>
+</div>

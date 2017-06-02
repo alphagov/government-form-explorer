@@ -1,13 +1,15 @@
+{% load humanize %}
+
 <table class="organisations">
 <tr>
-  <th>organisation</th>
-  <th>name</th>
+  <th>Organisation</th>
+  <th class="numeric">Pages</th>
 </tr>
 
 {% for organisation in organisations %}
     <tr>
-      <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.organisation }}</a></td>
-      <td><a href="{{ organisation.website }}">{{ organisation.name }}</a></td>
+      <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a></td>
+      <td class="numeric"><a href="/organisation/{{ organisation.organisation }}#pages">{{ organisation.page__count | intcomma }}</a></td>
     </tr>
 {% endfor %}
 

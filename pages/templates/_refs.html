@@ -1,5 +1,14 @@
-<ul>
-{% for ref, count in refs %}
-  <li><a href="/ref/{{ref}}">{{ref}}</a> ({{count}})</li>
+<table>
+<tr>
+  <th>Ref</th>
+  <th class="numeric">Count</th>
+</tr>
+
+{% for ref in refs %}
+    <tr>
+      <td><a href="/ref/{{ref.ref}}">{{ref.ref}}</a></td>
+      <td class="numeric">{{ref.ref__count}}</td>
+    </tr>
 {% endfor %}
-</ul>
+
+</table>

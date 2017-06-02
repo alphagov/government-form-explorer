@@ -1,16 +1,20 @@
+<div class="grid-row">
+  <div class="column-full">
 <table class="history">
 <tr>
-  <th>page</th>
-  <th>timestamp</th>
-  <th>text</th>
+<thead>
+  <th>Date</th>
+  <th>Text</th>
+</thead>
 </tr>
 
 {% for h in history %}
     <tr>
-      <td><a href="/page/{{ h.page.page }}/">{{ h.page.page }}</a></td>
       <td>{{ h.timestamp }}</a></td>
       <td>{{ h.text }}</a></td>
     </tr>
 {% endfor %}
 
 </table>
+  </div>
+</div>

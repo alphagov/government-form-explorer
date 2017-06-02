@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 
+{% block attachments_active %} class="active"{% endblock %}
 {% block content %}
-  <div class="container">
 
-<h2>Attachments</h2>
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Page</span>
+  Attachments
+</h1>
 
 {% include "_attachments.html" %}
-
-</div>
 
 {% endblock %}

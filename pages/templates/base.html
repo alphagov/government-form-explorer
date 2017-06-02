@@ -1,33 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Government Forms Explorer</title>
-<style>
-th {
-  text-align: left;
-}
-</style>
-</head>
-<body>
+{% extends "govuk_base.html" %}
+{% load staticfiles %}
 
-<h1><a href="/">Government Forms Explorer</a></h1>
+{% block header_class %}with-proposition{% endblock %}
 
-<ul>
-<li><a href="/organisations">organisations</a>
-<li><a href="/pages">pages</a>
-<li><a href="/attachments">attachments</a>
-<li><a href="/suffixes">suffixes</a>
+{% block head %}
+  <!--[if gt IE 8]><!--><link href="{% static 'stylesheets/govuk-elements-styles.css' %}"  rel="stylesheet" type="text/css"><!--<![endif]-->
+  <!--[if IE 6]><link href="{% static 'stylesheets/govuk-elements-styles-ie6.css' %}" rel="stylesheet" type="text/css" /><![endif]-->
+  <!--[if IE 7]><link href="{% static 'stylesheets/govuk-elements-styles-ie7.css' %}" rel="stylesheet" type="text/css" /><![endif]-->
+  <!--[if IE 8]><link href="{% static 'stylesheets/govuk-elements-styles-ie8.css' %}" rel="stylesheet" type="text/css" /><![endif]-->
 
+  <link href="{% static 'stylesheets/styles.css' %}"  rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block proposition_header %}
+<div class='header-proposition'>
+  <div class='content'>
+    <a href='#proposition-links' class='js-header-toggle menu'>Menu</a>
+    <nav id='proposition-menu'>
+      <a href='/' id='proposition-name'>Form Explorer</a>
+      <ul id='proposition-links'>
+        <li><a href="/organisations"{% block organisations_active %}{% endblock %}>Organisations</a>
+        <li><a href="/pages"{% block pages_active %}{% endblock %}>Pages</a>
+        <li><a href="/attachments"{% block attachments_active %}{% endblock %}>Attachments</a>
+        <li><a href="/suffixes"{% block suffixes_active %}{% endblock %}>Suffixes</a>
+        <li><a href="/refs"{% block refs_active %}{% endblock %}>Refs</a>
 <!--
-<li><a href="/forms">forms</a>
-<li><a href="/questions">questions</a>
-<li><a href="/snippets">snippet</a>
+        <li><a href="/forms">forms</a>
+        <li><a href="/questions">questions</a>
+        <li><a href="/snippets">snippet</a>
+        <li><a href="/admin">admin</a>
 -->
-<li><a href="/admin">admin</a>
-</ul>
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endblock %}
 
+{% block main %}
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-full">
+      <div class="phase-banner">
+      <p>
+        <strong class="phase-tag">ALPHA</strong>
+        <span>This is a prototype.</span>
+      </p>
+      </div>
+    </div>
+  </div>
 
-{% block content %}{% endblock %}
-
-</body>
-</html>
+    {% block content %}{% endblock %}
+</main>
+{% endblock %}

@@ -1,12 +1,14 @@
 all:	flake8
 
-refresh:	clean init migrate load
+refresh:	clean init static migrate load
 
 server:
 	python manage.py runserver
 
 init:
 	pip install -r requirements.txt
+
+static:
 	python manage.py collectstatic
 
 migrate:

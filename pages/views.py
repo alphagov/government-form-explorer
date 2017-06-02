@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Count
 
 from .models import Organisation, Page, Attachment, Download, History
 
@@ -8,7 +9,7 @@ def home(request):
 
 
 def organisations(request):
-    organisations = Organisation.objects.all()
+    organisations = Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).order_by('-page__count')
     return render(request, 'organisations.html', {'organisations': organisations})
 
 
@@ -19,7 +20,7 @@ def organisation(request, key=None):
 
 
 def pages(request):
-    pages = Page.objects.all()
+    pages = Page.objects.annotate(attachments=Count('attachment', distinct=True)).annotate(updates=Count('history', distinct=True)).order_by('-attachments')
     return render(request, 'pages.html', {'pages': pages})
 
 
@@ -47,12 +48,7 @@ def attachment(request, key=None):
 
 
 def suffixes(request):
-    attachments = Attachment.objects.all()
-    suffixes = {}
-    for attachment in attachments:
-        suffixes[attachment.suffix] = suffixes.get(attachment.suffix, 0) + 1
-    suffixes = sorted(suffixes.items())
-
+    suffixes = Attachment.objects.values('suffix').order_by().annotate(Count('suffix')).order_by("-suffix__count")
     return render(request, 'suffixes.html', {'suffixes': suffixes})
 
 
@@ -62,12 +58,7 @@ def suffix(request, key=None):
 
 
 def refs(request):
-    attachments = Attachment.objects.all()
-    refs = {}
-    for attachment in attachments:
-        refs[attachment.ref] = refs.get(attachment.ref, 0) + 1
-    refs = sorted(refs.items())
-
+    refs = Attachment.objects.values('ref').exclude(ref__isnull=True).exclude(ref__exact='').order_by().annotate(Count('ref')).order_by("-ref__count")
     return render(request, 'refs.html', {'refs': refs})
 
 

@@ -1,15 +1,20 @@
 <table class="pages">
+<thead>
 <tr>
-  <th>page</th>
-  <th>name</th>
+  <th scope="col">Page</th>
+  <th scope="col" class="numeric">Updates</th>
+  <th scope="col" class="numeric">Attachments</th>
 </tr>
+</thead>
+<tbody>
 
 {% for page in pages %}
     <tr>
-      <td><a href="/page/{{ page.page }}/">{{ page.page }}</a></td>
-      <td><a href="{{ page.url }}">{{ page.name }}</a></td>
+      <td><a href="/page/{{ page.page }}/">{{ page.name }}</a></td>
+      <td class="numeric">{{ page.updates }}</td>
+      <td class="numeric">{{ page.attachments }}</td>
     </tr>
 {% endfor %}
 
+</tbody>
 </table>
-

@@ -2,13 +2,58 @@
 {% load staticfiles %}
 
 {% block content %}
-  <div class="container">
 
-<h2>{{attachment.name}}</h2>
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Form</span>
+  Attachment: {{attachment.name}}
+</h1>
 
-{% include "_attachment.html" %}
-{% include "_downloads.html" %}
+<dl class="attachment">
+  <dt>Attachment</dt>
+  <dd>{{ attachment.attachment }}</dd>
 
-</div>
+  <dt>Name</dt>
+  <dd><a href="{{ attachment.url }}/">{{ attachment.name }}</a></dd>
+
+  <dt>Filename</dt>
+  <dd>{{ attachment.filename }}</dd>
+
+  <dt>Page</dt>
+  <dd><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.name }}</a></dd>
+
+  <dt>Ref</dt>
+  <dd><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></dd>
+
+  <dt>Suffix</dt>
+  <dd><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dd>
+
+  <dt>Mime</dt>
+  <dd><a href="/mime/{{attachment.mime}}">{{ attachment.mime }}</a></dd>
+
+  <dt>Magic</dt>
+  <dd>{{ attachment.magic }}</dd>
+
+  <dt>Size</dt>
+  <dd>{{ attachment.size }}</dd>
+</dl>
+
+
+<h2 class="heading-medium">Attachment downloads</h2>
+<table class="downloads">
+<thead>
+  <tr>
+    <th scope="col">month</th>
+    <th scope="col" class="numeric">count</th>
+  </tr>
+</thead>
+
+{% for download in downloads %}
+    <tr>
+      <td>{{ download.month }}</a></td>
+      <td class="numeric">{{ download.count }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
 
 {% endblock %}

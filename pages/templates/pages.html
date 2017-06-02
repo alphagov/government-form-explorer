@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 
+{% block pages_active %} class="active"{% endblock %}
 {% block content %}
-  <div class="container">
 
-<h2>Pages</h2>
+<h1 class="heading-xlarge">
+  Pages
+</h1>
 
 {% include "_pages.html" %}
-
-</div>
 
 {% endblock %}

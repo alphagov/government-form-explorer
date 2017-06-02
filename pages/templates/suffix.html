@@ -2,12 +2,13 @@
 {% load staticfiles %}
 
 {% block content %}
-  <div class="container">
 
-<h2>Attachments with a ".{{ suffix }}" suffix</h2>
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Attachment</span>
+  Suffix: {{ suffix }}
+</h1>
+
 
 {% include "_attachments.html" %}
-
-</div>
 
 {% endblock %}

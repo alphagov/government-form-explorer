@@ -1,13 +1,14 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+
+{% block suffixes_active %} class="active"{% endblock %}
 
 {% block content %}
-  <div class="container">
 
-<h2>Suffixes</h2>
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Attachment</span>
+  Suffixes
+</h1>
 
 {% include "_suffixes.html" %}
-
-</div>
 
 {% endblock %}

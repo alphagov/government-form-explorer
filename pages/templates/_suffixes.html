@@ -1,5 +1,16 @@
-<ul>
-{% for suffix, count in suffixes %}
-  <li><a href="/suffix/{{suffix}}">{{suffix}}</a> ({{count}})</li>
+{% load humanize %}
+
+<table>
+<tr>
+  <th>Suffix</th>
+  <th class="numeric">Count</th>
+</tr>
+
+{% for suffix in suffixes %}
+    <tr>
+      <td><a href="/suffix/{{suffix.suffix}}">{{suffix.suffix}}</a></td>
+      <td class="numeric">{{suffix.suffix__count | intcomma}}</td>
+    </tr>
 {% endfor %}
-</ul>
+
+</table>

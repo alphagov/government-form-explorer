@@ -1,12 +1,17 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+
+{% block organisations_active %} class="active"{% endblock %}
 
 {% block content %}
-<div class="container">
 
-<h2>Organisations</h2>
+<h1 class="heading-xlarge">
+  Organisations
+</h1>
 
-{% include "_organisations.html" %}
-
+<div class="grid-row">
+  <div class="column-full">
+  {% include "_organisations.html" %}
+  </div>
 </div>
+
 {% endblock %}

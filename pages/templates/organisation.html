@@ -2,9 +2,9 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="container">
-
-<h2>{{organisation.name}}</h2>
+<h1 class="heading-xlarge">
+  Organisation: {{organisation.name}}
+</h1>
 
 {% include "_organisation.html" %}
 {% include "_pages.html" %}
