@@ -29,8 +29,8 @@
   {% for organisation in organisations %}
       <tr>
         <td><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a></td>
-        <td class="numeric"><a href="/organisation/{{ organisation.organisation }}#pages">{{ organisation.page__count | intcomma }}</a></td>
-        <td class="numeric"><a href="/organisation/{{ organisation.organisation }}/attachments">{{ organisation.attachment__count | intcomma }}</a></td>
+        <td class="numeric"><a href="/organisation/{{ organisation.organisation }}#pages">{{ organisation.pages |intcomma }}</a></td>
+        <td class="numeric"><a href="/organisation/{{ organisation.organisation }}/attachments">{{ organisation.attachments | intcomma }}</a></td>
       </tr>
   {% endfor %}
   </tbody>

@@ -7,7 +7,8 @@ from .models import Organisation, Page, Attachment, Download, History
 def count_pages(pages):
     return pages \
             .annotate(attachments=Count('attachment', distinct=True)) \
-            .annotate(updates=Count('history', distinct=True)).order_by('-attachments')
+            .annotate(updates=Count('history', distinct=True)) \
+            .order_by('-attachments')
 
 
 def home(request):
@@ -21,7 +22,11 @@ def home(request):
 
 
 def organisations(request):
-    organisations = Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).order_by('-page__count')
+    organisations = Organisation.objects \
+        .annotate(pages=Count('page', distinct=True)) \
+        .annotate(attachments=Count('page__attachment', distinct=True)) \
+        .filter(pages__gt=0) \
+        .order_by('-pages')
     return render(request, 'organisations.html', {'organisations': organisations})
 
 
@@ -29,6 +34,12 @@ def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     pages = count_pages(Page.objects.filter(organisations__organisation=key))
     return render(request, 'organisation.html', {'organisation': organisation, 'pages': pages})
+
+
+def organisation_attachments(request, key=None):
+    organisation = Organisation.objects.get(organisation=key)
+    attachments = Attachment.objects.filter(page__organisations__organisation__contains=key).order_by('-size')
+    return render(request, 'organisation_attachments.html', {'organisation': organisation, 'attachments': attachments})
 
 
 def pages(request):
@@ -39,7 +50,7 @@ def pages(request):
 def page(request, key=None):
     page = Page.objects.get(page=key)
     organisations = Organisation.objects.filter(organisation__in=page.organisations.all())
-    attachments = Attachment.objects.filter(page=key)
+    attachments = Attachment.objects.filter(page=key).order_by('name')
     history = History.objects.filter(page=key)
     return render(request, 'page.html', {
         'page': page,
@@ -49,7 +60,7 @@ def page(request, key=None):
 
 
 def attachments(request):
-    attachments = Attachment.objects.all()
+    attachments = Attachment.objects.all().order_by('-size')
     return render(request, 'attachments.html', {'attachments': attachments})
 
 

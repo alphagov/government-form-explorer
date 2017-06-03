@@ -5,6 +5,15 @@
   <div class="breadcrumbs">
     <ol>
         <li><a href="/">Form explorer</a></li>
+        <li><a href="/organisations">Organisations</a></li>
+        <li>
+  {% for organisation in organisations %}
+      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
+  {% endfor %}
+        </li>
+    </ol>
+    <ol>
+        <li><a href="/">Form explorer</a></li>
         <li><a href="/pages">Pages</a></li>
     </ol>
   </div>
@@ -14,14 +23,6 @@
   {{page.name}}
 </h1>
 
-
-<dl>
-  <dt>Published by</dt>
-  <dd>{% for organisation in organisations %}
-      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
-  {% endfor %}
-  </dd>
-</dl>
 
 
 <h2 class="heading-medium">Page attachments</h2>
