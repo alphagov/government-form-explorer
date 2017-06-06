@@ -12,6 +12,10 @@ th {
   cursor: pointer;
 }
 
+#homebar .data {
+  padding-bottom: 1em;
+}
+
 #homebar .data a {
   text-decoration: none;
   color: black;
