@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Count
+from django.http import HttpResponse
+import csv
 
 from .models import Organisation, Page, Attachment, Download, History
 
@@ -97,3 +99,18 @@ def refs(request):
 def ref(request, key=None):
     attachments = Attachment.objects.filter(ref=key)
     return render(request, 'ref.html', {'ref': key, 'attachments': attachments})
+
+
+def history(request, suffix=None):
+    history = History.objects.extra({'date':"date(timestamp)"}).values('date').annotate(count=Count('id')).order_by("-date")
+
+    if suffix == "tsv":
+        response = HttpResponse(content_type='text/tab-separated-values;charset=UTF-8')
+        fields = ['date', 'count']
+        writer = csv.writer(response, delimiter='\t')
+        writer.writerow(fields)
+        for row in history:
+            writer.writerow([str(row[field]) for field in fields])
+        return response
+
+    return render(request, 'history.html', {'history': history})

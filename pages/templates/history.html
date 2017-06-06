@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block pages_active %} class="active"{% endblock %}
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/pages">Pages</a></li>
+    </ol>
+  </div>
+
+  <h1 class="heading-xlarge">
+    History
+  </h1>
+
+<div class="grid-row">
+  <div class="column-full">
+<table class="history">
+<tr>
+<thead>
+  <th>Date</th>
+  <th class="numeric">Count</th>
+</thead>
+</tr>
+
+{% for h in history %}
+    <tr>
+      <td>{{ h.date }}</a></td>
+      <td class="numeric">{{ h.count }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+  </div>
+</div>
+
+{% endblock %}
