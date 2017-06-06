@@ -19,6 +19,7 @@ def home(request):
         'pages': Page.objects.count(),
         'attachments': Attachment.objects.count(),
         'suffixes': Attachment.objects.values('suffix').distinct().count(),
+        'refs': Attachment.objects.values('ref').distinct().count(),
     }
     return render(request, 'home.html', {'count': count})
 

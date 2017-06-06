@@ -11,3 +11,13 @@ dt::after {
 th {
   cursor: pointer;
 }
+
+#homebar .data a {
+  text-decoration: none;
+  color: black;
+}
+
+#homebar .data a:hover {
+  text-decoration: underline;
+  color: black;
+}
