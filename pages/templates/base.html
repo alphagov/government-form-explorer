@@ -58,7 +58,25 @@
 <script type="text/javascript" src="/static/vendor/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="/static/vendor/jquery.tablesorter.min.js"></script>
 <script>
+function month(name) {
+  return "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(name) / 3 + 1;
+}
+
+function pad(num) {
+    var s = "00" + num;
+    return s.substr(s.length-2);
+}
+
 $(function () {
+  $.tablesorter.addParser({
+        id: 'when',
+        format: function d(s) {
+          a = s.split(" ");
+          return a[2] + pad(month(a[1])) + pad(a[0]);
+        },
+        type: 'text'
+  }); 
+
   $("table").tablesorter();
 });
 </script>

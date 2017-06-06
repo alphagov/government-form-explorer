@@ -18,14 +18,14 @@
 <table class="history">
 <tr>
 <thead>
-  <th>Date</th>
+  <th class="sorter-when">Date</th>
   <th class="numeric">Count</th>
 </thead>
 </tr>
 
 {% for h in history %}
     <tr>
-      <td>{{ h.date }}</a></td>
+      <td><time datetime="{{ h.timestamp }}" class="timestamp">{{ h.date }}</time></td>
       <td class="numeric">{{ h.count }}</a></td>
     </tr>
 {% endfor %}
