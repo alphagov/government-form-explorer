@@ -15,13 +15,18 @@ urlpatterns = [
     url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/attachments/$', pages.views.organisation_attachments, name='organisation'),
 
     url(r'^pages/$', pages.views.pages, name='page'),
-    url(r'^page/(?P<key>[:\w\d_-]{1,256})/$', pages.views.page, name='page'),
 
     url(r'^pages/history/$', pages.views.history, name='history'),
     url(r'^pages/history.(?P<suffix>[\w]{1,16})$', pages.views.history, name='history'),
     url(r'^pages/history/(?P<date>\d{4}-\d{2}-\d{2})$', pages.views.history_date, name='history'),
 
+    url(r'^page/(?P<key>[:\w\d_-]{1,256})/$', pages.views.page, name='page'),
+
     url(r'^attachments/$', pages.views.attachments, name='attachment'),
+
+    url(r'^attachments/downloads/$', pages.views.downloads, name='downloads'),
+    url(r'^attachments/downloads.(?P<suffix>[\w]{1,16})$', pages.views.downloads, name='downloads'),
+
     url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
 
     url(r'^suffixes/$', pages.views.suffixes, name='suffix'),

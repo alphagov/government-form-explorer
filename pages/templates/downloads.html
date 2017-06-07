@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block pages_active %} class="active"{% endblock %}
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/attachments">Attachments</a></li>
+    </ol>
+  </div>
+
+  <h1 class="heading-xlarge">
+    <span class="heading-secondary">Attachments</span>
+    Downloads
+  </h1>
+
+<div class="grid-row">
+  <div class="column-full">
+<table class="downloads">
+<tr>
+  <thead>
+    <th>Month</th>
+    <th class="numeric">Attachments</th>
+    <th class="numeric">Downloads</th>
+  </thead>
+</tr>
+
+{% for d in downloads %}
+    <tr>
+      <td>{{ d.month }}</td>
+      <td class="numeric">{{ d.attachments }}</a></td>
+      <td class="numeric">{{ d.downloads }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+  </div>
+</div>
+
+{% endblock %}

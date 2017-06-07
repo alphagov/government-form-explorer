@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.http import HttpResponse
 import csv
 
@@ -21,6 +21,7 @@ def home(request):
         'suffixes': Attachment.objects.values('suffix').distinct().count(),
         'refs': Attachment.objects.values('ref').distinct().count(),
         'history': History.objects.all().count(),
+        'downloads': Download.objects.all().aggregate(Sum('count')).get('count__sum'),
     }
     return render(request, 'home.html', {'count': count})
 
@@ -121,3 +122,21 @@ def history(request, suffix=None):
 def history_date(request, date=None):
     history = History.objects.filter(timestamp__startswith=date)
     return render(request, 'history_date.html', {'date': date, 'history': history})
+
+
+def downloads(request, suffix=None):
+    downloads = Download.objects.values('month') \
+        .annotate(attachments=Count('id')) \
+        .annotate(downloads=Sum('count')) \
+        .order_by("-month")
+
+    if suffix == "tsv":
+        response = HttpResponse(content_type='text/tab-separated-values;charset=UTF-8')
+        fields = ['month', 'count']
+        writer = csv.writer(response, delimiter='\t')
+        writer.writerow(fields)
+        for row in downloads:
+            writer.writerow([str(row[field]) for field in fields])
+        return response
+
+    return render(request, 'downloads.html', {'downloads': downloads})
