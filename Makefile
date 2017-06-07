@@ -3,24 +3,24 @@ all:	flake8
 refresh:	clean init static migrate load
 
 server:
-	python manage.py runserver
+	python3 manage.py runserver
 
 init:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 static:
-	python manage.py collectstatic --noinput --clear
+	python3 manage.py collectstatic --noinput --clear
 
 migrate:
-	python manage.py makemigrations pages
-	python manage.py migrate
-
+	python3 manage.py makemigrations pages
+	python3 manage.py migrate
+3
 load:
-	python manage.py load organisations
-	python manage.py load pages
-	python manage.py load attachments
-	python manage.py load history
-	python manage.py load downloads
+	python3 manage.py load organisations
+	python3 manage.py load pages
+	python3 manage.py load attachments
+	python3 manage.py load history
+	python3 manage.py load downloads
 
 flake8:
 	flake8
