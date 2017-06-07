@@ -14,7 +14,7 @@ static:
 migrate:
 	python3 manage.py makemigrations pages
 	python3 manage.py migrate
-3
+
 load:
 	python3 manage.py load organisations
 	python3 manage.py load pages
