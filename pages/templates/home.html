@@ -33,13 +33,19 @@
       <span class="data-item font-xsmall">Suffixes</span>
     </div>
 
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/pages/history">{{ count.history }}</a></span>
+      <span class="data-item font-xsmall">Page updates</span>
+    </div>
+
+
   </div>
 
   <div class="column-two-thirds">
     <p>
-    <p>An analysis of <a href="https://docs.publishing.service.gov.uk/document-types/form.html">form content</a> published on GOV.UK.</p>
+    <p>There are {{ count.pages }} pages published on GOV.UK with a content type of ‘<a href="https://docs.publishing.service.gov.uk/document-types/form.html">form</a>’.</p>
 
-    <p>A <a href="/pages">page</a> may have a number of different <a href="/attachments">attachments</a> and be published by a number of different <a href="/organisations">organisations</a>. </p>
+    <p>A form <a href="/pages">page</a> may have a number of <a href="/attachments">attachments</a> and may be authored by one or more <a href="/organisations">organisations</a>. </p>
     <p>
     The tools and data used to create this application are open and available from <a href="https://github.com/openregister/government-form-data">github.com/openregister/government-form-data</a>.
     </p>

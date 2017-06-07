@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block pages_active %} class="active"{% endblock %}
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/pages">Pages</a></li>
+        <li><a href="/pages/history">History</a></li>
+    </ol>
+  </div>
+
+  <h1 class="heading-xlarge">
+  <span class="heading-secondary">Pages</span>
+    Changes on {{ date }}
+  </h1>
+
+<div class="grid-row">
+  <div class="column-full">
+<table class="history">
+<tr>
+<thead>
+  <th>Organisations</th>
+  <th>Page</th>
+  <th>Text</th>
+</thead>
+</tr>
+
+{% for h in history %}
+    <tr>
+      <td>
+  {% for organisation in h.page.organisations.all %}
+      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
+  {% endfor %}
+      </td>
+      <td><a href="/page/{{ h.page.page }}">{{ h.page.name }}</a></td>
+      <td>{{ h.text }}</a></td>
+    </tr>
+{% endfor %}
+
+</table>
+  </div>
+</div>
+
+{% endblock %}

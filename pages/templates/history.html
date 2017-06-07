@@ -10,6 +10,7 @@
   </div>
 
   <h1 class="heading-xlarge">
+    <span class="heading-secondary">Pages</span>
     History
   </h1>
 
@@ -25,7 +26,7 @@
 
 {% for h in history %}
     <tr>
-      <td><time datetime="{{ h.timestamp }}" class="timestamp">{{ h.date }}</time></td>
+      <td><a href="{{ h.date| date:"Y-m-d" }}"><time datetime="{{ h.timestamp }}" class="timestamp">{{ h.date }}</time></a></td>
       <td class="numeric">{{ h.count }}</a></td>
     </tr>
 {% endfor %}

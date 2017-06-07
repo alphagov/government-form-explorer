@@ -20,6 +20,7 @@ def home(request):
         'attachments': Attachment.objects.count(),
         'suffixes': Attachment.objects.values('suffix').distinct().count(),
         'refs': Attachment.objects.values('ref').distinct().count(),
+        'history': History.objects.all().count(),
     }
     return render(request, 'home.html', {'count': count})
 
@@ -115,3 +116,8 @@ def history(request, suffix=None):
         return response
 
     return render(request, 'history.html', {'history': history})
+
+
+def history_date(request, date=None):
+    history = History.objects.filter(timestamp__startswith=date)
+    return render(request, 'history_date.html', {'date': date, 'history': history})

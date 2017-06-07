@@ -19,6 +19,7 @@ urlpatterns = [
 
     url(r'^pages/history/$', pages.views.history, name='history'),
     url(r'^pages/history.(?P<suffix>[\w]{1,16})$', pages.views.history, name='history'),
+    url(r'^pages/history/(?P<date>\d{4}-\d{2}-\d{2})$', pages.views.history_date, name='history'),
 
     url(r'^attachments/$', pages.views.attachments, name='attachment'),
     url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
