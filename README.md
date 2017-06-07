@@ -15,10 +15,25 @@ $ make init
 $ make flake8
 ```
 
-
 # Running locally
+
+Create and configure your postgres database:
+
+```
+$ psql
+hello=# CREATE DATABASE forms;
+^D
+
+$ export DATABASE_URL=postgres://username:password@localhost/forms
+```
 
 ```sh
 $ make migrate
 $ make server
+```
+
+Load the data from the [government-form-data](https://github.com/openregister/government-form-data) project.
+
+```sh
+$ make load
 ```
