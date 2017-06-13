@@ -90,8 +90,8 @@ def suffix(request, key=None):
 
 
 def refs(request):
-    refs = Attachment \
-        .objects.values('ref') \
+    refs = Attachment.objects \
+        .values('ref') \
         .exclude(ref__isnull=True) \
         .exclude(ref__exact='') \
         .order_by().annotate(Count('ref')) \
@@ -105,7 +105,11 @@ def ref(request, key=None):
 
 
 def history(request, suffix=None):
-    history = History.objects.extra({'date':"date(timestamp)"}).values('date').annotate(count=Count('id')).order_by("-date")
+    history = History.objects \
+        .extra({'date': "date(timestamp)"}) \
+        .values('date') \
+        .annotate(count=Count('id')) \
+        .order_by("-date")
 
     if suffix == "tsv":
         response = HttpResponse(content_type='text/tab-separated-values;charset=UTF-8')
