@@ -46,17 +46,18 @@
   <dt>Mime</dt>
   <dd><a href="/mime/{{attachment.mime}}">{{ attachment.mime }}</a></dd>
 
-
   <dt>Size</dt>
   <dd>{{ attachment.size }} Bytes</dd>
 
   <dt>Magic</dt>
-<dd>
-<div class="panel panel-border-wide">
-  <p>{{ attachment.magic }}</p>
-</div>
-</div>
-</dd>
+  <dd>
+    <div class="panel panel-border-wide"><p>{{ attachment.magic }}</p></div>
+  </dd>
+
+  <dt><a href="{{ text_url }}">Text</a></dt>
+  <dd>
+    <div class="panel panel-border-wide"><pre>{{ text }}</pre></div>
+  </dd>
 
 </dl>
 

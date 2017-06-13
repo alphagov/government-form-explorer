@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'httpproxy',
     'pages',
 )
 
@@ -135,3 +136,6 @@ STATICFILES_DIRS = (
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# proxy static files from s3
+DOCUMENTS_URL = 'https://s3-eu-west-1.amazonaws.com/government-form/documents'

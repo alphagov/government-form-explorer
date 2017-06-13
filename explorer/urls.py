@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 import pages.views
+
+from httpproxy.views import HttpProxy
 
 admin.autodiscover()
 
@@ -9,6 +12,8 @@ urlpatterns = [
     url(r'^$', pages.views.home),
 
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^documents/(?P<url>.*)$', HttpProxy.as_view(base_url=settings.DOCUMENTS_URL)),
 
     url(r'^organisations/$', pages.views.organisations, name='organisation'),
     url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/$', pages.views.organisation, name='organisation'),

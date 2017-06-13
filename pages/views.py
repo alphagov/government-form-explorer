@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.db.models import Count, Sum
 from django.http import HttpResponse
 import csv
+import requests
 
 from .models import Organisation, Page, Attachment, Download, History
 
@@ -73,8 +75,18 @@ def attachment(request, key=None):
     attachment = Attachment.objects.get(attachment=key)
     organisations = Organisation.objects.filter(organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
+
+    text_path = '/attachment/%s/document.txt' % attachment.attachment
+    text_url = '/documents/' + text_path
+    proxy_url = settings.DOCUMENTS_URL + text_path
+
+    r = requests.get(proxy_url)
+    r.raise_for_status()
+
     return render(request, 'attachment.html', {
         'attachment': attachment,
+        'text': r.text.strip(),
+        'text_url': text_url,
         'organisations': organisations,
         'downloads': downloads})
 
