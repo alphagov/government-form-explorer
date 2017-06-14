@@ -25,3 +25,7 @@ th {
   text-decoration: underline;
   color: black;
 }
+
+pre {
+  overflow-x: auto;
+}
