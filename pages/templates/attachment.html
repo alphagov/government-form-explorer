@@ -54,10 +54,12 @@
     <div class="panel panel-border-wide"><p>{{ attachment.magic }}</p></div>
   </dd>
 
+  {% if text %}
   <dt><a href="{{ text_url }}">Text</a></dt>
   <dd>
     <div class="panel panel-border-wide"><pre>{{ text }}</pre></div>
   </dd>
+  {% endif %}
 
 </dl>
 

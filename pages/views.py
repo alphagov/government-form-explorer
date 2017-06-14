@@ -76,16 +76,20 @@ def attachment(request, key=None):
     organisations = Organisation.objects.filter(organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
 
+    # get document from store
     text_path = '/attachment/%s/document.txt' % attachment.attachment
     text_url = '/documents/' + text_path
     proxy_url = settings.DOCUMENTS_URL + text_path
 
     r = requests.get(proxy_url)
-    r.raise_for_status()
+    if r.status_code == 200:
+        text = r.text.strip()
+    else:
+        text = ''
 
     return render(request, 'attachment.html', {
         'attachment': attachment,
-        'text': r.text.strip(),
+        'text': text,
         'text_url': text_url,
         'organisations': organisations,
         'downloads': downloads})
