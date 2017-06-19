@@ -26,11 +26,13 @@
 
   <div class="panel panel-border-narrow">
 
-    <p>Search uses the same syntax as <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">Lucerne search</a>, for example:</p>
+    <p>Search uses the <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">Lucerne search</a>, for example:</p>
     <ul class="foo">
       <li><a href="/search?q=work+address">work address</a>
       <li><a href='/search?q="work+address"'>"work address"</a>
       <li><a href="/search?q=donkey">donkey</a></li>
+      <li><a href="/search?q=signature">signature</a></li>
+      <li><a href="/search?q=NOT+signature">NOT signature</a></li>
       <li><a href="/search?q=donkey+AND+NOT+signature">donkey AND NOT signature</a></li>
       <li><a href="/search?q=%28fish+AND+chips%29++AND+NOT+CERS">(fish AND chips) AND NOT CERS</a>
     </ul>
