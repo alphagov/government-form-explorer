@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 import os
 import dj_database_url
+from elasticsearch import Elasticsearch, RequestsHttpConnection
+from requests_aws4auth import AWS4Auth
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -139,3 +141,25 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # proxy static files from s3
 DOCUMENTS_URL = 'https://s3-eu-west-1.amazonaws.com/government-form/documents'
+
+
+# Elasticsearch / Amazon Cloudsearch
+ES_INDEX='form-explorer'
+
+if 'ES_HOST' in os.environ:
+    awsauth = AWS4Auth(
+        os.environ['ES_ACCESS_KEY'],
+        os.environ['ES_SECRET_KEY'],
+        os.environ['ES_REGION'],
+        'es')
+    ES = Elasticsearch(
+        hosts=[{
+            'host': os.environ['ES_HOST'],
+            'port': 443
+        }],
+        http_auth=awsauth,
+        use_ssl=True,
+        verify_certs=True,
+        connection_class=RequestsHttpConnection)
+else:
+    ES = Elasticsearch()

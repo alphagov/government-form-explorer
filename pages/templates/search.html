@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block search_active %} class="active"{% endblock %}
+{% block content %}
+
+<form id="header-search" class="site-search" action="/search" method="get" role="search">
+    <div class="header-search-content">
+
+      {% if query %}
+      <label class="form-label heading-large" for="search-main">Search results for</label>
+      {% else %}
+      <label class="form-label heading-large" for="search-main"><h1>Search forms</h1></label>
+      {% endif %}
+
+      <div class="search-input-wrapper">
+          <input class="form-control" type="search" name="q" id="search-main" title="Search" value="{{ query }}">
+          <input class="search button" type="submit" value="Search">
+      </div>
+    </div>
+</form>
+
+
+<details>
+
+  <summary><span class="summary">Help with search</span></summary>
+
+  <div class="panel panel-border-narrow">
+
+    <p>Search uses the same syntax as <a href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html">Lucerne search</a>, for example:</p>
+    <ul class="foo">
+      <li><a href="/search?q=work+address">work address</a>
+      <li><a href='/search?q="work+address"'>"work address"</a>
+      <li><a href="/search?q=donkey">donkey</a></li>
+      <li><a href="/search?q=donkey+AND+NOT+signature">donkey AND NOT signature</a></li>
+      <li><a href="/search?q=%28fish+AND+chips%29++AND+NOT+CERS">(fish AND chips) AND NOT CERS</a>
+    </ul>
+</div>
+
+</details>
+
+
+{% if query %}
+<p>
+{{ response.hits.total }} results
+</p>
+<ul>
+{% for hit in hits %}
+<p>
+  <li><a href="/attachment/{{ hit.source.attachment }}">{{ hit.source.name }}</a></li>
+</p>
+{% endfor %}
+</ul>
+
+<nav class="previous-and-next-navigation" role="navigation" aria-label="Pagination">
+  <ul class="group">
+  <li class="page-count">Page {{page_index}} of {{ page_count }}
+{% if page_previous %}
+    <li class="previous-page">
+      <a rel="previous" href="?q={{ query }}&page-index={{ page_previous }}&amp;page-size={{ page_size }}">
+        <span class="pagination-part-title">Previous page</span>
+      </a>
+    </li>
+{% endif %}
+{% if page_next %}
+    <li class="next-page">
+      <a rel="next" href="?q={{ query }}&page-index={{ page_next }}&amp;page-size={{ page_size }}">
+        <span class="pagination-part-title">Next page</span>
+      </a>
+    </li>
+{% endif %}
+  </li>
+  </ul>
+</nav>
+
+{% endif %}
+{% endblock %}

@@ -17,13 +17,21 @@ def count_pages(pages):
 
 def home(request):
     count = {
-        'organisations': Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).count(),
-        'pages': Page.objects.count(),
-        'attachments': Attachment.objects.count(),
-        'suffixes': Attachment.objects.values('suffix').distinct().count(),
-        'refs': Attachment.objects.values('ref').distinct().count(),
-        'history': History.objects.all().count(),
-        'downloads': Download.objects.all().aggregate(Sum('count')).get('count__sum'),
+        'organisations':
+        Organisation.objects.annotate(Count('page')).filter(
+            page__count__gt=0).count(),
+        'pages':
+        Page.objects.count(),
+        'attachments':
+        Attachment.objects.count(),
+        'suffixes':
+        Attachment.objects.values('suffix').distinct().count(),
+        'refs':
+        Attachment.objects.values('ref').distinct().count(),
+        'history':
+        History.objects.all().count(),
+        'downloads':
+        Download.objects.all().aggregate(Sum('count')).get('count__sum'),
     }
     return render(request, 'home.html', {'count': count})
 
@@ -34,19 +42,25 @@ def organisations(request):
         .annotate(attachments=Count('page__attachment', distinct=True)) \
         .filter(pages__gt=0) \
         .order_by('-pages')
-    return render(request, 'organisations.html', {'organisations': organisations})
+    return render(request, 'organisations.html',
+                  {'organisations': organisations})
 
 
 def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     pages = count_pages(Page.objects.filter(organisations__organisation=key))
-    return render(request, 'organisation.html', {'organisation': organisation, 'pages': pages})
+    return render(request, 'organisation.html',
+                  {'organisation': organisation,
+                   'pages': pages})
 
 
 def organisation_attachments(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
-    attachments = Attachment.objects.filter(page__organisations__organisation__contains=key).order_by('-size')
-    return render(request, 'organisation_attachments.html', {'organisation': organisation, 'attachments': attachments})
+    attachments = Attachment.objects.filter(
+        page__organisations__organisation__contains=key).order_by('-size')
+    return render(request, 'organisation_attachments.html',
+                  {'organisation': organisation,
+                   'attachments': attachments})
 
 
 def pages(request):
@@ -56,14 +70,16 @@ def pages(request):
 
 def page(request, key=None):
     page = Page.objects.get(page=key)
-    organisations = Organisation.objects.filter(organisation__in=page.organisations.all())
+    organisations = Organisation.objects.filter(
+        organisation__in=page.organisations.all())
     attachments = Attachment.objects.filter(page=key).order_by('name')
     history = History.objects.filter(page=key)
     return render(request, 'page.html', {
         'page': page,
         'organisations': organisations,
         'attachments': attachments,
-        'history': history})
+        'history': history
+    })
 
 
 def attachments(request):
@@ -73,7 +89,8 @@ def attachments(request):
 
 def attachment(request, key=None):
     attachment = Attachment.objects.get(attachment=key)
-    organisations = Organisation.objects.filter(organisation__in=attachment.page.organisations.all())
+    organisations = Organisation.objects.filter(
+        organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
 
     # get document from store
@@ -92,17 +109,21 @@ def attachment(request, key=None):
         'text': text,
         'text_url': text_url,
         'organisations': organisations,
-        'downloads': downloads})
+        'downloads': downloads
+    })
 
 
 def suffixes(request):
-    suffixes = Attachment.objects.values('suffix').order_by().annotate(Count('suffix')).order_by("-suffix__count")
+    suffixes = Attachment.objects.values('suffix').order_by().annotate(
+        Count('suffix')).order_by("-suffix__count")
     return render(request, 'suffixes.html', {'suffixes': suffixes})
 
 
 def suffix(request, key=None):
     attachments = Attachment.objects.filter(suffix=key)
-    return render(request, 'suffix.html', {'suffix': key, 'attachments': attachments})
+    return render(request, 'suffix.html',
+                  {'suffix': key,
+                   'attachments': attachments})
 
 
 def refs(request):
@@ -117,7 +138,9 @@ def refs(request):
 
 def ref(request, key=None):
     attachments = Attachment.objects.filter(ref=key)
-    return render(request, 'ref.html', {'ref': key, 'attachments': attachments})
+    return render(request, 'ref.html',
+                  {'ref': key,
+                   'attachments': attachments})
 
 
 def history(request, suffix=None):
@@ -128,7 +151,8 @@ def history(request, suffix=None):
         .order_by("-date")
 
     if suffix == "tsv":
-        response = HttpResponse(content_type='text/tab-separated-values;charset=UTF-8')
+        response = HttpResponse(
+            content_type='text/tab-separated-values;charset=UTF-8')
         fields = ['date', 'count']
         writer = csv.writer(response, delimiter='\t')
         writer.writerow(fields)
@@ -141,7 +165,9 @@ def history(request, suffix=None):
 
 def history_date(request, date=None):
     history = History.objects.filter(timestamp__startswith=date)
-    return render(request, 'history_date.html', {'date': date, 'history': history})
+    return render(request, 'history_date.html',
+                  {'date': date,
+                   'history': history})
 
 
 def downloads(request, suffix=None):
@@ -151,7 +177,8 @@ def downloads(request, suffix=None):
         .order_by("-month")
 
     if suffix == "tsv":
-        response = HttpResponse(content_type='text/tab-separated-values;charset=UTF-8')
+        response = HttpResponse(
+            content_type='text/tab-separated-values;charset=UTF-8')
         fields = ['month', 'count']
         writer = csv.writer(response, delimiter='\t')
         writer.writerow(fields)
@@ -160,3 +187,53 @@ def downloads(request, suffix=None):
         return response
 
     return render(request, 'downloads.html', {'downloads': downloads})
+
+
+def search(request):
+    query = request.GET.get('q', '')
+    page_index = int(request.GET.get('page-index', 1))
+    page_size = int(request.GET.get('page-size', 100))
+
+    es = settings.ES
+    response = es.search(body={
+        "from": ((page_index - 1) * page_size),
+        "size": page_size,
+        "query": {
+            "query_string": {
+                "default_field": "text",
+                "query": query
+            }
+        }
+    })
+
+    hits = []
+    for h in response['hits']['hits']:
+        hit = {}
+        for key, value in h.items():
+            if key.startswith('_'):
+                key = key[1:]
+            hit[key] = value
+        hits.append(hit)
+
+    page_count = (response['hits']['total'] + page_size - 1) // page_size
+
+    if page_index <= 1:
+        page_previous = None
+    else:
+        page_previous = page_index - 1
+
+    if page_index >= page_count:
+        page_next = None
+    else:
+        page_next = page_index + 1
+
+    return render(request, 'search.html', {
+        'query': query,
+        'response': response,
+        'hits': hits,
+        'page_index': page_index,
+        'page_count': page_count,
+        'page_next': page_next,
+        'page_previous': page_previous,
+        'page_size': page_size
+    })

@@ -7,3 +7,5 @@ requests==2.14.2
 whitenoise==3.3.0
 waitress==0.8.9
 django-http-proxy==0.4.3
+elasticsearch==5.4.0
+requests-aws4auth==0.9

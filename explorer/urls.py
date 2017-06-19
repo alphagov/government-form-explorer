@@ -13,6 +13,8 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^search$', pages.views.search, name='search'),
+
     url(r'^documents/(?P<url>.*)$', HttpProxy.as_view(base_url=settings.DOCUMENTS_URL)),
 
     url(r'^organisations/$', pages.views.organisations, name='organisation'),
