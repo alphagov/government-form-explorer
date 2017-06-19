@@ -1,5 +1,7 @@
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.http import HttpResponse
 import csv
@@ -237,3 +239,13 @@ def search(request):
         'page_previous': page_previous,
         'page_size': page_size
     })
+
+
+@login_required
+def welcome(request):
+    return render(request, 'welcome.html')
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/')

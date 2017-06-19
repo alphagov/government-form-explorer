@@ -18,6 +18,13 @@
     <a href='#proposition-links' class='js-header-toggle menu'>Menu</a>
     <nav id='proposition-menu'>
       <a href='/' id='proposition-name'>Form explorer</a>
+        <span class="login">
+        {% if user.username %}
+        Logged in as <a href="">{{ user.username }}</a>. <a class="logout" href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">login</a>
+        {% endif %}
+        </span>
       <ul id='proposition-links'>
         <li><a href="/organisations"{% block organisations_active %}{% endblock %}>Organisations</a>
         <li><a href="/pages"{% block pages_active %}{% endblock %}>Pages</a>
@@ -29,7 +36,6 @@
         <li><a href="/refs"{% block refs_active %}{% endblock %}>References</a>
         <li><a href="/forms">forms</a>
         <li><a href="/questions">questions</a>
-        <li><a href="/snippets">snippet</a>
         <li><a href="/admin">admin</a>
 -->
       </ul>

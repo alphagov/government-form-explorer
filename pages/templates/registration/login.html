@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Login</h2>
+  <ul>
+  <li><a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+  <li><a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+  </ul>
+{% endblock %}
+
