@@ -43,10 +43,12 @@ urlpatterns = [
     url(r'^ref/(?P<key>.{1,256})$', pages.views.ref, name='ref'),
 
     url(r'^google3e69ae69b04281ff\.html$', lambda r: HttpResponse("google-site-verification: google3e69ae69b04281ff.html", content_type="text/plain")),
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', pages.views.logout, name='logout'),
+    url(r'^login$', auth_views.login, name='login'),
+    url(r'^login-github$', pages.views.login_github, name='login_github'),
+    url(r'^logout$', pages.views.logout, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
-    url(r'^welcome/$', pages.views.welcome, name='welcome'),
+    url(r'^welcome$', pages.views.welcome, name='welcome'),
+    url(r'^login-error$', pages.views.login_error, name='login_error'),
 
     url(r'^admin/', include(admin.site.urls)),
 ]

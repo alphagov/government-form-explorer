@@ -246,6 +246,14 @@ def welcome(request):
     return render(request, 'welcome.html')
 
 
+def login_github(request):
+    return render(request, 'registration/login_github.html')
+
+
 def logout(request):
     auth_logout(request)
     return redirect('/')
+
+
+def login_error(request):
+    return render(request, 'login-error.html', status=401)
