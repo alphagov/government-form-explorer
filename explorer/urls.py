@@ -33,11 +33,11 @@ urlpatterns = [
     url(r'^attachments/downloads/$', pages.views.downloads, name='downloads'),
     url(r'^attachments/downloads.(?P<suffix>[\w]{1,16})$', pages.views.downloads, name='downloads'),
     url(r'^attachments/tags$', pages.views.attachments_tags, name='attachments_tags'),
-    url(r'^attachments/tag/(?P<name>[\w\d\s:-]{1,128})$', pages.views.attachments_tag, name='attachments_tag'),
+    url(r'^attachments/tag/(?P<slug>[\w\d\s:-]{1,128})$', pages.views.attachments_tag, name='attachments_tag'),
 
     url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
     url(r'^attachment/(?P<key>[\d]{1,16})/tags.(?P<suffix>[\w]{1,16})$', pages.views.attachment_tags, name='attachment_tags'),
-    url(r'^attachment/(?P<key>[\d]{1,16})/tag/(?P<tag>[\w\d\s:-]{1,128})$', pages.views.attachment_tag, name='attachment_tag'),
+    url(r'^attachment/(?P<key>[\d]{1,16})/tag/(?P<name>[\w\d\s:-]{1,128})$', pages.views.attachment_tag, name='attachment_tag'),
 
     url(r'^suffixes/$', pages.views.suffixes, name='suffix'),
     url(r'^suffix/(?P<key>[\w\d]{1,16})$', pages.views.suffix, name='suffix'),

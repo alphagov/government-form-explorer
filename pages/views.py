@@ -272,15 +272,15 @@ def attachment_tags(request, key=None, suffix=None):
 
 
 @login_required
-def attachment_tag(request, key=None, tag=None):
+def attachment_tag(request, key=None, name=None):
     attachment = Attachment.objects.get(attachment=key)
 
     if request.method == 'PUT':
-        attachment.tags.add(tag)
+        attachment.tags.add(name)
         return HttpResponse(status=204)
 
     if request.method == 'DELETE':
-        attachment.tags.remove(tag)
+        attachment.tags.remove(name)
         return HttpResponse(status=204)
 
     return HttpResponse(status=200)
@@ -293,8 +293,8 @@ def attachments_tags(request):
     return render(request, 'attachments_tags.html', {'tags': tags})
 
 
-def attachments_tag(request, name=None):
-    tag = Tag.objects.get(name=name)
+def attachments_tag(request, slug=None):
+    tag = Tag.objects.get(slug=slug)
     attachments = Attachment.objects.filter(tags__name__in=[tag.name])
     print(list(attachments))
     return render(request, 'attachments_tag.html',
