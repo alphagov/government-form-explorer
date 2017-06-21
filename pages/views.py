@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import csv
 import requests
 
@@ -257,3 +257,28 @@ def logout(request):
 
 def login_error(request):
     return render(request, 'login-error.html', status=401)
+
+
+def attachment_tags(request, key=None, suffix=None):
+    attachment = Attachment.objects.get(attachment=key)
+
+    if suffix == "json":
+        tags = [tag.name for tag in attachment.tags.all()]
+        return JsonResponse({'tags': tags})
+
+    raise Http404("Not found")
+
+
+@login_required
+def attachment_tag(request, key=None, tag=None):
+    attachment = Attachment.objects.get(attachment=key)
+
+    if request.method == 'PUT':
+        attachment.tags.add(tag)
+        return HttpResponse(status=204)
+
+    if request.method == 'DELETE':
+        attachment.tags.remove(tag)
+        return HttpResponse(status=204)
+
+    return HttpResponse(status=200)

@@ -30,11 +30,12 @@ urlpatterns = [
     url(r'^page/(?P<key>[:\w\d_-]{1,256})/$', pages.views.page, name='page'),
 
     url(r'^attachments/$', pages.views.attachments, name='attachment'),
-
     url(r'^attachments/downloads/$', pages.views.downloads, name='downloads'),
     url(r'^attachments/downloads.(?P<suffix>[\w]{1,16})$', pages.views.downloads, name='downloads'),
 
     url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
+    url(r'^attachment/(?P<key>[\d]{1,16})/tags.(?P<suffix>[\w]{1,16})$', pages.views.attachment_tags, name='attachment_tags'),
+    url(r'^attachment/(?P<key>[\d]{1,16})/tag/(?P<tag>[\w]{1,256})$', pages.views.attachment_tag, name='attachment_tag'),
 
     url(r'^suffixes/$', pages.views.suffixes, name='suffix'),
     url(r'^suffix/(?P<key>[\w\d]{1,16})$', pages.views.suffix, name='suffix'),

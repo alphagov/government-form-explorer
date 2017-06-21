@@ -1,6 +1,7 @@
 {% extends "govuk_base.html" %}
 {% load staticfiles %}
 
+{% block page_title %}Form explorer{% endblock %}
 {% block header_class %}with-proposition{% endblock %}
 
 {% block head %}
@@ -20,7 +21,8 @@
       <a href='/' id='proposition-name'>Form explorer</a>
         <span class="login">
         {% if user.username %}
-        Logged in as <a href="">{{ user.username }}</a>. <a class="logout" href="/logout">Logout</a>
+        Logged in as <a href="">{{ user.username }}</a>
+        <a class="logout" href="/logout">Logout</a>
         {% else %}
         <a href="/login">Login</a>
         {% endif %}
@@ -62,8 +64,9 @@
 {% endblock %}
 
 {% block body_end %}
-<script type="text/javascript" src="/static/vendor/jquery-2.2.0.min.js"></script>
-<script type="text/javascript" src="/static/vendor/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="{% static 'vendor/jquery-2.2.0.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/jquery.tablesorter.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'vendor/taggle.js' %}"></script>
 <script>
 function month(name) {
   return "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(name) / 3 + 1;
@@ -87,4 +90,5 @@ $(function () {
   $("table").tablesorter();
 });
 </script>
+{% block body_end_script %}{% endblock %}
 {% endblock %}

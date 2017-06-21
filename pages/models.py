@@ -1,4 +1,5 @@
 from django.db import models
+from taggit.managers import TaggableManager
 
 
 class Task(models.Model):
@@ -36,6 +37,7 @@ class Attachment(models.Model):
     magic = models.CharField(max_length=1024)
     suffix = models.CharField(max_length=16)
     form = models.ForeignKey(Form, null=True)
+    tags = TaggableManager()
 
 
 class History(models.Model):

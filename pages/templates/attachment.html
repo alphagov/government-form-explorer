@@ -19,18 +19,41 @@
     </ol>
   </div>
 
+
 <h1 class="heading-xlarge">
   <span class="heading-secondary">Attachment</span>
   {{attachment.name}}
 </h1>
 
+{% csrf_token %}
+
 <dl class="attachment">
+
+  <dt>Tags</dt>
+  <dd class="tagbox">
+  <div class="grid-row">
+    <div class="column-full">
+      <div id="tags">
+
+{% if not user.is_authenticated %}
+<ul class="taggle_list">
+  {% for tag in attachment.tags.all %}
+  <li class="taggle "><span class="taggle_text">{{ tag.name }}</span></li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+      </div>
+    </div>
+  </div>
+  </dd>
+
+
   <dt>Published by</dt>
   <dd>{% for organisation in organisations %}
       <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
   {% endfor %}
   </dd>
-
 
   <dt>Attachment</dt>
   <dd><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></dd>
@@ -82,4 +105,35 @@
 
 </table>
 
+{% endblock %}
+
+{% block body_end_script %}
+<script>
+{% if user.is_authenticated %}
+function actionTag(method, tag) {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  $.ajax({
+    type: method,
+    headers: { 'X-CSRFToken': csrftoken },
+    url: 'tag/' + tag
+  });
+}
+
+$(function() {
+  $.getJSON( "tags.json", function(data) {
+    new Taggle('tags', {
+      tags: data.tags,
+      preserveCase: true,
+      placeholder: '',
+      onTagAdd: function(event, tag) {
+        actionTag('PUT', tag);
+      },
+      onTagRemove: function(event, tag) {
+        actionTag('DELETE', tag);
+      }
+    });
+  });
+});
+{% endif %}
+</script>
 {% endblock %}

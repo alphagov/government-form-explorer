@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'social_django',
     'httpproxy',
+    'taggit',
     'pages',
 )
 
@@ -188,3 +189,6 @@ if 'SOCIAL_AUTH_GITHUB_KEY' in os.environ:
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = [ 'digital.cabinet-office.gov.uk' ]
+
+# tagging
+TAGGIT_CASE_INSENSITIVE = True
