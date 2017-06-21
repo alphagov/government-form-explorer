@@ -119,6 +119,12 @@ function actionTag(method, tag) {
   });
 }
 
+function tagFormatter(li) {
+  var tag = $(li).children('.taggle_text').text();
+  $(li).children('.taggle_text').wrap('<a href="/attachments/tag/' + tag + '"/>');
+  return li;
+}
+
 $(function() {
   $.getJSON( "tags.json", function(data) {
     new Taggle('tags', {
@@ -130,7 +136,8 @@ $(function() {
       },
       onTagRemove: function(event, tag) {
         actionTag('DELETE', tag);
-      }
+      },
+      tagFormatter: tagFormatter
     });
   });
 });

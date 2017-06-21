@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/attachments">Attachments</a></li>
+        <li><a href="/attachments/tags">Tags</a></li>
+    </ol>
+  </div>
+
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Tag</span>
+  {{ tag.name }}
+</h1>
+
+{% include "_attachments.html" %}
+
+{% endblock %}

@@ -1,5 +1,11 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
+from taggit.models import CommonGenericTaggedItemBase, TaggedItemBase
+
+
+class GenericStringTaggedItem(CommonGenericTaggedItemBase, TaggedItemBase):
+    object_id = models.CharField(max_length=256, verbose_name=_('Object id'), db_index=True)
 
 
 class Task(models.Model):
@@ -37,7 +43,7 @@ class Attachment(models.Model):
     magic = models.CharField(max_length=1024)
     suffix = models.CharField(max_length=16)
     form = models.ForeignKey(Form, null=True)
-    tags = TaggableManager()
+    tags = TaggableManager(through=GenericStringTaggedItem)
 
 
 class History(models.Model):

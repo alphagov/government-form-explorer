@@ -4,10 +4,12 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse
+from django.utils.text import slugify
 import csv
 import requests
 
 from .models import Organisation, Page, Attachment, Download, History
+from taggit.models import Tag
 
 
 def count_pages(pages):
@@ -282,3 +284,20 @@ def attachment_tag(request, key=None, tag=None):
         return HttpResponse(status=204)
 
     return HttpResponse(status=200)
+
+
+def attachments_tags(request):
+    tags = Tag.objects.all() \
+            .annotate(count=Count('taggit_taggeditem_items__id')) \
+            .order_by('-count', 'name')
+    return render(request, 'attachments_tags.html', {'tags': tags})
+
+
+def attachments_tag(request, name=None):
+    tag = Tag.objects.get(name=name)
+    attachments = Attachment.objects.filter(tags__name__in=[tag.name])
+    print(list(attachments))
+    return render(request, 'attachments_tag.html',
+                  {'tag': tag,
+                   'attachments': attachments})
+
