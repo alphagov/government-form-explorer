@@ -294,7 +294,12 @@ def attachments_tags(request):
 
 
 def attachments_tag(request, slug=None):
-    tag = Tag.objects.get(slug=slug)
+    try:
+        tag = Tag.objects.get(slug=slug)
+    except:
+        tag = Tag.objects.get(name=slug)
+        return redirect('attachments_tag', slug=tag.slug)
+
     attachments = Attachment.objects.filter(tags__name__in=[tag.name])
     print(list(attachments))
     return render(request, 'attachments_tag.html',
