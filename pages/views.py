@@ -288,7 +288,7 @@ def attachment_tag(request, key=None, name=None):
 
 def attachments_tags(request):
     tags = Tag.objects.all() \
-            .annotate(count=Count('taggit_taggeditem_items__id')) \
+            .annotate(count=Count('pages_genericstringtaggeditem_items__id')) \
             .order_by('-count', 'name')
     return render(request, 'attachments_tags.html', {'tags': tags})
 
