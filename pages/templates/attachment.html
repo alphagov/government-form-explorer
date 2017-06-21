@@ -37,8 +37,8 @@
 
 {% if not user.is_authenticated %}
 <ul class="taggle_list">
-  {% for tag in attachment.tags.all %}
-  <li class="taggle "><span class="taggle_text">{{ tag.name }}</span></li>
+  {% for tag in attachment.tags.all|dictsort:"slug"  %}
+  <li class="taggle "><span class="taggle_text"><a href="/attachments/tag/{{ tag.slug }}">{{ tag.name }}</a></span></li>
   {% endfor %}
 </ul>
 {% endif %}

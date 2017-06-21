@@ -265,7 +265,7 @@ def attachment_tags(request, key=None, suffix=None):
     attachment = Attachment.objects.get(attachment=key)
 
     if suffix == "json":
-        tags = [tag.name for tag in attachment.tags.all()]
+        tags = [tag.name for tag in attachment.tags.all().order_by('slug')]
         return JsonResponse({'tags': tags})
 
     raise Http404("Not found")
