@@ -301,7 +301,6 @@ def attachments_tag(request, slug=None):
         return redirect('attachments_tag', slug=tag.slug)
 
     attachments = Attachment.objects.filter(tags__name__in=[tag.name])
-    print(list(attachments))
     return render(request, 'attachments_tag.html',
                   {'tag': tag,
                    'attachments': attachments})
