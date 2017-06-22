@@ -8,6 +8,7 @@ import requests
 from ...models import Organisation, Page, Attachment, Download, History
 
 from django.utils.dateparse import parse_datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 url = 'https://raw.githubusercontent.com/openregister/government-form-data/master/data/%s.tsv'
 field_sep = ';'
@@ -55,6 +56,23 @@ def load_attachments():
         o.save()
 
 
+def load_attachment_metadata():
+    print("loading attachment-metadata …")
+    for row in tsv_reader('attachment-metadata'):
+        try:
+            attachment = Attachment.objects.get(attachment=row['attachment'])
+        except ObjectDoesNotExist:
+            print("unknown attachment", row['attachment'])
+            continue
+        if row['created']:
+            attachment.created = parse_datetime(row['created'])
+        if row['modified']:
+            attachment.modified = parse_datetime(row['modified'])
+        if row['page-count']:
+            attachment.page_count = int(row['page-count'])
+        attachment.save()
+
+
 def load_history():
     print("loading history …")
     for row in tsv_reader('history'):
@@ -85,6 +103,8 @@ class Command(BaseCommand):
             load_pages()
         elif options['table'] == 'attachments':
             load_attachments()
+        elif options['table'] == 'attachment-metadata':
+            load_attachment_metadata()
         elif options['table'] == 'history':
             load_history()
         elif options['table'] == 'downloads':

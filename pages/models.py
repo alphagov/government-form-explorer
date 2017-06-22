@@ -50,6 +50,9 @@ class Attachment(models.Model):
     suffix = models.CharField(max_length=16)
     form = models.ForeignKey(Form, null=True)
     tags = TaggableManager(through=GenericStringTaggedItem)
+    created = models.DateTimeField(null=True)
+    modified = models.DateTimeField(null=True)
+    page_count = models.IntegerField(null=True)
 
     def __str__(self):
        return self.attachment

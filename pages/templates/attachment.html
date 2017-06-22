@@ -48,6 +48,15 @@
   </div>
   </dd>
 
+  {% if attachment.page_count %}
+  <dt>Sheets</dt>
+  <dd>
+{% for sheet in sheets %}
+  <a href="{{ sheet.href }}"><img src="{{ sheet.src }}" alt="" class="sheet"></a>
+{% endfor %}
+   </dd>
+   {% endif %}
+
 
   <dt>Published by</dt>
   <dd>{% for organisation in organisations %}
@@ -68,6 +77,9 @@
 
   <dt>Mime</dt>
   <dd><a href="/mime/{{attachment.mime}}">{{ attachment.mime }}</a></dd>
+
+  <dt>Number of sheets</dt>
+  <dd>{{attachment.page_count}}</dd>
 
   <dt>Size</dt>
   <dd>{{ attachment.size }} Bytes</dd>

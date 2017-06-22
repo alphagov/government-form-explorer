@@ -1,3 +1,4 @@
+import math
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
@@ -86,6 +87,18 @@ def page(request, key=None):
     })
 
 
+def attachment_sheets(attachment):
+    sheets = []
+    if attachment.page_count:
+        w = int(math.log10(attachment.page_count)) + 1
+        for n in range(1, attachment.page_count + 1):
+            fmt = '%s/attachment/%s/page-%0' + str(w) + 'd.png'
+            src = fmt % (settings.DOCUMENTS_URL, attachment.attachment, n)
+            href = "%s#page=%d" % (attachment.url, n)
+            sheets.append({'src': src, 'href': href})
+    return sheets
+
+
 def attachments(request):
     attachments = Attachment.objects.all().order_by('-size')
     return render(request, 'attachments.html', {'attachments': attachments})
@@ -101,6 +114,7 @@ def attachment(request, key=None):
     text_path = '/attachment/%s/document.txt' % attachment.attachment
     text_url = '/documents/' + text_path
     proxy_url = settings.DOCUMENTS_URL + text_path
+    sheets = attachment_sheets(attachment)
 
     r = requests.get(proxy_url)
     if r.status_code == 200:
@@ -113,7 +127,8 @@ def attachment(request, key=None):
         'text': text,
         'text_url': text_url,
         'organisations': organisations,
-        'downloads': downloads
+        'downloads': downloads,
+        'sheets': sheets,
     })
 
 
