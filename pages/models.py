@@ -23,12 +23,18 @@ class Organisation(models.Model):
     name = models.CharField(max_length=256)
     website = models.CharField(max_length=256)
 
+    def __str__(self):
+       return self.organisation + " " + self.name
+
 
 class Page(models.Model):
     page = models.CharField(max_length=256, primary_key=True)
     name = models.CharField(max_length=256)
     url = models.CharField(max_length=256)
     organisations = models.ManyToManyField(Organisation)
+
+    def __str__(self):
+       return self.page
 
 
 class Attachment(models.Model):
@@ -45,12 +51,17 @@ class Attachment(models.Model):
     form = models.ForeignKey(Form, null=True)
     tags = TaggableManager(through=GenericStringTaggedItem)
 
+    def __str__(self):
+       return self.attachment
+
 
 class History(models.Model):
     page = models.ForeignKey(Page)
     timestamp = models.DateTimeField()
     text = models.CharField(max_length=1024)
 
+    def __str__(self):
+       return str(self.page)
 
 class Download(models.Model):
     class Meta:
@@ -59,3 +70,6 @@ class Download(models.Model):
     attachment = models.ForeignKey(Attachment)
     month = models.CharField(max_length=6)
     count = models.IntegerField()
+
+    def __str__(self):
+       return str(self.attachment)
