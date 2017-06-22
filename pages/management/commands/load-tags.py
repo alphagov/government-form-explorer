@@ -20,7 +20,7 @@ def tsv_reader(name):
 
 
 def load_attachment_tags(name):
-    print("loading %s attachment tags …", name)
+    print("loading %s attachment tags …" % name)
     for row in tsv_reader(name):
         attachment = Attachment.objects.get(attachment=row['attachment'])
         attachment.tags.add(row['tag'])
