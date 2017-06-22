@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load humanize %}
 
 {% block content %}
   <div class="breadcrumbs">
@@ -82,7 +83,7 @@
   <dd>{{attachment.page_count}}</dd>
 
   <dt>Size</dt>
-  <dd>{{ attachment.size }} Bytes</dd>
+  <dd>{{ attachment.size|intcomma }} Bytes</dd>
 
   <dt>Magic</dt>
   <dd>
