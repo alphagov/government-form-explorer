@@ -12,8 +12,10 @@
 
 <h1 class="heading-xlarge">
   <span class="heading-secondary">Tag</span>
-  {{ tag.name }}
+  <span contenteditable="true" data-name="tag.name" data-url="{{ request.path }}/name">{{ tag.name }}</span>
 </h1>
+
+{% csrf_token %}
 
 {% include "_attachments.html" %}
 

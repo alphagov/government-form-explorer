@@ -91,5 +91,42 @@ $(function () {
   $("table").tablesorter();
 });
 </script>
+
+{% if user.is_authenticated %}
+<script>
+/* bind ESC/ENTER keys for contenteditable */
+$(function () {
+  document.addEventListener('keydown', function (event) {
+    var el = event.target,
+        key = event.which,
+        data = {};
+
+    if (!$(el).attr("contentEditable") == "true") {
+      return;
+    }
+
+    if (key == 27) {
+      el.blur();
+      return;
+    }
+
+    if (key == 13) {
+      document.execCommand('submit');
+      data[el.getAttribute('data-name')] = el.innerHTML;
+      $.ajax({
+        type: 'PUT',
+        url: el.getAttribute('data-url'),
+        headers: { 'X-CSRFToken': $("[name=csrfmiddlewaretoken]").val() },
+        dataType: "json",
+        data: JSON.stringify(data)
+      });
+
+      el.blur();
+      event.preventDefault();
+    }
+  }, true);
+});
+</script>
+{% endif %}
 {% block body_end_script %}{% endblock %}
 {% endblock %}

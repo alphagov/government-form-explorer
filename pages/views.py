@@ -6,6 +6,7 @@ from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse
 from django.utils.text import slugify
 import csv
+import json
 import requests
 
 from .models import Organisation, Page, Attachment, Download, History
@@ -306,3 +307,16 @@ def attachments_tag(request, slug=None):
                   {'tag': tag,
                    'attachments': attachments})
 
+
+@login_required
+def attachments_tag_name(request, slug=None):
+    tag = Tag.objects.get(slug=slug)
+
+    if request.method == 'PUT':
+        data = json.loads(request.body.decode("utf-8"))
+        tag.name = data['tag.name']
+        tag.slug = slugify(tag.name)
+        tag.save()
+        return HttpResponse(status=204)
+
+    return HttpResponse(status=200)

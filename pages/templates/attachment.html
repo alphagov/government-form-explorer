@@ -108,8 +108,8 @@
 {% endblock %}
 
 {% block body_end_script %}
-<script>
 {% if user.is_authenticated %}
+<script>
 function actionTag(method, tag) {
   var csrftoken = $("[name=csrfmiddlewaretoken]").val();
   $.ajax({
@@ -141,6 +141,6 @@ $(function() {
     });
   });
 });
-{% endif %}
 </script>
+{% endif %}
 {% endblock %}
