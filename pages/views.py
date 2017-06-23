@@ -10,7 +10,7 @@ import csv
 import requests
 
 from .models import Organisation, Page, Attachment, Download, History
-from taggit.models import Tag
+from taggit.models import Tag, TaggedItem
 
 
 def count_pages(pages):
@@ -85,6 +85,15 @@ def page(request, key=None):
         'attachments': attachments,
         'history': history
     })
+
+
+def related_attachments(attachment):
+    "Find attachments which same tags"
+    related_items = TaggedItem.objects.none()
+    for tag in attachment.tags.all():
+        related_items |= tag.pages_genericstringtaggeditem_items.all()
+    attachments = related_items.values_list('object_id', flat=True)
+    return Attachment.objects.filter(attachment__in=attachments).exclude(attachment=attachment.attachment)
 
 
 def attachment_sheets(attachment):
