@@ -132,6 +132,18 @@ def attachment(request, key=None):
     })
 
 
+def attachment_downloads(request, key=None, suffix=None):
+    attachment = Attachment.objects.get(attachment=key)
+    organisations = Organisation.objects.filter(
+        organisation__in=attachment.page.organisations.all())
+    downloads = Download.objects.filter(attachment=key)
+    return render(request, 'attachment_downloads.html', {
+        'attachment': attachment,
+        'organisations': organisations,
+        'downloads': downloads
+    })
+
+
 def suffixes(request):
     suffixes = Attachment.objects.values('suffix').order_by().annotate(
         Count('suffix')).order_by("-suffix__count")
@@ -319,4 +331,3 @@ def attachments_tag(request, slug=None):
     return render(request, 'attachments_tag.html',
                   {'tag': tag,
                    'attachments': attachments})
-

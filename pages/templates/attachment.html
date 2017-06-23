@@ -26,16 +26,21 @@
   {{attachment.name}}
 </h1>
 
+
+  {% if attachment.page_count %}
+{% for sheet in sheets %}
+  <a href="{{ sheet.href }}"><img src="{{ sheet.src }}" alt="" class="sheet"></a>
+{% endfor %}
+   {% else %}
+<p><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></p>
+   {% endif %}
+
+
 {% csrf_token %}
-
-<dl class="attachment">
-
-  <dt>Tags</dt>
-  <dd class="tagbox">
   <div class="grid-row">
     <div class="column-full">
+      <h2 class="heading-medium"><label for="tags">Tags</label></h2>
       <div id="tags">
-
 {% if not user.is_authenticated %}
 <ul class="taggle_list">
   {% for tag in attachment.tags.all|dictsort:"slug"  %}
@@ -43,79 +48,70 @@
   {% endfor %}
 </ul>
 {% endif %}
-
       </div>
     </div>
   </div>
+
+
+<div class="grid-row">
+  <div class="column-one-quarter">
+
+    <h2 class="heading-medium"><a href="{{ attachment.page.url }}">Publication</a></h2>
+    {% if attachment.ref %}
+    <h3 class="heading-small">Reference</h3>
+    <p><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></p>
+    {% endif %}
+
+  </div>
+
+  <div class="column-one-quarter">
+    <h2 class="heading-medium"><a href="{{ attachment.url }}">Document</a></h2>
+
+    <h3 class="heading-small">Suffix</h3>
+    <p><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></p>
+
+    <h3 class="heading-small">Mime</h3>
+    <p>{{ attachment.mime }}</p>
+
+    <h3 class="heading-small">Size</h3>
+    <p>{{ attachment.size|intcomma }} Bytes</p>
+
+    {% if attachment.page_count %}
+    <h3 class="heading-small">Page-count</h3>
+    <dd>{{attachment.page_count}}</dd>
+    {% endif %}
+
+  </div>
+
+  <div class="column-one-quarter">
+    <h2 class="heading-medium">History</h2>
+    <h3 class="heading-small">Created</h3>
+    <p>{{ attachment.created }}</p>
+
+    <h3 class="heading-small">Modified</h3>
+    <p>{{ attachment.modified }}</p>
+  </div>
+  <div class="column-one-quarter">
+    <h2 class="heading-medium"><a href="downloads">Downloads</a></h2>
+  </div>
+</div>
+
+<div class="grid-row">
+  <div class="column-full">
+    <h2 class="heading-medium">Metadata</h2>
+    <div class="panel attachment"><p>{{ attachment.magic }}</p></div>
   </dd>
 
-  {% if attachment.page_count %}
-  <dt>Sheets</dt>
-  <dd>
-{% for sheet in sheets %}
-  <a href="{{ sheet.href }}"><img src="{{ sheet.src }}" alt="" class="sheet"></a>
-{% endfor %}
-   </dd>
-   {% endif %}
 
+{% if text %}
+<div class="grid-row">
+  <div class="column-full">
+    <h2 class="heading-medium"><a href="{{ text_url }}">Text</a></h2>
+    <div class="panel attachment"><pre>{{ text }}</pre></div>
+  </div>
+</div>
+{% endif %}
 
-  <dt>Published by</dt>
-  <dd>{% for organisation in organisations %}
-      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
-  {% endfor %}
-  </dd>
-
-  <dt>Attachment</dt>
-  <dd><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></dd>
-
-  {% if attachment.ref %}
-  <dt>Reference</dt>
-  <dd><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></dd>
-  {% endif %}
-
-  <dt>Suffix</dt>
-  <dd><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></dd>
-
-  <dt>Mime</dt>
-  <dd><a href="/mime/{{attachment.mime}}">{{ attachment.mime }}</a></dd>
-
-  <dt>Number of sheets</dt>
-  <dd>{{attachment.page_count}}</dd>
-
-  <dt>Size</dt>
-  <dd>{{ attachment.size|intcomma }} Bytes</dd>
-
-  <dt>Magic</dt>
-  <dd>
-    <div class="panel panel-border-wide"><p>{{ attachment.magic }}</p></div>
-  </dd>
-
-  {% if text %}
-  <dt><a href="{{ text_url }}">Text</a></dt>
-  <dd>
-    <div class="panel panel-border-wide"><pre>{{ text }}</pre></div>
-  </dd>
-  {% endif %}
-
-</dl>
-
-
-<h2 class="heading-medium">Downloads</h2>
-<table class="downloads">
-<thead>
-  <tr>
-    <th scope="col">month</th>
-    <th scope="col" class="numeric">count</th>
-  </tr>
-</thead>
-<tbody>
-
-{% for download in downloads %}
-    <tr>
-      <td>{{ download.month }}</a></td>
-      <td class="numeric">{{ download.count }}</a></td>
-    </tr>
-{% endfor %}
 
 </tbody>
 </table>

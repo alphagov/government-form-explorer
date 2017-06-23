@@ -315,9 +315,9 @@
         this.list.className = 'taggle_list';
         this.input.type = 'text';
         // Make sure no left/right padding messes with the input sizing
-        this.input.style.paddingLeft = 0;
-        this.input.style.paddingRight = 0;
-        this.input.className = 'taggle_input';
+        //this.input.style.paddingLeft = 0;
+        //this.input.style.paddingRight = 0;
+        this.input.className = 'taggle_input form-control';
         this.input.tabIndex = this.settings.tabIndex;
         this.sizer.className = 'taggle_sizer';
 
@@ -528,7 +528,7 @@
      * @param {Number} width
      */
     Taggle.prototype._setInputWidth = function(width) {
-        this.input.style.width = (width || 10) + 'px';
+        // this.input.style.width = (width || 10) + 'px';
     };
 
     /**
@@ -694,9 +694,9 @@
         var size = parseInt(this.sizer.style.fontSize, 10);
 
         // 1.5 just seems to be a good multiplier here
-        if (width + (size * 1.5) > parseInt(this.input.style.width, 10)) {
-            this.input.style.width = max + 'px';
-        }
+        //if (width + (size * 1.5) > parseInt(this.input.style.width, 10)) {
+            //this.input.style.width = max + 'px';
+        //}
     };
 
     Taggle.prototype._createTag = function(text) {

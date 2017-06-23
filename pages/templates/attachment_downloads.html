@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/organisations">Organisations</a></li>
+        <li>
+  {% for organisation in organisations %}
+      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
+  {% endfor %}
+        </li>
+    </ol>
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/pages">Pages</a></li>
+        <li><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.name }}</a></li>
+        <li><a href="/attachment/{{ attachment.attachment }}">{{ attachment.name }}</a></li>
+    </ol>
+  </div>
+
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Attachment</span>
+  Downloads
+</h1>
+
+<table class="downloads">
+<thead>
+  <tr>
+    <th scope="col">Month</th>
+    <th scope="col" class="numeric">Count</th>
+  </tr>
+</thead>
+<tbody>
+
+{% for download in downloads %}
+    <tr>
+      <td>{{ download.month }}</a></td>
+      <td class="numeric">{{ download.count }}</a></td>
+    </tr>
+{% endfor %}
+
+</tbody>
+</table>
+{% endblock %}

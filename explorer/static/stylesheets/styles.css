@@ -26,9 +26,17 @@ th {
   color: black;
 }
 
-pre {
-  overflow-x: auto;
+.panel.attachment {
+  border: 1px solid #bfc1c3;
+  padding-right: 0;
+}
+
+.panel.attachment pre {
+  overflow-y: auto;
+  overflow-x: hidden;
   max-height: 400px;
+  white-space: pre-wrap;
+  padding-right: 0.78947em;
 }
 
 .login, .logout {
@@ -60,9 +68,10 @@ pre {
 }
 
 #tags .taggle_input {
-  border: none;
   font-weight: 300;
+  width: 100%;
 }
+
 
 #tags .taggle_list li {
   float: left;
@@ -70,6 +79,11 @@ pre {
   white-space: nowrap;
   font-weight: 600;
   margin-bottom: 5px;
+}
+
+#tags .taggle_list li:not(.taggle) {
+  width: 100%;
+  margin-top: 1.05263em;
 }
 
 .taggle_list .taggle {
@@ -116,6 +130,11 @@ pre {
   padding-left: 0;
   float: left;
   background: none;
+  border: 1px solid #bfc1c3;
+}
+
+.taggle_input:focus {
+  border: 2px solid #000;
 }
 
 .taggle_sizer {
@@ -131,4 +150,5 @@ pre {
 
 img.sheet {
   width: 24%;
+  border: 1px solid #bfc1c3;
 }
