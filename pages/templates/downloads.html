@@ -17,13 +17,14 @@
 <div class="grid-row">
   <div class="column-full">
 <table class="downloads">
+<thead>
 <tr>
-  <thead>
     <th>Month</th>
     <th class="numeric">Attachments</th>
     <th class="numeric">Downloads</th>
-  </thead>
 </tr>
+</thead>
+<tbody>
 
 {% for d in downloads %}
     <tr>
@@ -33,6 +34,7 @@
     </tr>
 {% endfor %}
 
+</tbody>
 </table>
   </div>
 </div>

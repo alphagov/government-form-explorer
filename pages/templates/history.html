@@ -17,12 +17,13 @@
 <div class="grid-row">
   <div class="column-full">
 <table class="history">
-<tr>
 <thead>
+<tr>
   <th class="sorter-when">Date</th>
   <th class="numeric">Count</th>
-</thead>
 </tr>
+</thead>
+<tbody>
 
 {% for h in history %}
     <tr>
@@ -31,6 +32,7 @@
     </tr>
 {% endfor %}
 
+</tbody>
 </table>
   </div>
 </div>

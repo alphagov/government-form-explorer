@@ -1,13 +1,14 @@
 <div class="grid-row">
   <div class="column-full">
 <table class="history">
-<tr>
 <thead>
+<tr>
   <th>Date</th>
   <th>Text</th>
-</thead>
 </tr>
+</thead>
 
+<tbody>
 {% for h in history %}
     <tr>
       <td>{{ h.timestamp }}</a></td>
@@ -15,6 +16,7 @@
     </tr>
 {% endfor %}
 
+</tbody>
 </table>
   </div>
 </div>
