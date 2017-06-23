@@ -56,7 +56,7 @@
 <div class="grid-row">
   <div class="column-one-quarter">
 
-    <h2 class="heading-medium"><a href="{{ attachment.page.url }}">Publication</a></h2>
+    <h2 id="publication" class="heading-medium"><a href="{{ attachment.page.url }}">Publication</a></h2>
     {% if attachment.ref %}
     <h3 class="heading-small">Reference</h3>
     <p><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></p>
@@ -65,7 +65,7 @@
   </div>
 
   <div class="column-one-quarter">
-    <h2 class="heading-medium"><a href="{{ attachment.url }}">Document</a></h2>
+    <h2 id="document" class="heading-medium"><a href="{{ attachment.url }}">Document</a></h2>
 
     <h3 class="heading-small">Suffix</h3>
     <p><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></p>
@@ -84,7 +84,7 @@
   </div>
 
   <div class="column-one-quarter">
-    <h2 class="heading-medium">History</h2>
+    <h2 id="history" class="heading-medium">History</h2>
     <h3 class="heading-small">Created</h3>
     <p>{{ attachment.created }}</p>
 
@@ -92,13 +92,13 @@
     <p>{{ attachment.modified }}</p>
   </div>
   <div class="column-one-quarter">
-    <h2 class="heading-medium"><a href="downloads">Downloads</a></h2>
+    <h2 id="downloads" class="heading-medium"><a href="downloads">Downloads</a></h2>
   </div>
 </div>
 
 <div class="grid-row">
   <div class="column-full">
-    <h2 class="heading-medium">Metadata</h2>
+    <h2 id="metadata" class="heading-medium">Metadata</h2>
     <div class="panel attachment"><p>{{ attachment.magic }}</p></div>
   </div>
 </div>
@@ -117,7 +117,7 @@
 {% if text %}
 <div class="grid-row">
   <div class="column-full">
-    <h2 class="heading-medium"><a href="{{ text_url }}">Text</a></h2>
+    <h2 id="text" class="heading-medium"><a href="{{ text_url }}">Text</a></h2>
     <div class="panel attachment"><pre>{{ text }}</pre></div>
   </div>
 </div>
