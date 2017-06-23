@@ -91,7 +91,7 @@ def attachment_sheets(attachment):
     sheets = []
     if attachment.page_count:
         w = int(math.log10(attachment.page_count)) + 1
-        for n in range(1, attachment.page_count + 1):
+        for n in range(1, min(attachment.page_count + 1, settings.SHEETS_MAX)):
             fmt = '%s/attachment/%s/page-%0' + str(w) + 'd.png'
             src = fmt % (settings.DOCUMENTS_URL, attachment.attachment, n)
             href = "%s#page=%d" % (attachment.url, n)

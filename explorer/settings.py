@@ -147,6 +147,8 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # proxy static files from s3
 DOCUMENTS_URL = 'https://s3-eu-west-1.amazonaws.com/government-form/documents'
 
+# maximum number of rendered sheets
+SHEETS_MAX = 100
 
 # Elasticsearch / Amazon Cloudsearch
 ES_INDEX='form-explorer'
