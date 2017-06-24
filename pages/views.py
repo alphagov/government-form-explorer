@@ -67,7 +67,8 @@ def organisation_attachments(request, key=None):
         page__organisations__organisation__contains=key).order_by('-size')
     return render(request, 'organisation_attachments.html',
                   {'organisation': organisation,
-                   'attachments': attachments})
+                   'attachments': attachments,
+                   'tags': True})
 
 
 def pages(request):
@@ -85,7 +86,8 @@ def page(request, key=None):
         'page': page,
         'organisations': organisations,
         'attachments': attachments,
-        'history': history
+        'history': history,
+        'tags': True,
     })
 
 

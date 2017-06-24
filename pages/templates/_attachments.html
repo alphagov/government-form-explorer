@@ -6,7 +6,7 @@
 <thead>
   <tr>
     <th scope='col'>Attachment</th>
-    <th scope='col'>Tags</th>
+    {% if tags %}<th scope='col'>Tags</th>{% endif %}
     <th scope='col'>Suffix</th>
     <th scope='col' class="numeric">Size (Bytes)</th>
   </tr>
@@ -16,6 +16,7 @@
 {% for attachment in attachments %}
     <tr>
       <td><a href="/attachment/{{ attachment.attachment }}/">{{ attachment.name }}</a></td>
+      {% if tags %}
       <td>
         <div id="tags">
           <ul class="taggle_list">
@@ -25,6 +26,7 @@
           </ul>
         </div>
       </td>
+      {% endif %}
       <td>{{ attachment.suffix }}</dt>
       <td class="numeric">{{ attachment.size | intcomma }}</td>
     </tr>
