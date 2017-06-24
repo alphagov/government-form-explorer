@@ -1,0 +1,23 @@
+{% load govuk %}
+
+<div class="grid-row" id="homebar">
+  <div class="column-one-half">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ attachments|length }}</span>
+      <span class="data-item font-xsmall">Attachments</span>
+    </div>
+  </div>
+  <div class="column-one-quarter">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/suffixes">{{ suffixes }}</a></span>
+      <span class="data-item font-xsmall">Suffixes</span>
+    </div>
+  </div>
+  <div class="column-one-quarter">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ size|humansize_value }}</span>
+      <span class="data-item font-xsmall">{{ size|humansize_unit }}</span>
+    </div>
+  </div>
+</div>
+

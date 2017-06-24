@@ -65,10 +65,15 @@ def organisation_attachments(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     attachments = Attachment.objects.filter(
         page__organisations__organisation__contains=key).order_by('-size')
-    return render(request, 'organisation_attachments.html',
-                  {'organisation': organisation,
-                   'attachments': attachments,
-                   'tags': True})
+    size = sum(a.size for a in attachments)
+    suffixes = attachments.values('suffix').distinct().count()
+    return render(request, 'organisation_attachments.html', {
+        'organisation': organisation,
+        'attachments': attachments,
+        'tags': True,
+        'size': size,
+        'suffixes': suffixes,
+    })
 
 
 def pages(request):
@@ -105,7 +110,13 @@ def attachment_sheets(attachment):
 
 def attachments(request):
     attachments = Attachment.objects.all().order_by('-size')
-    return render(request, 'attachments.html', {'attachments': attachments})
+    size = sum(a.size for a in attachments)
+    suffixes = attachments.values('suffix').distinct().count()
+    return render(request, 'attachments.html', {
+        'attachments': attachments,
+        'size': size,
+        'suffixes': suffixes,
+    })
 
 
 def attachment(request, key=None):

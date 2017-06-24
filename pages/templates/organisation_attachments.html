@@ -1,19 +1,27 @@
 {% extends "base.html" %}
-
-{% block attachments_active %} class="active"{% endblock %}
 {% block content %}
-  <div class="breadcrumbs">
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-        <li><a href="/organisations">Organisations</a></li>
-        <li><a href="/organisation/{{ organisation.organisation }}">{{ organisation.name }}</a></li>
-    </ol>
+<div class="grid-row">
+  <div class="column-full">
+    <div class="breadcrumbs">
+      <ol>
+          <li><a href="/">Form explorer</a></li>
+          <li><a href="/organisations">Organisations</a></li>
+          <li><a href="/organisation/{{ organisation.organisation }}">{{ organisation.name }}</a></li>
+      </ol>
+    </div>
+
+    <h1 class="heading-xlarge">
+      Attachments
+    </h1>
   </div>
+</div>
 
-  <h1 class="heading-xlarge">
-    Attachments
-  </h1>
+{% include "_attachments_homebar.html" %}
 
-{% include "_attachments.html" %}
+<div class="grid-row">
+  <div class="column-full">
+    {% include "_attachments.html" %}
+  </div>
+</div>
 
 {% endblock %}
