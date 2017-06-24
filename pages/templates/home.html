@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load staticfiles %}
+{% load govuk %}
 
 {% block content %}
 
@@ -20,23 +21,23 @@
     </div>
 
     <div class="data">
+      <span class="data-item bold-xxlarge"><a href="/pages/history">{{ count.history }}</a></span>
+      <span class="data-item font-xsmall">Page updates</span>
+    </div>
+
+    <div class="data">
       <span class="data-item bold-xxlarge"><a href="/attachments">{{ count.attachments }}</a></span>
       <span class="data-item font-xsmall">Attachments</span>
     </div>
 
     <div class="data">
       <span class="data-item bold-xxlarge"><a href="/refs">{{ count.refs }}</a></span>
-      <span class="data-item font-xsmall">References</span>
+      <span class="data-item font-xsmall">Attachment references</span>
     </div>
 
     <div class="data">
       <span class="data-item bold-xxlarge"><a href="/suffixes">{{ count.suffixes }}</a></span>
-      <span class="data-item font-xsmall">Suffixes</span>
-    </div>
-
-    <div class="data">
-      <span class="data-item bold-xxlarge"><a href="/pages/history">{{ count.history }}</a></span>
-      <span class="data-item font-xsmall">Page updates</span>
+      <span class="data-item font-xsmall">Attachment suffixes</span>
     </div>
 
     <div class="data">
@@ -44,6 +45,10 @@
       <span class="data-item font-xsmall">Attachment downloads</span>
     </div>
 
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ count.size|humansize_value }}</span>
+      <span class="data-item font-xsmall">{{ count.size|humansize_unit }} of attachments</span>
+    </div>
 
   </div>
 

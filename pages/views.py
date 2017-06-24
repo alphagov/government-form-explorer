@@ -22,22 +22,16 @@ def count_pages(pages):
 
 
 def home(request):
+    attachments = Attachment.objects.all()
     count = {
-        'organisations':
-        Organisation.objects.annotate(Count('page')).filter(
-            page__count__gt=0).count(),
-        'pages':
-        Page.objects.count(),
-        'attachments':
-        Attachment.objects.count(),
-        'suffixes':
-        Attachment.objects.values('suffix').distinct().count(),
-        'refs':
-        Attachment.objects.values('ref').distinct().count(),
-        'history':
-        History.objects.all().count(),
-        'downloads':
-        Download.objects.all().aggregate(Sum('count')).get('count__sum'),
+        'organisations': Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).count(),
+        'pages': Page.objects.count(),
+        'attachments': attachments.count(),
+        'size': attachments.aggregate(Sum('size')).get('size__sum'),
+        'suffixes': attachments.values('suffix').distinct().count(),
+        'refs': attachments.values('ref').distinct().count(),
+        'history': History.objects.all().count(),
+        'downloads': Download.objects.all().aggregate(Sum('count')).get('count__sum'),
     }
     return render(request, 'home.html', {'count': count})
 
