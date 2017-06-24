@@ -10,7 +10,7 @@ import csv
 import requests
 from scipy.stats import hmean
 
-from .models import Organisation, Page, Attachment, Download, History
+from .models import Organisation, Page, Attachment, Download, History, GenericStringTaggedItem
 from taggit.models import Tag
 
 
@@ -32,6 +32,7 @@ def home(request):
         'refs': attachments.values('ref').distinct().count(),
         'history': History.objects.all().count(),
         'downloads': Download.objects.all().aggregate(Sum('count')).get('count__sum'),
+        'tags': len(Tag.objects.all().annotate(count=Count('pages_genericstringtaggeditem_items__id'))),
     }
     return render(request, 'home.html', {'count': count})
 
