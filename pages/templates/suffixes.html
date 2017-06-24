@@ -3,17 +3,28 @@
 {% block suffixes_active %} class="active"{% endblock %}
 
 {% block content %}
-  <div class="breadcrumbs">
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-        <li><a href="/attachments">Attachments</a></li>
-    </ol>
+<div class="grid-row">
+  <div class="column-full">
+    <div class="breadcrumbs">
+      <ol>
+          <li><a href="/">Form explorer</a></li>
+          <li><a href="/attachments">Attachments</a></li>
+      </ol>
+    </div>
+
+    <h1 class="heading-xlarge">Suffixes</h1>
+
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ suffixes|length }}</span>
+      <span class="data-item font-xsmall">Suffixes</span>
+    </div>
   </div>
+</div>
 
-<h1 class="heading-xlarge">
-  Suffixes
-</h1>
-
-{% include "_suffixes.html" %}
+<div class="grid-row">
+  <div class="column-full">
+    {% include "_suffixes.html" %}
+  </div>
+</div>
 
 {% endblock %}

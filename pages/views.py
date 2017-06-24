@@ -1,4 +1,4 @@
-import math
+from math import log10
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.text import slugify
 import csv
 import requests
+from scipy.stats import hmean
 
 from .models import Organisation, Page, Attachment, Download, History
 from taggit.models import Tag
@@ -47,6 +48,7 @@ def organisations(request):
         .annotate(attachments=Count('page__attachment', distinct=True)) \
         .filter(pages__gt=0) \
         .order_by('-pages')
+
     return render(request, 'organisations.html',
                   {'organisations': organisations})
 
@@ -90,7 +92,7 @@ def page(request, key=None):
 def attachment_sheets(attachment):
     sheets = []
     if attachment.page_count:
-        w = int(math.log10(attachment.page_count)) + 1
+        w = int(log10(attachment.page_count)) + 1
         for n in range(1, min(attachment.page_count + 1, settings.SHEETS_MAX)):
             fmt = '%s/attachment/%s/page-%0' + str(w) + 'd.png'
             src = fmt % (settings.DOCUMENTS_URL, attachment.attachment, n)
@@ -109,6 +111,7 @@ def attachment(request, key=None):
     organisations = Organisation.objects.filter(
         organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
+    counts = [d.count for d in downloads]
 
     # get document from store
     text_path = '/attachment/%s/document.txt' % attachment.attachment
@@ -129,6 +132,8 @@ def attachment(request, key=None):
         'organisations': organisations,
         'downloads': downloads,
         'sheets': sheets,
+        'mean': int(round(hmean(counts))),
+        'peak': max(counts),
     })
 
 
@@ -137,10 +142,14 @@ def attachment_downloads(request, key=None, suffix=None):
     organisations = Organisation.objects.filter(
         organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
+    counts = [d.count for d in downloads]
+
     return render(request, 'attachment_downloads.html', {
         'attachment': attachment,
         'organisations': organisations,
-        'downloads': downloads
+        'downloads': downloads,
+        'mean': int(round(hmean(counts))),
+        'peak': max(counts),
     })
 
 
@@ -206,6 +215,7 @@ def downloads(request, suffix=None):
         .annotate(attachments=Count('id')) \
         .annotate(downloads=Sum('count')) \
         .order_by("-month")
+    counts = [d['downloads'] for d in downloads]
 
     if suffix == "tsv":
         response = HttpResponse(
@@ -217,7 +227,11 @@ def downloads(request, suffix=None):
             writer.writerow([str(row[field]) for field in fields])
         return response
 
-    return render(request, 'downloads.html', {'downloads': downloads})
+    return render(request, 'downloads.html', {
+        'downloads': downloads,
+        'mean': int(round(hmean(counts))),
+        'peak': max(counts),
+    })
 
 
 def search(request):

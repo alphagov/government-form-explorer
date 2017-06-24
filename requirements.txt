@@ -11,3 +11,4 @@ elasticsearch==5.4.0
 requests-aws4auth==0.9
 social-auth-app-django==1.2.0
 django-taggit==0.22.1
+scipy==0.19.1

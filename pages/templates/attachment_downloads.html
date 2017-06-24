@@ -35,10 +35,26 @@
 </thead>
 <tbody>
 
+<div class="grid-row">
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ peak|intcomma }}</span>
+      <span class="data-item font-xsmall">Peak month</span>
+    </div>
+  </div>
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ mean|intcomma }}</span>
+      <span class="data-item font-xsmall">Average per-month</span>
+    </div>
+  </div>
+</div>
+
+
 {% for download in downloads %}
     <tr>
       <td>{{ download.month }}</a></td>
-      <td class="numeric">{{ download.count }}</a></td>
+      <td class="numeric">{{ download.count|intcomma }}</a></td>
     </tr>
 {% endfor %}
 

@@ -2,38 +2,50 @@
 
 {% block pages_active %} class="active"{% endblock %}
 {% block content %}
-  <div class="breadcrumbs">
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-        <li><a href="/pages">Pages</a></li>
-    </ol>
-  </div>
+<div class="grid-row">
+  <div class="column-full">
+    <div class="breadcrumbs">
+      <ol>
+          <li><a href="/">Form explorer</a></li>
+          <li><a href="/pages">Pages</a></li>
+      </ol>
+    </div>
 
-  <h1 class="heading-xlarge">
-    <span class="heading-secondary">Pages</span>
-    History
-  </h1>
+    <h1 class="heading-xlarge">
+      <span class="heading-secondary">Pages</span>
+      History
+    </h1>
+  </div>
+</div>
+
+<div class="grid-row">
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ history|length }}</span>
+      <span class="data-item font-xsmall">Page updates</span>
+    </div>
+  </div>
+</div>
+
 
 <div class="grid-row">
   <div class="column-full">
-<table class="history">
-<thead>
-<tr>
-  <th class="sorter-when">Date</th>
-  <th class="numeric">Count</th>
-</tr>
-</thead>
-<tbody>
-
-{% for h in history %}
-    <tr>
-      <td><a href="{{ h.date| date:"Y-m-d" }}"><time datetime="{{ h.timestamp }}" class="timestamp">{{ h.date }}</time></a></td>
-      <td class="numeric">{{ h.count }}</a></td>
-    </tr>
-{% endfor %}
-
-</tbody>
-</table>
+    <table class="history">
+      <thead>
+        <tr>
+          <th class="sorter-when">Date</th>
+          <th class="numeric">Count</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for h in history %}
+        <tr>
+          <td><a href="{{ h.date| date:"Y-m-d" }}"><time datetime="{{ h.timestamp }}" class="timestamp">{{ h.date }}</time></a></td>
+          <td class="numeric">{{ h.count }}</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 

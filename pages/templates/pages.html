@@ -2,16 +2,27 @@
 
 {% block pages_active %} class="active"{% endblock %}
 {% block content %}
-  <div class="breadcrumbs">
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-    </ol>
+<div class="grid-row">
+  <div class="column-full">
+    <div class="breadcrumbs">
+      <ol>
+          <li><a href="/">Form explorer</a></li>
+      </ol>
+    </div>
+
+    <h1 class="heading-xlarge">Pages</h1>
+
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ pages|length }}</span>
+      <span class="data-item font-xsmall">Pages</span>
+    </div>
   </div>
+</div>
 
-  <h1 class="heading-xlarge">
-    Pages
-  </h1>
-
-{% include "_pages.html" %}
+<div class="grid-row">
+  <div class="column-full">
+    {% include "_pages.html" %}
+  </div>
+</div>
 
 {% endblock %}

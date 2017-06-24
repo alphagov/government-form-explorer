@@ -65,7 +65,7 @@
   </div>
 
   <div class="column-one-quarter">
-    <h2 id="document" class="heading-medium"><a href="{{ attachment.url }}">Document</a></h2>
+    <h2 id="file" class="heading-medium"><a href="{{ attachment.url }}">File</a></h2>
 
     <h3 class="heading-small">Suffix</h3>
     <p><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></p>
@@ -85,6 +85,7 @@
 
   <div class="column-one-quarter">
     <h2 id="history" class="heading-medium">History</h2>
+
     <h3 class="heading-small">Created</h3>
     <p>{{ attachment.created }}</p>
 
@@ -93,6 +94,13 @@
   </div>
   <div class="column-one-quarter">
     <h2 id="downloads" class="heading-medium"><a href="downloads">Downloads</a></h2>
+
+    <h3 class="heading-small">Peak month</h3>
+    <p>{{ peak|intcomma }}</p>
+
+    <h3 class="heading-small">Average month</h3>
+    <p>{{ mean|intcomma }}</p>
+
   </div>
 </div>
 
@@ -107,7 +115,7 @@
 {% if attachment.mime == "application/pdf" %}
 <div class="grid-row">
   <div class="column-full">
-    <h2 id="object" class="heading-medium"><a href="{{attachment.url}}">Object</a></h2>
+    <h2 id="document" class="heading-medium"><a href="{{attachment.url}}">Document</a></h2>
     <object data="{{attachment.url}}" type="{{attachment.mime}}" width="100%" height="800px"></object>
   </div>
 </div>
