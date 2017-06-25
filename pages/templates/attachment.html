@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load humanize %}
+{% load sparklines %}
 
 {% block content %}
   <div class="breadcrumbs">
@@ -59,7 +60,7 @@
     <h2 id="publication" class="heading-medium"><a href="{{ attachment.page.url }}">Publication</a></h2>
     {% if attachment.ref %}
     <h3 class="heading-small">Reference</h3>
-    <p><a href="/ref/{{attachment.ref}}">{{ attachment.ref }}</a></p>
+    <p><a href="/ref/{{attachment.ref|urlencode}}">{{ attachment.ref }}</a></p>
     {% endif %}
 
   </div>
@@ -71,7 +72,7 @@
     <p><a href="/suffix/{{attachment.suffix}}">{{ attachment.suffix }}</a></p>
 
     <h3 class="heading-small">Mime</h3>
-    <p>{{ attachment.mime }}</p>
+    <p class="mime">{{ attachment.mime }}</p>
 
     <h3 class="heading-small">Size</h3>
     <p>{{ attachment.size|intcomma }} Bytes</p>
@@ -94,6 +95,8 @@
   </div>
   <div class="column-one-quarter">
     <h2 id="downloads" class="heading-medium"><a href="downloads">Downloads</a></h2>
+
+    <embed src="{% static 'images/line.svg' %}?{{ counts | sparkcounts }}" type="image/svg+xml" width="160px" height="30px">
 
     <h3 class="heading-small">Peak month</h3>
     <p>{{ peak|intcomma }}</p>

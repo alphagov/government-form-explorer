@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load humanize %}
+{% load govuk %}
 
 {% block content %}
   <div class="breadcrumbs">
@@ -51,10 +52,10 @@
 </div>
 
 
-{% for download in downloads %}
+{% for d in downloads %}
     <tr>
-      <td>{{ download.month }}</a></td>
-      <td class="numeric">{{ download.count|intcomma }}</a></td>
+      <td><a href="/attachments/downloads/{{d.month}}">{{ d.month|govuk_date|safe }}</a></td>
+      <td class="numeric">{{ d.count|intcomma }}</a></td>
     </tr>
 {% endfor %}
 

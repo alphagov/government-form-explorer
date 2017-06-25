@@ -1,5 +1,9 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+{% load sparklines %}
+
 {% block attachments_active %} class="active"{% endblock %}
+
 {% block content %}
 <div class="grid-row">
   <div class="column-full">
@@ -9,7 +13,10 @@
         <li><a href="/pages">Pages</a></li>
       </ol>
     </div>
-    <h1 class="heading-xlarge">Attachments</h1>
+    <h1 class="heading-xlarge">
+      Attachments
+      <embed src="{% static 'images/bar.svg' %}?{{ sizes | sparkcounts }}" type="image/svg+xml" width="80px" height="30px">
+    </h1>
   </div>
 </div>
 

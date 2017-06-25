@@ -31,7 +31,8 @@ urlpatterns = [
 
     url(r'^attachments/$', pages.views.attachments, name='attachment'),
     url(r'^attachments/downloads/$', pages.views.downloads, name='downloads'),
-    url(r'^attachments/downloads.(?P<suffix>[\w]{1,16})$', pages.views.downloads, name='downloads_json'),
+    url(r'^attachments/downloads.tsv$', pages.views.downloads, name='downloads_tsv'),
+    url(r'^attachments/downloads/(?P<month>[\d]{6})$', pages.views.downloads_month, name='downloads_month'),
     url(r'^attachments/tags$', pages.views.attachments_tags, name='attachments_tags'),
     url(r'^attachments/tag/(?P<slug>[\w\d\s:-]{1,128})$', pages.views.attachments_tag, name='attachments_tag'),
 

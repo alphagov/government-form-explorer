@@ -12,13 +12,13 @@
       <ol>
           <li><a href="/">Form explorer</a></li>
           <li><a href="/attachments">Attachments</a></li>
+          <li><a href="/attachments/downloads">Downloads</a></li>
       </ol>
     </div>
 
     <h1 class="heading-xlarge">
-      <span class="heading-secondary">Attachments</span>
-      Downloads
-      <embed src="{% static 'images/line.svg' %}?{{ counts | sparkcounts }}" type="image/svg+xml" width="160px" height="30px">
+      <span class="heading-secondary">Attachment downloads</span>
+      {{ month|govuk_date|safe }}
     </h1>
   </div>
 </div>
@@ -27,7 +27,13 @@
   <div class="column-one-third">
     <div class="data">
       <span class="data-item bold-xxlarge">{{ mean|intword }}</span>
-      <span class="data-item font-xsmall">Average per-month</span>
+      <span class="data-item font-xsmall">Mean</span>
+    </div>
+  </div>
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{% if total < 1000000 %}{{total|intcomma}}{%else%}{{ total|intword }}{% endif %}</span>
+      <span class="data-item font-xsmall">Total</span>
     </div>
   </div>
 </div>
@@ -37,8 +43,7 @@
 <table class="downloads">
 <thead>
 <tr>
-    <th class="sorter-when">Month</th>
-    <th class="numeric">Attachments</th>
+    <th>Attachment</th>
     <th class="numeric">Downloads</th>
 </tr>
 </thead>
@@ -46,9 +51,8 @@
 
 {% for d in downloads %}
     <tr>
-      <td><a href="{{d.month}}">{{ d.month|govuk_date|safe }}</a></td>
-      <td class="numeric">{{ d.attachments|intcomma }}</a></td>
-      <td class="numeric">{{ d.downloads|intcomma }}</a></td>
+      <td><a href="/attachment/{{ attachment.attachment }}/">{{ d.attachment.name }}</a></td>
+      <td class="numeric">{{ d.count|intcomma }}</a></td>
     </tr>
 {% endfor %}
 

@@ -8,7 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.text import slugify
 import csv
 import requests
-from scipy.stats import hmean
+from scipy.stats import hmean, gmean
 
 from .models import Organisation, Page, Attachment, Download, History, GenericStringTaggedItem
 from taggit.models import Tag
@@ -105,12 +105,14 @@ def attachment_sheets(attachment):
 
 def attachments(request):
     attachments = Attachment.objects.all().order_by('-size')
-    size = sum(a.size for a in attachments)
     suffixes = attachments.values('suffix').distinct().count()
+    sizes = [a.size for a in attachments]
+    size = sum(sizes)
     return render(request, 'attachments.html', {
         'attachments': attachments,
         'size': size,
         'suffixes': suffixes,
+        'sizes': sizes,
     })
 
 
@@ -119,7 +121,14 @@ def attachment(request, key=None):
     organisations = Organisation.objects.filter(
         organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
+
     counts = [d.count for d in downloads]
+    if len(counts):
+        mean = int(round(hmean(counts)))
+        peak = max(counts)
+    else:
+        mean = 0
+        peak = 0
 
     # get document from store
     text_path = '/attachment/%s/document.txt' % attachment.attachment
@@ -140,8 +149,9 @@ def attachment(request, key=None):
         'organisations': organisations,
         'downloads': downloads,
         'sheets': sheets,
-        'mean': int(round(hmean(counts))),
-        'peak': max(counts),
+        'mean': mean,
+        'peak': peak,
+        'counts': counts,
     })
 
 
@@ -150,14 +160,21 @@ def attachment_downloads(request, key=None, suffix=None):
     organisations = Organisation.objects.filter(
         organisation__in=attachment.page.organisations.all())
     downloads = Download.objects.filter(attachment=key)
+
     counts = [d.count for d in downloads]
+    if len(counts):
+        mean = int(round(hmean(counts)))
+        peak = max(counts)
+    else:
+        mean = 0
+        peak = 0
 
     return render(request, 'attachment_downloads.html', {
         'attachment': attachment,
         'organisations': organisations,
         'downloads': downloads,
-        'mean': int(round(hmean(counts))),
-        'peak': max(counts),
+        'mean': mean,
+        'peak': peak,
     })
 
 
@@ -225,6 +242,13 @@ def downloads(request, suffix=None):
         .order_by("-month")
     counts = [d['downloads'] for d in downloads]
 
+    if len(counts):
+        mean = int(round(hmean(counts)))
+        peak = max(counts)
+    else:
+        mean = 0
+        peak = 0
+
     if suffix == "tsv":
         response = HttpResponse(
             content_type='text/tab-separated-values;charset=UTF-8')
@@ -237,8 +261,23 @@ def downloads(request, suffix=None):
 
     return render(request, 'downloads.html', {
         'downloads': downloads,
-        'mean': int(round(hmean(counts))),
+        'mean': mean,
+        'peak': peak,
+        'counts': counts,
+    })
+
+
+def downloads_month(request, month=None):
+    downloads = Download.objects.filter(month=month).order_by("-count")
+    counts = [d.count for d in downloads]
+
+    return render(request, 'downloads_month.html', {
+        'month': month,
+        'downloads': downloads,
+        'mean': int(round(gmean(counts))),
         'peak': max(counts),
+        'counts': counts,
+        'total': sum(counts),
     })
 
 
