@@ -14,6 +14,23 @@ from .models import Organisation, Page, Attachment, Download, History, GenericSt
 from taggit.models import Tag
 
 
+def downloads_stats():
+    downloads = Download.objects.values('month') \
+        .annotate(attachments=Count('id')) \
+        .annotate(downloads=Sum('count')) \
+        .order_by("-month")
+    counts = [d['downloads'] for d in downloads]
+
+    if len(counts):
+        mean = int(round(hmean(counts)))
+        peak = max(counts)
+    else:
+        mean = 0
+        peak = 0
+
+    return { 'downloads': downloads, 'counts': counts, 'mean': mean, 'peak': peak }
+
+
 def count_pages(pages):
     return pages \
             .annotate(attachments=Count('attachment', distinct=True)) \
@@ -23,6 +40,7 @@ def count_pages(pages):
 
 def home(request):
     attachments = Attachment.objects.all()
+    stats = downloads_stats()
     count = {
         'organisations': Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).count(),
         'pages': Page.objects.count(),
@@ -31,7 +49,7 @@ def home(request):
         'suffixes': attachments.values('suffix').distinct().count(),
         'refs': attachments.values('ref').distinct().count(),
         'history': History.objects.all().count(),
-        'downloads': Download.objects.all().aggregate(Sum('count')).get('count__sum'),
+        'downloads': stats['mean'],
         'tags': len(Tag.objects.all().annotate(count=Count('pages_genericstringtaggeditem_items__id'))),
     }
     return render(request, 'home.html', {'count': count})
@@ -236,18 +254,7 @@ def history_date(request, date=None):
 
 
 def downloads(request, suffix=None):
-    downloads = Download.objects.values('month') \
-        .annotate(attachments=Count('id')) \
-        .annotate(downloads=Sum('count')) \
-        .order_by("-month")
-    counts = [d['downloads'] for d in downloads]
-
-    if len(counts):
-        mean = int(round(hmean(counts)))
-        peak = max(counts)
-    else:
-        mean = 0
-        peak = 0
+    stats = downloads_stats()
 
     if suffix == "tsv":
         response = HttpResponse(
@@ -260,10 +267,10 @@ def downloads(request, suffix=None):
         return response
 
     return render(request, 'downloads.html', {
-        'downloads': downloads,
-        'mean': mean,
-        'peak': peak,
-        'counts': counts,
+        'downloads': stats['downloads'],
+        'mean': stats['mean'],
+        'peak': stats['peak'],
+        'counts': stats['counts'],
     })
 
 
