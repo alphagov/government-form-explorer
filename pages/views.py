@@ -128,7 +128,7 @@ def attachment_sheets(attachment):
             fmt = '%s/attachment/%s/page-%0' + str(w) + 'd.png'
             src = fmt % (settings.DOCUMENTS_URL, attachment.attachment, n)
             href = "%s#page=%d" % (attachment.url, n)
-            sheets.append({'src': src, 'href': href})
+            sheets.append({'src': src, 'href': href, 'number': n})
     return sheets
 
 
