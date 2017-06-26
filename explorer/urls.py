@@ -19,7 +19,8 @@ urlpatterns = [
 
     url(r'^organisations/$', pages.views.organisations, name='organisations'),
     url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/$', pages.views.organisation, name='organisation'),
-    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/attachments/$', pages.views.organisation_attachments, name='organisation'),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/pages$', pages.views.organisation_pages, name='organisation_pages'),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/attachments/$', pages.views.organisation_attachments, name='organisation_attachments'),
 
     url(r'^pages/$', pages.views.pages, name='page'),
 

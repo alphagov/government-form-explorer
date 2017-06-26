@@ -47,12 +47,12 @@ Search
 <ol class="results-list">
 {% for hit in hits %}
 <li>
-  <h3><a href="/attachment/{{ hit.source.attachment }}">{{ hit.source.name }}</a></h3>
+  <h3 class="heading-medium"><a href="/attachment/{{ hit.source.attachment }}">{{ hit.source.name }}</a></h3>
   <ul class="attributes">
     <li>Attachment</li>
   </ul>
   {% for highlight in hit.highlight.text %}
-  <p>{{ highlight | safe }}</p>
+  <p class="font-xsmall">{{ highlight | safe }}</p>
   {% endfor %}
 </li>
 {% endfor %}

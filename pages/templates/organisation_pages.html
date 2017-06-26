@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/organisations">Organisations</a></li>
+        <li><a href="/organisation/{{ organisation.organisation }}">{{ organisation.name }}</a></li>
+    </ol>
+  </div>
+
+<h1 class="heading-xlarge">
+  <span class="heading-secondary">Pages</span>
+  {{organisation.name}}
+</h1>
+
+<p>Form pages published by <a href="{{ organisation.website }}">{{ organisation.name }}</a>.</p>
+
+{% include "_pages.html" %}
+
+{% endblock %}

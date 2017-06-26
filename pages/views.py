@@ -68,8 +68,19 @@ def organisations(request):
 
 def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
-    pages = count_pages(Page.objects.filter(organisations__organisation=key))
+    pages = count_pages(Page.objects.filter(organisations__organisation__contains=key))
+    attachments = Attachment.objects.filter(
+        page__organisations__organisation__contains=key)
     return render(request, 'organisation.html',
+                  {'organisation': organisation,
+                   'pages': pages,
+                   'attachments': attachments})
+
+
+def organisation_pages(request, key=None):
+    organisation = Organisation.objects.get(organisation=key)
+    pages = count_pages(Page.objects.filter(organisations__organisation__contains=key))
+    return render(request, 'organisation_pages.html',
                   {'organisation': organisation,
                    'pages': pages})
 
