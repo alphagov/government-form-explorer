@@ -421,4 +421,5 @@ def attachments_tag(request, slug=None):
     attachments = Attachment.objects.filter(tags__name__in=[tag.name])
     return render(request, 'attachments_tag.html',
                   {'tag': tag,
+                   'tags': True,
                    'attachments': attachments})
