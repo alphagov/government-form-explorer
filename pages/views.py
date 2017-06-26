@@ -297,14 +297,26 @@ def search(request):
     response = es.search(body={
         "from": ((page_index - 1) * page_size),
         "size": page_size,
+        "_source": {
+             "includes": ["attachment", "name"]
+         },
         "query": {
             "query_string": {
                 "default_field": "text",
                 "query": query
-            }
+            },
+        },
+        "highlight": {
+             "fields" : {
+                 "text" : {
+                     "fragment_size" : 300,
+                     "number_of_fragments" : 1
+                 }
+             }
         }
     })
 
+    print(response)
     hits = []
     for h in response['hits']['hits']:
         hit = {}

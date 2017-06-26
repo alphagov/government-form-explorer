@@ -2,18 +2,17 @@
 
 {% block search_active %} class="active"{% endblock %}
 {% block content %}
+<div id="search">
+
+<h1 class="heading-xlarge">
+Search
+</h1>
 
 <form id="header-search" class="site-search" action="/search" method="get" role="search">
     <div class="header-search-content">
 
-      {% if query %}
-      <label class="form-label heading-large" for="search-main">Search results for</label>
-      {% else %}
-      <label class="form-label heading-large" for="search-main"><h1>Search forms</h1></label>
-      {% endif %}
-
       <div class="search-input-wrapper">
-          <input class="form-control" type="search" name="q" id="search-main" title="Search" value="{{ query }}">
+          <input class="form-control" type="search" name="q" id="search-main" title="Search" value="{{ query }}" aria-label="Search">
           <input class="search button" type="submit" value="Search">
       </div>
     </div>
@@ -45,13 +44,19 @@
 <p>
 {{ response.hits.total }} results
 </p>
-<ul>
+<ol class="results-list">
 {% for hit in hits %}
-<p>
-  <li><a href="/attachment/{{ hit.source.attachment }}">{{ hit.source.name }}</a></li>
-</p>
+<li>
+  <h3><a href="/attachment/{{ hit.source.attachment }}">{{ hit.source.name }}</a></h3>
+  <ul class="attributes">
+    <li>Attachment</li>
+  </ul>
+  {% for highlight in hit.highlight.text %}
+  <p>{{ highlight | safe }}</p>
+  {% endfor %}
+</li>
 {% endfor %}
-</ul>
+</ol>
 
 <nav class="previous-and-next-navigation" role="navigation" aria-label="Pagination">
   <ul class="group">
@@ -74,5 +79,6 @@
   </ul>
 </nav>
 
+</div>
 {% endif %}
 {% endblock %}
