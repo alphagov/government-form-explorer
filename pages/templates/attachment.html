@@ -28,13 +28,27 @@
 </h1>
 
 
-  {% if attachment.page_count %}
-{% for sheet in sheets %}
-  <a href="{{ sheet.href }}"><img src="{{ sheet.src }}" alt="" class="sheet"></a>
-{% endfor %}
-   {% else %}
-<p><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></p>
-   {% endif %}
+{% if attachment.page_count %}
+<div class="sheets">
+  <ul>
+  {% for sheet in sheets %}
+    <li class="sheet">
+      {% if user.is_authenticated %}
+      <div class="toolbar">
+        <p><a href="/snippets/create?attachment={{attachment.attachment}}&sheet={{ sheet.number }}" aria-hidden="true">Take a snippet</a></p>
+      </div>
+      <div class="tooltip">
+        <p><a href="{{ sheet.href }}"><span>Page#{{ sheet.number }}</a></p>
+      </div>
+      {% endif %}
+      <img src="{{ sheet.src }}" alt="">
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+{% else %}
+  <p><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></p>
+{% endif %}
 
 
 {% csrf_token %}

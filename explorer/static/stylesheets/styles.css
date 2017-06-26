@@ -148,11 +148,6 @@ th {
   visibility: hidden;
 }
 
-img.sheet {
-  width: 24%;
-  border: 1px solid #bfc1c3;
-}
-
 h1 embed {
   margin-left: 1em;
 }
@@ -204,3 +199,81 @@ em {
 }
 
 
+/*
+ *  snippets
+ */
+.toolbar {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #DEE0E2;
+  z-index: 20;
+}
+
+.toolbar p {
+  padding: 1em;
+}
+
+.toolbar p {
+  margin: 0;
+  line-height: 1em;
+  width: 100%;
+}
+
+.tooltip {
+  display: block;
+  visibility: hidden;
+  background: #DEE0E2;
+  position: absolute;
+  z-index: 10;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.tooltip p {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sheets a {
+  display: block;
+  width: 100%;
+}
+
+.sheets ul {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.25rem;
+  max-width: 100%;
+}
+
+li.sheet:hover .toolbar,
+li.sheet:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+li.sheet {
+  position: relative;
+  box-sizing: border-box; 
+}
+
+.sheet img:hover {
+  border: 1px solid #FFBF47;
+}
+
+.sheet img {
+  display: block;
+  width: 100%;
+  border: 1px solid #BFC1C3;
+}
