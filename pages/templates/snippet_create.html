@@ -45,8 +45,23 @@
 
   <div class="form-group">
     <fieldset>
+      <label class="form-label" for="name">Name</label>
+      <span class="form-hint">
+        Displayed name for the snippet
+      </span>
+      <input class="form-control form-control-3-4" type="text" name="name" id="name" value="{{ snippet.name }}">
+
       <label class="form-label" for="text">Text</label>
-      <input class="form-control form-control-3-4" type="text" name="text" id="text" value="{{ snippet.text }}">
+      <span class="form-hint">
+        Text for search
+      </span>
+      <textarea class="form-control form-control-3-4" type="textarea" name="text" rows="5" id="text">{{ snippet.text }}</textarea>
+
+      <label class="form-label" for="tags">Tags</label>
+      <span class="form-hint">
+        Separated by commas
+      </span>
+      <input class="form-control form-control-3-4" type="text" name="tags" id="tags" value="{{ snippet.tags }}">
     </fieldset>
   </div>
 

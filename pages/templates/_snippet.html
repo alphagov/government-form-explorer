@@ -2,6 +2,19 @@
   <div class="clip" style="width: {{snippet.width}}px; height: {{snippet.height}}px; overflow: hidden">
     <a href="/attachment/{{ snippet.attachment.attachment }}#sheet-{{ snippet.sheet }}"><img src="{{ snippet.url }}" style="margin: -{{snippet.top}}px 0 0 -{{snippet.left}}px"></a>
   </div>
+
+  <h3>Name</h3>
   <p>{{ snippet.name }}</p>
+
+  <h3>Text</h3>
   <p>{{ snippet.text }}</p>
+
+  <h3>Tags</h3>
+  <div id="tags">
+    <ul class="taggle_list">
+    {% for tag in snippet.tags.all|dictsort:"slug"  %}
+    <li class="taggle "><span class="taggle_text"><a href="/attachments/tag/{{ tag.slug }}">{{ tag.name }}</a></span></li>
+    {% endfor %}
+    </ul>
+  </div>
 </div>

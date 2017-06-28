@@ -436,6 +436,7 @@ def snippet_create(request, key, n):
         snippet = Snippet(
             attachment=attachment,
             sheet=sheet_number,
+            name=request.POST.get("name", ""),
             text=request.POST.get("text", ""),
             top=int(request.POST.get("top", 0)),
             right=int(request.POST.get("right", 0)),
@@ -443,7 +444,13 @@ def snippet_create(request, key, n):
             left=int(request.POST.get("left", 0)),
             url=sheet['src']
         )
+
         snippet.save()
+
+        for tag in request.POST.get("tags", "").split(","):
+            tag = tag.strip()
+            if tag:
+                snippet.tags.add(tag)
 
         response = HttpResponse(content="", status=303)
         response["Location"] = "%s://%s/snippet/%s" % (request.scheme, request.get_host(), snippet.id)
