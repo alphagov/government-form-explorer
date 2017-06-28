@@ -33,12 +33,15 @@
   <ul>
   {% for sheet in sheets %}
     <li class="sheet">
-      {% if user.is_authenticated %}
       <ul class="toolbar">
-        <li><a href="sheet/{{ sheet.number }}/snippets/create" aria-hidden="true">Create a snippet</a></li>
-        <li><a href="{{ sheet.href }}"><span>Page {{ sheet.number }}</a></li>
+        <li>
+        <a class="pilcrow" id="sheet-{{ sheet.number }}" href="#sheet-{{ sheet.number }}">¶</a>
+        {% if user.is_authenticated %}
+          <a href="sheet/{{ sheet.number }}/snippets/create" aria-hidden="true">Create a snippet</a>
+        {% endif %}
+        </li>
+        <li><a href="{{ sheet.href }}"><span>Sheet {{ sheet.number }}</a></li>
       </ul>
-      {% endif %}
       <img src="{{ sheet.src }}" alt="">
     </li>
   {% endfor %}
