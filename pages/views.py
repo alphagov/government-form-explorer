@@ -328,7 +328,6 @@ def search(request):
         }
     })
 
-    print(response)
     hits = []
     for h in response['hits']['hits']:
         hit = {}
