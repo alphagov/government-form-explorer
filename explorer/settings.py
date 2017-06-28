@@ -13,6 +13,7 @@ import os
 import dj_database_url
 from elasticsearch import Elasticsearch, RequestsHttpConnection
 from requests_aws4auth import AWS4Auth
+import tinys3
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -144,8 +145,21 @@ STATICFILES_DIRS = (
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+# S3 store for snippets
+S3_ACCESS_KEY = os.environ['ES_ACCESS_KEY']
+S3_SECRET_KEY = os.environ['ES_SECRET_KEY']
+
+S3_ENDPOINT = os.environ.get('S3_ENDPOINT', 's3-eu-west-1.amazonaws.com')
+S3_BUCKET = os.environ.get('S3_BUCKET', 'government-form')
+
+S3 = tinys3.Connection(
+    S3_ACCESS_KEY,
+    S3_SECRET_KEY,
+    tls=True,
+    endpoint=S3_ENDPOINT)
+
 # proxy static files from s3
-DOCUMENTS_URL = 'https://s3-eu-west-1.amazonaws.com/government-form/documents'
+DOCUMENTS_URL = 'https://' + S3_ENDPOINT + '/' + S3_BUCKET + '/documents'
 
 # maximum number of rendered sheets
 SHEETS_MAX = 100
@@ -170,6 +184,7 @@ if 'ES_HOST' in os.environ:
         connection_class=RequestsHttpConnection)
 else:
     ES = Elasticsearch()
+
 
 # Allow Google Accounts
 AUTHENTICATION_BACKENDS = (

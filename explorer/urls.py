@@ -42,6 +42,11 @@ urlpatterns = [
     url(r'^attachment/(?P<key>[\d]{1,16})/downloads.(?P<suffix>[\w]{1,16})$', pages.views.attachment_downloads, name='attachment_downloads_json'),
     url(r'^attachment/(?P<key>[\d]{1,16})/tags.(?P<suffix>[\w]{1,16})$', pages.views.attachment_tags, name='attachment_tags'),
     url(r'^attachment/(?P<key>[\d]{1,16})/tag/(?P<name>[\w\d\s:-]{1,128})$', pages.views.attachment_tag, name='attachment_tag'),
+    url(r'^attachment/(?P<key>[\d]{1,16})/sheet/(?P<n>[\d]{1,4})/snippets/create$', pages.views.snippet_create, name='snippet_create'),
+
+    url(r'^snippets/$', pages.views.snippets, name='snippet'),
+
+    url(r'^snippet/(?P<key>[\d]{1,16})/$', pages.views.snippet, name='snippet'),
 
     url(r'^suffixes/$', pages.views.suffixes, name='suffix'),
     url(r'^suffix/(?P<key>[\w\d]{1,16})$', pages.views.suffix, name='suffix'),

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="breadcrumbs">
+    <ol>
+        <li><a href="/attachments">Attachments</a></li>
+        <li><a href="/attachment/{{ snippet.attachment.attachment }}/">{{ snippet.attachment.name }}</a></li>
+        <li>sheet</li>
+        <li><a href="/attachment/{{ snippet.attachment.attachment }}/sheet/{{ snippet.sheet }}">{{ snippet.sheet }}</a></li>
+    </ol>
+    <ol>
+        <li><a href="/snippets">Snippet</a></li>
+        <li><a href="/snippet/{{ snippet.id }}">{{ snippet.id }}</a></li>
+    </ol>
+  </div>
+
+{% include "_snippet.html" %}
+
+{% endblock %}

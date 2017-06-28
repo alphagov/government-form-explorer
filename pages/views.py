@@ -10,7 +10,7 @@ import csv
 import requests
 from scipy.stats import hmean, gmean
 
-from .models import Organisation, Page, Attachment, Download, History, GenericStringTaggedItem
+from .models import Organisation, Page, Attachment, Download, History, GenericStringTaggedItem, Snippet
 from taggit.models import Tag
 
 
@@ -127,8 +127,9 @@ def attachment_sheets(attachment):
         for n in range(1, min(attachment.page_count + 1, settings.SHEETS_MAX)):
             fmt = '%s/attachment/%s/page-%0' + str(w) + 'd.png'
             src = fmt % (settings.DOCUMENTS_URL, attachment.attachment, n)
+            proxy = fmt % ('/documents/', attachment.attachment, n)
             href = "%s#page=%d" % (attachment.url, n)
-            sheets.append({'src': src, 'href': href, 'number': n})
+            sheets.append({'src': src, 'href': href, 'number': n, 'proxy': proxy})
     return sheets
 
 
@@ -423,3 +424,42 @@ def attachments_tag(request, slug=None):
                   {'tag': tag,
                    'tags': True,
                    'attachments': attachments})
+
+
+@login_required
+def snippet_create(request, key, n):
+    attachment = Attachment.objects.get(attachment=key)
+    sheet_number = int(n)
+    sheet = attachment_sheets(attachment)[sheet_number-1]
+
+    if request.method == 'POST':
+        snippet = Snippet(
+            attachment=attachment,
+            sheet=sheet_number,
+            text=request.POST.get("text", ""),
+            top=int(request.POST.get("top", 0)),
+            right=int(request.POST.get("right", 0)),
+            bottom=int(request.POST.get("bottom", 0)),
+            left=int(request.POST.get("left", 0)),
+            url=sheet['src']
+        )
+        snippet.save()
+
+        response = HttpResponse(content="", status=303)
+        response["Location"] = "%s://%s/snippet/%s" % (request.scheme, request.get_host(), snippet.id)
+        return response
+
+    return render(request, 'snippet_create.html',
+                   {'attachment': attachment,
+                    'sheet': sheet,
+                   })
+
+
+def snippets(request):
+    snippets = Snippet.objects.all()
+    return render(request, 'snippets.html', { 'snippets': snippets })
+
+
+def snippet(request, key):
+    snippet = Snippet.objects.get(id=int(key))
+    return render(request, 'snippet.html', { 'snippet': snippet })

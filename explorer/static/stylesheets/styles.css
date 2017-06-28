@@ -250,3 +250,25 @@ li.sheet {
   width: 100%;
   border: 1px solid #BFC1C3;
 }
+
+/*
+ *  snippet / cropper
+ */
+#snippet-create form {
+  padding-top: 2em;
+}
+
+#cropper {
+  max-width: 100%;
+}
+
+#text {
+  width: 100%;
+}
+
+.snippet {
+  padding: 1em;
+  margin-top: 1.25em;
+  width: 100%;
+  border: 1px solid #BFC1C3;
+}

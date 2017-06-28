@@ -49,7 +49,7 @@ class Attachment(models.Model):
     magic = models.CharField(max_length=1024)
     suffix = models.CharField(max_length=16)
     form = models.ForeignKey(Form, null=True)
-    tags = TaggableManager(through=GenericStringTaggedItem)
+    tags = TaggableManager(through=GenericStringTaggedItem, blank=True)
     created = models.DateTimeField(null=True)
     modified = models.DateTimeField(null=True)
     page_count = models.IntegerField(null=True)
@@ -76,3 +76,27 @@ class Download(models.Model):
 
     def __str__(self):
        return str(self.attachment)
+
+
+class Snippet(models.Model):
+    name = models.CharField(max_length=256, blank=True, default='')
+    attachment = models.ForeignKey(Attachment)
+    sheet = models.IntegerField()
+    top = models.IntegerField()
+    right = models.IntegerField()
+    bottom = models.IntegerField()
+    left = models.IntegerField()
+    text = models.CharField(max_length=2048, blank=True, default='')
+    url = models.CharField(max_length=256, blank=True, default='')
+    tags = TaggableManager(through=GenericStringTaggedItem, blank=True)
+
+    @property
+    def width(self):
+        return self.right - self.left
+
+    @property
+    def height(self):
+        return self.bottom - self.top
+
+    def __str__(self):
+       return str(self.id)

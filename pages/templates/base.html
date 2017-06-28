@@ -11,6 +11,7 @@
   <!--[if IE 8]><link href="{% static 'stylesheets/govuk-elements-styles-ie8.css?2' %}" rel="stylesheet" type="text/css" /><![endif]-->
 
   <link href="{% static 'stylesheets/styles.css?1' %}"  rel="stylesheet" type="text/css">
+  {% block base_body_head %}{% endblock %}
 {% endblock %}
 
 {% block proposition_header %}
@@ -32,13 +33,12 @@
         <li><a href="/pages"{% block pages_active %}{% endblock %}>Pages</a>
         <li><a href="/attachments"{% block attachments_active %}{% endblock %}>Attachments</a>
         <li><a href="/attachments/tags"{% block attachments_tags_active %}{% endblock %}>Tags</a>
+        <li><a href="/snippets"{% block snippets_active %}{% endblock %}>Snippets</a>
         <li><a href="/search"{% block search_active %}{% endblock %}>Search</a>
 
 <!--
         <li><a href="/suffixes"{% block suffixes_active %}{% endblock %}>Suffixes</a>
         <li><a href="/refs"{% block refs_active %}{% endblock %}>References</a>
-        <li><a href="/forms">forms</a>
-        <li><a href="/questions">questions</a>
         <li><a href="/admin">admin</a>
 -->
       </ul>

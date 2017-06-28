@@ -51,7 +51,7 @@
 
 {% for d in downloads %}
     <tr>
-      <td><a href="/attachment/{{ attachment.attachment }}/">{{ d.attachment.name }}</a></td>
+      <td><a href="/attachment/{{ d.attachment.attachment }}/">{{ d.attachment.name }}</a></td>
       <td class="numeric">{{ d.count|intcomma }}</a></td>
     </tr>
 {% endfor %}
