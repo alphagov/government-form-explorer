@@ -14,6 +14,11 @@ from .models import Organisation, Page, Attachment, Download, History, GenericSt
 from taggit.models import Tag
 
 
+#'tsv': 'text/tab-separated-values;charset=UTF-8'
+content_type = {
+    'tsv': 'text/plain'
+}
+
 def downloads_stats():
     downloads = Download.objects.values('month') \
         .annotate(attachments=Count('id')) \
@@ -246,8 +251,7 @@ def history(request, suffix=None):
         .order_by("-date")
 
     if suffix == "tsv":
-        response = HttpResponse(
-            content_type='text/tab-separated-values;charset=UTF-8')
+        response = HttpResponse(content_type=content_type[suffix])
         fields = ['date', 'count']
         writer = csv.writer(response, delimiter='\t')
         writer.writerow(fields)
@@ -461,8 +465,30 @@ def snippet_create(request, key, n):
                    })
 
 
-def snippets(request):
+def snippets(request, suffix=None):
     snippets = Snippet.objects.all()
+
+    if suffix == "tsv":
+        response = HttpResponse(content_type=content_type[suffix])
+        fields = ['snippet', 'name', 'attachment', 'sheet', 'top', 'right', 'bottom', 'left', 'text', 'url', 'tags']
+        writer = csv.writer(response, delimiter='\t')
+        writer.writerow(fields)
+        for snippet in snippets:
+            row = {}
+            row['snippet'] = snippet.id
+            row['attachment'] = snippet.attachment.attachment
+            row['name'] = snippet.name
+            row['sheet'] = snippet.sheet
+            row['top'] = snippet.top
+            row['right'] = snippet.right
+            row['bottom'] = snippet.bottom
+            row['left'] = snippet.left
+            row['text'] = '\\n'.join(snippet.text.splitlines())
+            row['url'] = snippet.url
+            row['tags'] = ";".join(snippet.tags.names())
+            writer.writerow([str(row[field]) for field in fields])
+        return response
+
     return render(request, 'snippets.html', { 'snippets': snippets })
 
 
