@@ -9,6 +9,8 @@ from django.utils.text import slugify
 import csv
 import requests
 from scipy.stats import hmean, gmean
+from io import BytesIO
+from PIL import Image
 
 from .models import Organisation, Page, Attachment, Download, History, GenericStringTaggedItem, Snippet
 from taggit.models import Tag
@@ -454,6 +456,14 @@ def snippet_create(request, key, n):
             tag = tag.strip()
             if tag:
                 snippet.tags.add(tag)
+
+        # grap image, crop and upload to s3
+        response = requests.get(snippet.url)
+        img = Image.open(BytesIO(response.content))
+        img = img.crop((snippet.left, snippet.top, snippet.right, snippet.bottom))
+        f = BytesIO()
+        img.save(f, 'PNG')
+        settings.S3.upload(snippet.path, f, bucket=settings.S3_BUCKET, public=True, content_type='image/png')
 
         response = HttpResponse(content="", status=303)
         response["Location"] = "%s://%s/snippet/%s" % (request.scheme, request.get_host(), snippet.id)

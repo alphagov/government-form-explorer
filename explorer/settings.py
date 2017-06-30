@@ -146,8 +146,8 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # S3 store for snippets
-S3_ACCESS_KEY = os.environ['ES_ACCESS_KEY']
-S3_SECRET_KEY = os.environ['ES_SECRET_KEY']
+S3_ACCESS_KEY = os.environ.get('ES_ACCESS_KEY', '')
+S3_SECRET_KEY = os.environ.get('ES_SECRET_KEY', '')
 
 S3_ENDPOINT = os.environ.get('S3_ENDPOINT', 's3-eu-west-1.amazonaws.com')
 S3_BUCKET = os.environ.get('S3_BUCKET', 'government-form')
@@ -160,6 +160,7 @@ S3 = tinys3.Connection(
 
 # proxy static files from s3
 DOCUMENTS_URL = 'https://' + S3_ENDPOINT + '/' + S3_BUCKET + '/documents'
+S3_BUCKET_URL = 'https://' + S3_ENDPOINT + '/' + S3_BUCKET
 
 # maximum number of rendered sheets
 SHEETS_MAX = 100

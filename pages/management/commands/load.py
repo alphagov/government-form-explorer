@@ -5,7 +5,7 @@ import os
 import csv
 import requests
 
-from ...models import Organisation, Page, Attachment, Download, History
+from ...models import Organisation, Page, Attachment, Download, History, Snippet
 
 from django.utils.dateparse import parse_datetime
 from django.core.exceptions import ObjectDoesNotExist
@@ -91,6 +91,28 @@ def load_downloads():
         o.save()
 
 
+def load_snippets():
+    print("loading snippets …")
+    for row in tsv_reader('snippet'):
+        attachment = Attachment.objects.get(attachment=row['attachment'])
+        snippet = Snippet(id=row['snippet'],
+            name=row['name'],
+            attachment=attachment,
+            sheet=row['sheet'],
+            top=row['top'],
+            right=row['right'],
+            bottom=row['bottom'],
+            left=row['left'],
+            text=row['text'],
+            url=row['url'])
+        snippet.save()
+
+        for tag in row['tags'].split(";"):
+            tag = tag.strip()
+            if tag:
+                snippet.tags.add(tag)
+
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
@@ -109,5 +131,7 @@ class Command(BaseCommand):
             load_history()
         elif options['table'] == 'downloads':
             load_downloads()
+        elif options['table'] == 'snippets':
+            load_snippets()
         else:
             raise ValueError('Unknown table', options['table'])

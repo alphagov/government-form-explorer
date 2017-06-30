@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 from taggit.models import CommonGenericTaggedItemBase, TaggedItemBase
+from django.conf import settings
 
 
 class GenericStringTaggedItem(CommonGenericTaggedItemBase, TaggedItemBase):
@@ -97,6 +98,14 @@ class Snippet(models.Model):
     @property
     def height(self):
         return self.bottom - self.top
+
+    @property
+    def path(self):
+        return '/documents/snippet/%s.png' % (self.id)
+
+    @property
+    def img(self):
+        return settings.S3_BUCKET_URL + self.path
 
     def __str__(self):
        return str(self.id)

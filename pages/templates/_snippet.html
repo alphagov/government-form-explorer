@@ -1,15 +1,14 @@
 <div class="snippet">
-  <div class="clip" style="width: {{snippet.width}}px; height: {{snippet.height}}px; overflow: hidden">
-    <a href="/attachment/{{ snippet.attachment.attachment }}#sheet-{{ snippet.sheet }}"><img src="{{ snippet.url }}" style="margin: -{{snippet.top}}px 0 0 -{{snippet.left}}px"></a>
+  <h3 class='heading-small'>{{ snippet.name }}</h3>
+
+  <div class="image">
+  <a href="/attachment/{{ snippet.attachment.attachment }}#sheet-{{ snippet.sheet }}"><img src="{{ snippet.img }}"></a>
   </div>
 
-  <h3>Name</h3>
-  <p>{{ snippet.name }}</p>
-
-  <h3>Text</h3>
+  <!--
   <p>{{ snippet.text }}</p>
+  -->
 
-  <h3>Tags</h3>
   <div id="tags">
     <ul class="taggle_list">
     {% for tag in snippet.tags.all|dictsort:"slug"  %}

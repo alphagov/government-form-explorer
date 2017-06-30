@@ -266,9 +266,28 @@ li.sheet {
   width: 100%;
 }
 
+.snippets {
+  column-width: 13em;
+  column-gap: 1em;
+}
+
+.snippet h3.heading-small {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.snippet .taggle_text {
+  font-size: 16px;
+}
+
 .snippet {
+  display: inline-block;
   padding: 1em;
   margin-top: 1.25em;
-  width: 100%;
   border: 1px solid #BFC1C3;
+  background-color: #F8F8F8;
+}
+
+.snippet img {
+  width: 100%;
 }
