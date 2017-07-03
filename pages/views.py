@@ -64,9 +64,6 @@ def home(request):
 
 def organisations(request):
     organisations = Organisation.objects \
-        .annotate(pages=Count('page', distinct=True)) \
-        .annotate(attachments=Count('page__attachment', distinct=True)) \
-        .filter(pages__gt=0) \
         .order_by('-pages')
 
     return render(request, 'organisations.html',
