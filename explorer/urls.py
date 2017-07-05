@@ -55,6 +55,8 @@ urlpatterns = [
     url(r'^refs/$', pages.views.refs, name='ref'),
     url(r'^ref/(?P<key>.{1,256})$', pages.views.ref, name='ref'),
 
+    url(r'^tagger/$', pages.views.tagger, name='tagger'),
+
     url(r'^google3e69ae69b04281ff\.html$', lambda r: HttpResponse("google-site-verification: google3e69ae69b04281ff.html", content_type="text/plain")),
     url(r'^login$', auth_views.login, name='login'),
     url(r'^login-github$', pages.views.login_github, name='login_github'),

@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block base_body_head %}
+<style>
+html {
+  background-color: white;
+}
+
+#global-header,
+#global-header-bar,
+.phase-banner,
+#footer {
+  display: none;
+}
+
+#content {
+  width: 98%;
+  max-width: 98%;
+  margin: 0 1%;
+}
+
+#tagger {
+  width: 100%;
+  background-color: white;
+  text-align: center;
+}
+
+#tagger h1 {
+  margin-bottom: 0.625em;
+}
+
+#tagger a {
+  text-decoration: none;
+}
+
+#tagger a:hover {
+  text-decoration: underline;
+}
+
+#tagger-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  width: 100%;
+  border-top: 2px solid black;
+}
+
+#tagger-footer .taggle_list li {
+  float: none;
+}
+
+#tagger-footer .taggle_input {
+  display: none;
+}
+
+dl.keys {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.625em;
+  text-align: center;
+  margin-left: 2.5em;
+}
+dl.keys dt,
+dl.keys dd {
+    display: inline;
+}
+dl.keys dt {
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    padding: 0.25em 0.5em;
+}
+dl.keys dt:after {
+  content: "";
+}
+dl.keys dd {
+  margin: 0 5em 0 1em;
+}
+
+.toolbar {
+  display: none;
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div id="tagger">
+
+<h1 class="heading-xlarge"><a href="/attachment/{{ attachment.attachment }}">{{attachment.name}}</a></h1>
+
+
+{% if attachment.page_count %}
+<div class="sheets">
+  <ul>
+  {% for sheet in sheets %}
+    <li class="sheet">
+      <ul class="toolbar">
+        <li>
+        <a class="pilcrow" id="sheet-{{ sheet.number }}" href="#sheet-{{ sheet.number }}">¶</a>
+        {% if user.is_authenticated %}
+          <a href="sheet/{{ sheet.number }}/snippets/create" aria-hidden="true">Create a snippet</a>
+        {% endif %}
+        </li>
+        <li><a href="{{ sheet.href }}"><span>Sheet {{ sheet.number }}</a></li>
+      </ul>
+      <img src="{{ sheet.src }}" alt="">
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+{% else %}
+  <p><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></p>
+{% endif %}
+
+<div id="tagger-footer">
+
+{% csrf_token %}
+<div class="tags">
+  <div class="grid-row">
+    <div class="column-full">
+      <div id="tags">
+      </div>
+    </div>
+  </div>
+</div>
+<dl class="keys">
+{% for key in keys %}
+  <dt>{{ key.key }}</dt>
+  <dd>{{ key.tag }}</dd>
+{% endfor %}
+</dl>
+
+</div>
+
+</div>
+{% endblock %}
+
+{% block body_end_script %}
+<script>
+{% if user.is_authenticated %}
+function actionTag(method, tag) {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  return $.ajax({
+    type: method,
+    headers: { 'X-CSRFToken': csrftoken },
+    url: '/attachment/{{ attachment.attachment }}/tag/' + tag
+  });
+}
+
+function tagFormatter(li) {
+  var tag = $(li).children('.taggle_text').text();
+  $(li).children('.taggle_text').wrap('<a href="/attachments/tag/' + tag + '"/>');
+  return li;
+}
+
+$(function() {
+  $.getJSON( "/attachment/{{ attachment.attachment }}/tags.json", function(data) {
+    new Taggle('tags', {
+      tags: data.tags,
+      preserveCase: true,
+      placeholder: '',
+      onTagAdd: function(event, tag) {
+        actionTag('PUT', tag);
+      },
+      onTagRemove: function(event, tag) {
+        actionTag('DELETE', tag);
+      },
+      tagFormatter: tagFormatter
+    });
+  });
+
+  $('body').keypress(function(event) {
+{% for key in keys %}
+      if (event.key.toLowerCase() == '{{ key.key }}'.toLowerCase()) {
+        return actionTag('PUT', '{{ key.tag }}').done(function() {
+          window.location.href = ""
+        })
+      }
+{% endfor %}
+
+  });
+});
+
+{% endif %}
+</script>
+{% endblock %}

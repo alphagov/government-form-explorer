@@ -502,3 +502,22 @@ def snippets(request, suffix=None):
 def snippet(request, key):
     snippet = Snippet.objects.get(id=int(key))
     return render(request, 'snippet.html', { 'snippet': snippet })
+
+
+def tagger(request):
+
+    keys = []
+    tags = []
+    for k in request.GET.get('keys', '').split(','):
+        (key, tag) = k.split(':')
+        tags.append(tag)
+        keys.append({ 'key': key[0], 'tag': tag })
+
+    attachment = Attachment.objects.exclude(tags__name__in=tags).order_by('?')[0]
+    sheets = attachment_sheets(attachment)
+
+    return render(request, 'tagger.html', {
+        'attachment': attachment,
+        'sheets': sheets,
+        'keys': keys,
+    })
