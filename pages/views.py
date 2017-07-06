@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.utils.text import slugify
 import csv
 import requests
@@ -505,7 +505,9 @@ def snippet(request, key):
 
 
 def tagger(request):
-
+    """
+          tagger?keys=F:Form,G:Guidance,O:Other&tags=Form%20Analysis
+    """
     keys = []
     tags = []
     for k in request.GET.get('keys', '').split(','):
@@ -513,11 +515,21 @@ def tagger(request):
         tags.append(tag)
         keys.append({ 'key': key[0], 'tag': tag })
 
-    attachment = Attachment.objects.exclude(tags__name__in=tags).order_by('?')[0]
-    sheets = attachment_sheets(attachment)
+    attachments = Attachment.objects
 
-    return render(request, 'tagger.html', {
-        'attachment': attachment,
-        'sheets': sheets,
-        'keys': keys,
-    })
+    include_tags = request.GET.get('tags', '')
+    if include_tags:
+        attachments = attachments.filter(tags__name__in=include_tags.split(','))
+
+    attachments = attachments.exclude(tags__name__in=tags).order_by('?')
+    if len(attachments) > 0:
+        attachment = attachments[0]
+        sheets = attachment_sheets(attachment)
+
+        return render(request, 'tagger.html', {
+            'attachment': attachment,
+            'sheets': sheets,
+            'keys': keys,
+        })
+    else:
+        raise Http404("Nothing to tag")
