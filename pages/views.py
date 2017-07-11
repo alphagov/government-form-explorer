@@ -407,10 +407,24 @@ def attachment_tag(request, key=None, name=None):
     return HttpResponse(status=200)
 
 
-def attachments_tags(request):
+def attachments_tags(request, suffix=None):
     tags = Tag.objects.all() \
             .annotate(count=Count('pages_genericstringtaggeditem_items__id')) \
             .order_by('-count', 'name')
+
+    if suffix == "tsv":
+        response = HttpResponse(
+            content_type='text/tab-separated-values;charset=UTF-8')
+        fields = ['tag', 'items']
+        writer = csv.writer(response, delimiter='\t')
+        writer.writerow(fields)
+        for tag in tags.all():
+            row = {}
+            row['tag'] = tag.name
+            row['items'] = ";".join([str(a.content_type) + ":" + str(a.object_id) for a in tag.pages_genericstringtaggeditem_items.all()])
+            writer.writerow([str(row[field]) for field in fields])
+        return response
+
     return render(request, 'attachments_tags.html', {'tags': tags})
 
 
