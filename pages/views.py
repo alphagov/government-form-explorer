@@ -415,13 +415,14 @@ def attachments_tags(request, suffix=None):
     if suffix == "tsv":
         response = HttpResponse(
             content_type='text/tab-separated-values;charset=UTF-8')
-        fields = ['tag', 'items']
+        fields = ['tag', 'attachments', 'snippets']
         writer = csv.writer(response, delimiter='\t')
         writer.writerow(fields)
         for tag in tags.all():
             row = {}
             row['tag'] = tag.name
-            row['items'] = ";".join([str(a.content_type) + ":" + str(a.object_id) for a in tag.pages_genericstringtaggeditem_items.all()])
+            row['attachments'] = ";".join([str(a.object_id) for a in tag.pages_genericstringtaggeditem_items.all() if str(a.content_type) == 'attachment'])
+            row['snippets'] = ";".join([str(a.object_id) for a in tag.pages_genericstringtaggeditem_items.all() if str(a.content_type) == 'snippet'])
             writer.writerow([str(row[field]) for field in fields])
         return response
 
