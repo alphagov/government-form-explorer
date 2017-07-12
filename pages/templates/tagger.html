@@ -118,6 +118,15 @@ dl.keys dd {
   <p><a href="{{ attachment.url }}/">{{ attachment.attachment }}/{{ attachment.filename }}</a></p>
 {% endif %}
 
+{% if text %}
+<div class="grid-row">
+  <div class="column-full">
+    <h2 id="text" class="heading-medium"><a href="{{ text_url }}">Text</a></h2>
+    <div class="panel attachment"><pre>{{ text }}</pre></div>
+  </div>
+</div>
+{% endif %}
+
 <div id="tagger-footer">
 
 {% csrf_token %}
@@ -128,6 +137,8 @@ dl.keys dd {
       </div>
     </div>
   </div>
+
+
 </div>
 <dl class="keys">
 {% for key in keys %}
@@ -135,7 +146,6 @@ dl.keys dd {
   <dd>{{ key.tag }}</dd>
 {% endfor %}
 </dl>
-
 </div>
 
 </div>

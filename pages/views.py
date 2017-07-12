@@ -545,8 +545,21 @@ def tagger(request):
         attachment = attachments[0]
         sheets = attachment_sheets(attachment)
 
+        # get document from store
+        text_path = '/attachment/%s/document.txt' % attachment.attachment
+        text_url = '/documents/' + text_path
+        proxy_url = settings.DOCUMENTS_URL + text_path
+
+        r = requests.get(proxy_url)
+        if r.status_code == 200:
+            text = r.text.strip()
+        else:
+            text = ''
+
         return render(request, 'tagger.html', {
             'attachment': attachment,
+            'text': text,
+            'text_url': text_url,
             'sheets': sheets,
             'keys': keys,
         })
