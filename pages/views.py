@@ -536,6 +536,10 @@ def tagger(request):
     if include_tags:
         attachments = attachments.filter(tags__name__in=include_tags.split(','))
 
+    exclude_tags = request.GET.get('exclude', '')
+    if exclude_tags:
+        attachments = attachments.exclude(tags__name__in=exclude_tags.split(','))
+
     attachments = attachments.exclude(tags__name__in=tags).order_by('?')
     if len(attachments) > 0:
         attachment = attachments[0]
