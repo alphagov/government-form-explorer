@@ -84,6 +84,14 @@ dl.keys dd {
   display: none;
 }
 
+#progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+  background-color: black;
+}
+
 
 </style>
 {% endblock %}
@@ -91,6 +99,8 @@ dl.keys dd {
 {% block content %}
 
 <div id="tagger">
+
+<div id='progress'><span class='remaining'>{{remaining}}</span></div>
 
 <h1 class="heading-xlarge"><a href="/attachment/{{ attachment.attachment }}">{{attachment.name}}</a></h1>
 

@@ -562,6 +562,7 @@ def tagger(request):
             'text_url': text_url,
             'sheets': sheets,
             'keys': keys,
+            'remaining': len(attachments),
         })
     else:
         raise Http404("Nothing to tag")
