@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load sparklines %}
+{% load humanize %}
 
 {% block content %}
   <div class="breadcrumbs">
@@ -14,6 +16,21 @@
   <span class="heading-secondary">Tag</span>
   {{ tag.name }}
 </h1>
+
+
+<div class="grid-row">
+  <div class="column-one-quarter">
+    <h2 id="downloads" class="heading-medium"><a href="downloads">Downloads</a></h2>
+
+    <embed src="{% static 'images/line.svg' %}?{{ counts | sparkcounts }}" type="image/svg+xml" width="160px" height="30px">
+
+    <h3 class="heading-small">Peak month</h3>
+    <p>{{ peak|intcomma }}</p>
+
+    <h3 class="heading-small">Average month</h3>
+    <p>{{ mean|intcomma }}</p>
+  </div>
+</div>
 
 {% include "_attachments.html" %}
 

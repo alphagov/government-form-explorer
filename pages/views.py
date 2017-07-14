@@ -437,10 +437,25 @@ def attachments_tag(request, slug=None):
         return redirect('attachments_tag', slug=tag.slug)
 
     attachments = Attachment.objects.filter(tags__name__in=[tag.name])
-    return render(request, 'attachments_tag.html',
-                  {'tag': tag,
-                   'tags': True,
-                   'attachments': attachments})
+
+    downloads = Download.objects.filter(attachment__in=attachments)
+
+    counts = [d.count for d in downloads]
+    if len(counts):
+        mean = int(round(hmean(counts)))
+        peak = max(counts)
+    else:
+        mean = 0
+        peak = 0
+
+    return render(request, 'attachments_tag.html', {
+                'tag': tag,
+                'tags': True,
+                'attachments': attachments,
+                'mean': mean,
+                'peak': peak,
+                'counts': counts,
+            })
 
 
 @login_required
