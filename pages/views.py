@@ -438,9 +438,9 @@ def attachments_tag(request, slug=None):
 
     attachments = Attachment.objects.filter(tags__name__in=[tag.name])
 
-    downloads = Download.objects.filter(attachment__in=attachments)
+    downloads = Download.objects.filter(attachment__in=attachments).values('month').annotate(total=Sum('count')).order_by('month')
 
-    counts = [d.count for d in downloads]
+    counts = [d['total'] for d in downloads]
     if len(counts):
         mean = int(round(hmean(counts)))
         peak = max(counts)
