@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block base_body_head %}
+<style>
+.split ul {
+  width: 100%;
+  display: block;
+  float: left;
+  padding-bottom: 0.25em;
+}
+
+.split li {
+  position: relative;
+  display: inline-block;
+  float: left;
+  height: 2em;
+  font-weight: bold;
+  line-height: 2em;
+}
+
+.split li div {
+  position: absolute;
+  padding: 0 0.5em;
+  left: 0;
+}
+
+.split li:nth-child(odd) {
+  background: #005ea5;
+  color: #F8F8F8;
+}
+
+.split li:nth-child(even) {
+  background: #BFC1C3;
+  color: #F8F8F8;
+}
+
+.split li:nth-child(odd) div {
+  width: 100%;
+  z-index: 1;
+}
+
+.split li:nth-child(even) div {
+  display: none;
+}
+
+
+</style>
+{% endblock %}
+
+
+{% block attachments_tags_active %} class="active"{% endblock %}
+
+{% block content %}
+<div class="grid-row">
+  <div class="column-full">
+    <h1 class="heading-xlarge">Tag splits</h1>
+  </div>
+</div>
+
+{% for split in splits %}
+<div class="grid-row">
+  <div class="column-full split">
+      <ul>
+        {% for tag in split.tags %}
+        <li style="width:{% widthratio tag.count split.total 100 %}%"><div>{{ tag.name }}</div></li>
+        {% endfor %}
+      </ul>
+  </div>
+</div>
+{% endfor %}
+
+
+
+{% endblock %}

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.http import HttpResponse, JsonResponse, Http404
 from django.utils.text import slugify
+import re
 import csv
 import requests
 from scipy.stats import hmean, gmean
@@ -427,6 +428,47 @@ def attachments_tags(request, suffix=None):
         return response
 
     return render(request, 'attachments_tags.html', {'tags': tags})
+
+
+def tags_splits(request):
+
+    taglist = request.GET.get('tags',
+        'Form,Guidance' +
+        '|Supplements,No-Supplements' +
+        '|Name,No-Name' +
+        '|Address,No-Address' +
+        '|Signature,No-signature' +
+        '|email,No-email' +
+        '|Organisation,No-organisation' +
+        '|Table,No-Table' +
+        '|DOB,No-DOB' +
+        '|Honorific,No-honorific' +
+        '|Payment,No-payment' +
+        '|Fax,No-Fax' +
+        '|National-Insurance,No-National-Insurance' +
+        '|Nationality,No-nationality' +
+        '|Sex,No-sex' +
+        '|Passport,No-Passport')
+
+    names = sorted(set(re.split('\||,', taglist)))
+    tagset = {}
+
+    tags = Tag.objects.filter(name__in=names) \
+            .annotate(count=Count('pages_genericstringtaggeditem_items__id'))
+
+    for tag in tags:
+        tagset[tag.name] = tag
+
+    splits = []
+    for seg in taglist.split('|'):
+        split = {'tags': [], 'total': 0}
+        for tagname in seg.split(','):
+            t = tagset[tagname]
+            split['tags'].append({'name': t.name, 'slug': t.slug, 'count': t.count})
+            split['total'] += t.count
+        splits.append(split)
+
+    return render(request, 'splits.html', {'splits': splits})
 
 
 def attachments_tag(request, slug=None):

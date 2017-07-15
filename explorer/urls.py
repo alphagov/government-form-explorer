@@ -38,6 +38,8 @@ urlpatterns = [
     url(r'^attachments/tags.(?P<suffix>[\w]{1,16})$', pages.views.attachments_tags, name='attachments_tags'),
     url(r'^attachments/tag/(?P<slug>[\w\d\s:-]{1,128})$', pages.views.attachments_tag, name='attachments_tag'),
 
+    url(r'^tags/splits$', pages.views.tags_splits, name='tags_splits'),
+
     url(r'^attachment/(?P<key>[\d]{1,16})/$', pages.views.attachment, name='attachment'),
     url(r'^attachment/(?P<key>[\d]{1,16})/downloads/$', pages.views.attachment_downloads, name='attachment_downloads'),
     url(r'^attachment/(?P<key>[\d]{1,16})/downloads.(?P<suffix>[\w]{1,16})$', pages.views.attachment_downloads, name='attachment_downloads_json'),
