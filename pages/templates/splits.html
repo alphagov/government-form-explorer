@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% block attachments_tags_active %} class="active"{% endblock %}
 
 {% block base_body_head %}
 <style>
@@ -48,8 +49,6 @@
 </style>
 {% endblock %}
 
-
-{% block attachments_tags_active %} class="active"{% endblock %}
 
 {% block content %}
 <div class="grid-row">

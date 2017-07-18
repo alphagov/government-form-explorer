@@ -430,15 +430,59 @@ def attachments_tags(request, suffix=None):
     return render(request, 'attachments_tags.html', {'tags': tags})
 
 
+def tags_adjacency(request, suffix=None):
+
+
+    if suffix == "json":
+        attachments = Attachment.objects
+
+        include_tags = request.GET.get('tags', 'Popular,Form Analysis')
+        if include_tags:
+            attachments = attachments.filter(tags__name__in=include_tags.split(','))
+
+        exclude_tags = request.GET.get('exclude', 'Guidance,Other')
+        if exclude_tags:
+            attachments = attachments.exclude(tags__name__in=exclude_tags.split(','))
+
+        matrix = {}
+        for a in attachments:
+            for _tx in a.tags.all():
+                tx = _tx.name.lower()
+                if tx[0:3] == 'no-':
+                    matrix[tx[3:]] = {}
+
+        for a in attachments:
+            for _tx in a.tags.all():
+                tx = _tx.name.lower()
+                if tx in matrix:
+                    for _ty in a.tags.all():
+                        ty = _ty.name.lower()
+                        if ty in matrix:
+                            if ty in matrix[tx]:
+                                matrix[tx][ty] += 1
+                            else:
+                                matrix[tx][ty] = 1
+
+        tags = [t for t in matrix]
+        nodes = [{ 'group': 1, 'name': t} for t in tags]
+        links = []
+        for tx in matrix:
+            for ty in matrix[tx]:
+                links.append({'source': tags.index(tx), 'target': tags.index(ty), 'value': matrix[tx][ty]})
+
+        return JsonResponse({'nodes': nodes, 'links': links})
+
+    return render(request, 'adjacency.html')
+
+
 def tags_splits(request):
 
     taglist = request.GET.get('tags',
-        'Form,Guidance' +
-        '|Supplements,No-Supplements' +
-        '|Name,No-Name' +
+        'Name,No-Name' +
         '|Address,No-Address' +
         '|Signature,No-signature' +
-        '|email,No-email' +
+        '|Phone-Number,No-Phone-Number' +
+        '|Email,No-email' +
         '|Organisation,No-organisation' +
         '|Table,No-Table' +
         '|DOB,No-DOB' +
@@ -448,7 +492,8 @@ def tags_splits(request):
         '|National-Insurance,No-National-Insurance' +
         '|Nationality,No-nationality' +
         '|Sex,No-sex' +
-        '|Passport,No-Passport')
+        '|Passport,No-Passport' +
+        '|Drawing,No-Drawing')
 
     names = sorted(set(re.split('\||,', taglist)))
     tagset = {}
