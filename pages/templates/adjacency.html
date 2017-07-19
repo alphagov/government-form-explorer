@@ -46,8 +46,9 @@ var margin = {top: 110, right: 0, bottom: 10, left: 110},
     height = 720;
 
 var x = d3.scaleBand().range([0, width]),
-    z = d3.scaleLinear().domain([0, 4]).clamp(true),
-    c = d3.scaleOrdinal().domain([1,2,3]).range([ "#4C2C92", "#B58840", "#2B8CC4" ]);
+    z = d3.scaleLinear().domain([0, 256]).clamp(true),
+    c = d3.scaleOrdinal().domain([1]).range([ "#005ea5" ]);
+
 
 var svg = d3.select("#matrix").append("svg")
     .attr("width", width + margin.left + margin.right)
