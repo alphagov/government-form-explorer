@@ -431,8 +431,6 @@ def attachments_tags(request, suffix=None):
 
 
 def tags_adjacency(request, suffix=None):
-
-
     if suffix == "json":
         attachments = Attachment.objects
 
@@ -451,19 +449,19 @@ def tags_adjacency(request, suffix=None):
                 if tx[0:3] == 'no-':
                     matrix[tx[3:]] = {}
 
+        tags = [t for t in matrix]
+
         for a in attachments:
-            for _tx in a.tags.all():
-                tx = _tx.name.lower()
+            atags = [t for t in map(lambda o: o.name.lower(), a.tags.all()) if t in tags]
+            for tx in atags:
                 if tx in matrix:
-                    for _ty in a.tags.all():
-                        ty = _ty.name.lower()
+                    for ty in atags:
                         if ty in matrix:
                             if ty in matrix[tx]:
                                 matrix[tx][ty] += 1
                             else:
                                 matrix[tx][ty] = 1
 
-        tags = [t for t in matrix]
         nodes = [{ 'group': 1, 'name': t} for t in tags]
         links = []
         for tx in matrix:
