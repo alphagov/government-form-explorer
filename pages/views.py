@@ -445,14 +445,14 @@ def tags_adjacency(request, suffix=None):
         matrix = {}
         for a in attachments:
             for _tx in a.tags.all():
-                tx = _tx.name.lower()
+                tx = _tx.slug
                 if tx[0:3] == 'no-':
                     matrix[tx[3:]] = {}
 
         tags = [t for t in matrix]
 
         for a in attachments:
-            atags = [t for t in map(lambda o: o.name.lower(), a.tags.all()) if t in tags]
+            atags = [t for t in map(lambda o: o.slug, a.tags.all()) if t in tags]
             for tx in atags:
                 if tx in matrix:
                     for ty in atags:
