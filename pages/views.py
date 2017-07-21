@@ -430,37 +430,41 @@ def attachments_tags(request, suffix=None):
     return render(request, 'attachments_tags.html', {'tags': tags})
 
 
+
+def sample_attachments(request):
+    attachments = Attachment.objects
+
+    include_tags = request.GET.get('tags', 'Popular,Form Analysis')
+    if include_tags:
+        attachments = attachments.filter(tags__name__in=include_tags.split(','))
+
+    exclude_tags = request.GET.get('exclude', 'Guidance,Other')
+    if exclude_tags:
+        attachments = attachments.exclude(tags__name__in=exclude_tags.split(','))
+
+    return attachments
+
+
+def sample_tags():
+    return [t[3:] for t in map(lambda o: o.slug, Tag.objects.all()) if t[0:3] == 'no-']
+
+
 def tags_adjacency(request, suffix=None):
     if suffix == "json":
-        attachments = Attachment.objects
-
-        include_tags = request.GET.get('tags', 'Popular,Form Analysis')
-        if include_tags:
-            attachments = attachments.filter(tags__name__in=include_tags.split(','))
-
-        exclude_tags = request.GET.get('exclude', 'Guidance,Other')
-        if exclude_tags:
-            attachments = attachments.exclude(tags__name__in=exclude_tags.split(','))
+        attachments = sample_attachments(request)
+        tags = sample_tags()
 
         matrix = {}
         for a in attachments:
-            for _tx in a.tags.all():
-                tx = _tx.slug
-                if tx[0:3] == 'no-':
-                    matrix[tx[3:]] = {}
-
-        tags = [t for t in matrix]
-
-        for a in attachments:
             atags = [t for t in map(lambda o: o.slug, a.tags.all()) if t in tags]
             for tx in atags:
-                if tx in matrix:
-                    for ty in atags:
-                        if ty in matrix:
-                            if ty in matrix[tx]:
-                                matrix[tx][ty] += 1
-                            else:
-                                matrix[tx][ty] = 1
+                if tx not in matrix:
+                    matrix[tx] = {}
+                for ty in atags:
+                    if ty in matrix[tx]:
+                        matrix[tx][ty] += 1
+                    else:
+                        matrix[tx][ty] = 1
 
         nodes = [{ 'group': 1, 'name': t} for t in tags]
         links = []
@@ -475,41 +479,27 @@ def tags_adjacency(request, suffix=None):
 
 def tags_splits(request):
 
-    taglist = request.GET.get('tags',
-        'Name,No-Name' +
-        '|Address,No-Address' +
-        '|Signature,No-signature' +
-        '|Phone-Number,No-Phone-Number' +
-        '|Email,No-email' +
-        '|Organisation,No-organisation' +
-        '|Table,No-Table' +
-        '|DOB,No-DOB' +
-        '|Honorific,No-honorific' +
-        '|Payment,No-payment' +
-        '|Fax,No-Fax' +
-        '|National-Insurance,No-National-Insurance' +
-        '|Nationality,No-nationality' +
-        '|Sex,No-sex' +
-        '|Passport,No-Passport' +
-        '|Drawing,No-Drawing')
+    taglist = sample_tags()
 
-    names = sorted(set(re.split('\||,', taglist)))
-    tagset = {}
+    tags = {}
+    for tag in Tag.objects.filter(slug__in=taglist) \
+            .annotate(count=Count('pages_genericstringtaggeditem_items__id')):
+        tags[tag.slug] = tag
 
-    tags = Tag.objects.filter(name__in=names) \
-            .annotate(count=Count('pages_genericstringtaggeditem_items__id'))
-
-    for tag in tags:
-        tagset[tag.name] = tag
+    no_tags = {}
+    for tag in Tag.objects.filter(slug__in=['no-' + t for t in taglist]) \
+            .annotate(count=Count('pages_genericstringtaggeditem_items__id')):
+        no_tags[tag.slug[3:]] = tag
 
     splits = []
-    for seg in taglist.split('|'):
+    for tag in taglist:
         split = {'tags': [], 'total': 0}
-        for tagname in seg.split(','):
-            t = tagset[tagname]
+        for t in [tags[tag], no_tags[tag]]:
             split['tags'].append({'name': t.name, 'slug': t.slug, 'count': t.count})
             split['total'] += t.count
         splits.append(split)
+
+    splits =  sorted(splits, key=lambda s: s['tags'][0]['count'] / s['total'], reverse=True)
 
     return render(request, 'splits.html', {'splits': splits})
 
