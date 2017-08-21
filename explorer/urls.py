@@ -21,6 +21,13 @@ urlpatterns = [
     url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/$', pages.views.organisation, name='organisation'),
     url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/pages$', pages.views.organisation_pages, name='organisation_pages'),
     url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/attachments/$', pages.views.organisation_attachments, name='organisation_attachments'),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/history/$', pages.views.history, name='organisation_history'),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/history/(?P<date>\d{4}-\d{2}-\d{2})$', pages.views.organisation_history_date, name='history'),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/tags$', pages.views.attachments_tags),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/refs$', pages.views.refs),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/suffixes$', pages.views.suffixes),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/downloads/$', pages.views.downloads),
+    url(r'^organisation/(?P<key>[:\w\d_-]{1,256})/downloads/(?P<month>[\d]{6})$', pages.views.downloads_month),
 
     url(r'^pages/$', pages.views.pages, name='page'),
 

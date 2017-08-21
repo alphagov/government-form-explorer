@@ -1,41 +1,24 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 {% load humanize %}
+{% load humansize %}
+{% load staticfiles %}
 
 {% block content %}
 
+<div id='homebar'>
 <div class="grid-row">
   <div class="column-full">
-    <div class="breadcrumbs">
-      <ol>
-          <li><a href="/">Form explorer</a></li>
-          <li><a href="/organisations">Organisations</a></li>
-      </ol>
-    </div>
+
+   {% include '_breadcrumbs.html' %}
 
     <h1 class="heading-xlarge">
       <span class="heading-secondary">Organisation</span>
-      {{organisation.name}}
+      <a href="{{ organisation.website }}">{{ organisation.name }}</a>
     </h1>
   </div>
 </div>
 
-<div class="grid-row" id='homebar'>
-  <div class="column-one-third">
-    <div class="data">
-      <span class="data-item bold-xxlarge"><a href="pages">{{ pages|length }}</a></span>
-      <span class="data-item font-xsmall">Pages</span>
-    </div>
-  </div>
-  <div class="column-one-third">
-    <div class="data">
-      <span class="data-item bold-xxlarge"><a href="attachments">{{ attachments|length }}</a></span>
-      <span class="data-item font-xsmall">Attachments</span>
-    </div>
-  </div>
+{% include "_counts.html" %}
+
 </div>
-
-<p><a href="{{ organisation.website }}">{{ organisation.name }}</a></p>
-
-
 {% endblock %}

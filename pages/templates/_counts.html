@@ -1,0 +1,74 @@
+{% load humanize %}
+{% load humansize %}
+{% load staticfiles %}
+
+<div class="grid-row">
+{% if count.organisations %}
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="pages">{{ count.organisations }}</a></span>
+      <span class="data-item font-xsmall">Organisations</span>
+    </div>
+  </div>
+{% endif %}
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="pages">{{ count.pages }}</a></span>
+      <span class="data-item font-xsmall">Pages</span>
+    </div>
+  </div>
+
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="history">{{ count.history }}</a></span>
+      <span class="data-item font-xsmall">Page updates</span>
+    </div>
+  </div>
+</div>
+
+<div class="grid-row">
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="attachments">{{ count.attachments }}</a></span>
+      <span class="data-item font-xsmall">Attachments</span>
+    </div>
+  </div>
+
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="attachments">{{ count.size|humansize_value }}</a></span>
+      <span class="data-item font-xsmall">{{ count.size|humansize_unit }} of attachments</span>
+    </div>
+  </div>
+
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="downloads">{{ count.downloads | intcomma }}</a></span>
+      <span class="data-item font-xsmall">Monthly downloads</span>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="grid-row">
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="refs">{{ count.refs }}</a></span>
+      <span class="data-item font-xsmall">Attachment references</span>
+    </div>
+  </div>
+
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="suffixes">{{ count.suffixes }}</a></span>
+      <span class="data-item font-xsmall">Attachment suffixes</span>
+    </div>
+  </div>
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge"><a href="tags">{{ count.tags }}</a></span>
+      <span class="data-item font-xsmall">Tags</span>
+    </div>
+  </div>
+</div>

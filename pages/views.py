@@ -22,8 +22,13 @@ content_type = {
     'tsv': 'text/plain'
 }
 
-def downloads_stats():
-    downloads = Download.objects.values('month') \
+def downloads_stats(organisation=None):
+    downloads = Download.objects.values('month')
+
+    if organisation:
+        downloads = downloads.filter(attachment__page__organisations__organisation__contains=organisation)
+
+    downloads = downloads \
         .annotate(attachments=Count('id')) \
         .annotate(downloads=Sum('count')) \
         .order_by("-month")
@@ -47,65 +52,63 @@ def count_pages(pages):
 
 
 def home(request):
-    attachments = Attachment.objects.all()
+    organisations = Organisation.objects.annotate(Count('page')).filter(page__count__gt=0)
+    pages = Page.objects
+    attachments = Attachment.objects
+    history = History.objects
+    tags = Tag.objects
     stats = downloads_stats()
+
     count = {
-        'organisations': Organisation.objects.annotate(Count('page')).filter(page__count__gt=0).count(),
-        'pages': Page.objects.count(),
+        'organisations': organisations.count(),
+        'pages': pages.count(),
         'attachments': attachments.count(),
+        'history': history.count(),
+        'tags': tags.count(),
         'size': attachments.aggregate(Sum('size')).get('size__sum'),
         'suffixes': attachments.values('suffix').distinct().count(),
         'refs': attachments.values('ref').distinct().count(),
-        'history': History.objects.all().count(),
         'downloads': stats['mean'],
-        'tags': len(Tag.objects.all().annotate(count=Count('pages_genericstringtaggeditem_items__id'))),
     }
     return render(request, 'home.html', {'count': count})
 
 
-def organisations(request):
-    organisations = Organisation.objects \
-        .annotate(pages=Count('page', distinct=True)) \
-        .annotate(attachments=Count('page__attachment', distinct=True)) \
-        .filter(pages__gt=0) \
-        .order_by('-pages')
-
-    return render(request, 'organisations.html',
-                  {'organisations': organisations})
-
 
 def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
-    pages = count_pages(Page.objects.filter(organisations__organisation__contains=key))
-    attachments = Attachment.objects.filter(
-        page__organisations__organisation__contains=key)
-    return render(request, 'organisation.html',
-                  {'organisation': organisation,
-                   'pages': pages,
-                   'attachments': attachments})
+    pages = Page.objects.filter(organisations__organisation__contains=key)
+    attachments = Attachment.objects.filter(page__organisations__organisation__contains=key)
+    history = History.objects.filter(page__organisations__organisation__contains=key)
+    tags = Tag.objects.filter(attachment__page__organisations__organisation__contains=key).distinct()
+    stats = downloads_stats(organisation=key)
+
+    count = {
+        'pages': pages.count(),
+        'attachments': attachments.count(),
+        'history': history.count(),
+        'tags': tags.count(),
+        'size': attachments.aggregate(Sum('size')).get('size__sum'),
+        'suffixes': attachments.values('suffix').distinct().count(),
+        'refs': attachments.values('ref').distinct().count(),
+        'downloads': stats['mean'],
+    }
+    return render(request, 'organisation.html', {'organisation': organisation, 'count': count})
 
 
 def organisation_pages(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     pages = count_pages(Page.objects.filter(organisations__organisation__contains=key))
-    return render(request, 'organisation_pages.html',
+    return render(request, 'pages.html',
                   {'organisation': organisation,
                    'pages': pages})
 
 
-def organisation_attachments(request, key=None):
+def organisation_history_date(request, key=None, date=None):
     organisation = Organisation.objects.get(organisation=key)
-    attachments = Attachment.objects.filter(
-        page__organisations__organisation__contains=key).order_by('-size')
-    size = sum(a.size for a in attachments)
-    suffixes = attachments.values('suffix').distinct().count()
-    return render(request, 'organisation_attachments.html', {
-        'organisation': organisation,
-        'attachments': attachments,
-        'tags': True,
-        'size': size,
-        'suffixes': suffixes,
-    })
+    history = History.objects.filter(timestamp__startswith=date).filter(page__organisations__organisation__contains=key)
+    return render(request, 'history_date.html',
+                  {'date': date,
+                   'history': history})
 
 
 def pages(request):
@@ -141,6 +144,17 @@ def attachment_sheets(attachment):
     return sheets
 
 
+def organisations(request):
+    organisations = Organisation.objects \
+        .annotate(pages=Count('page', distinct=True)) \
+        .annotate(attachments=Count('page__attachment', distinct=True)) \
+        .filter(pages__gt=0) \
+        .order_by('-pages')
+
+    return render(request, 'organisations.html',
+                  {'organisations': organisations})
+
+
 def attachments(request):
     attachments = Attachment.objects.all().order_by('-size')
     suffixes = attachments.values('suffix').distinct().count()
@@ -151,6 +165,21 @@ def attachments(request):
         'size': size,
         'suffixes': suffixes,
         'sizes': sizes,
+    })
+
+
+def organisation_attachments(request, key=None):
+    organisation = Organisation.objects.get(organisation=key)
+    attachments = Attachment.objects.filter(
+        page__organisations__organisation__contains=key).order_by('-size')
+    size = sum(a.size for a in attachments)
+    suffixes = attachments.values('suffix').distinct().count()
+    return render(request, 'attachments.html', {
+        'organisation': organisation,
+        'attachments': attachments,
+        'tags': True,
+        'size': size,
+        'suffixes': suffixes,
     })
 
 
@@ -216,10 +245,18 @@ def attachment_downloads(request, key=None, suffix=None):
     })
 
 
-def suffixes(request):
-    suffixes = Attachment.objects.values('suffix').order_by().annotate(
-        Count('suffix')).order_by("-suffix__count")
-    return render(request, 'suffixes.html', {'suffixes': suffixes})
+def suffixes(request, key=None):
+    attachments = Attachment.objects
+
+    if key:
+        organisation = Organisation.objects.get(organisation=key)
+        attachments = attachments.filter(page__organisations__organisation__contains=key)
+    else:
+        organisation = None
+
+
+    suffixes = attachments.values('suffix').order_by().annotate(Count('suffix')).order_by("-suffix__count")
+    return render(request, 'suffixes.html', {'organisation': organisation, 'suffixes': suffixes})
 
 
 def suffix(request, key=None):
@@ -229,14 +266,21 @@ def suffix(request, key=None):
                    'attachments': attachments})
 
 
-def refs(request):
-    refs = Attachment.objects \
+def refs(request, key=None):
+    attachments = Attachment.objects
+
+    if key:
+        organisation = Organisation.objects.get(organisation=key)
+        attachments = attachments.filter(page__organisations__organisation__contains=key)
+    else:
+        organisation = None
+
+    refs = attachments \
         .values('ref') \
-        .exclude(ref__isnull=True) \
-        .exclude(ref__exact='') \
         .order_by().annotate(Count('ref')) \
         .order_by("-ref__count")
-    return render(request, 'refs.html', {'refs': refs})
+
+    return render(request, 'refs.html', {'organisation': organisation, 'refs': refs})
 
 
 def ref(request, key=None):
@@ -246,8 +290,15 @@ def ref(request, key=None):
                    'attachments': attachments})
 
 
-def history(request, suffix=None):
-    history = History.objects \
+def history(request, key=None, suffix=None):
+    history = History.objects
+    if key:
+        organisation = Organisation.objects.get(organisation=key)
+        history = history.filter(page__organisations__organisation__contains=key)
+    else:
+        organisation = None
+
+    history = history \
         .extra({'date': "date(timestamp)"}) \
         .values('date') \
         .annotate(count=Count('id')) \
@@ -262,7 +313,9 @@ def history(request, suffix=None):
             writer.writerow([str(row[field]) for field in fields])
         return response
 
-    return render(request, 'history.html', {'history': history})
+    updates = history.aggregate(Sum('count')).get('count__sum')
+
+    return render(request, 'history.html', {'organisation': organisation, 'history': history, 'updates': updates})
 
 
 def history_date(request, date=None):
@@ -272,8 +325,13 @@ def history_date(request, date=None):
                    'history': history})
 
 
-def downloads(request, suffix=None):
-    stats = downloads_stats()
+def downloads(request, key=None, suffix=None):
+    if key:
+        organisation = Organisation.objects.get(organisation=key)
+    else:
+        organisation = None
+
+    stats = downloads_stats(key)
 
     if suffix == "tsv":
         response = HttpResponse(
@@ -286,6 +344,7 @@ def downloads(request, suffix=None):
         return response
 
     return render(request, 'downloads.html', {
+        'organisation': organisation,
         'downloads': stats['downloads'],
         'mean': stats['mean'],
         'peak': stats['peak'],
@@ -293,11 +352,20 @@ def downloads(request, suffix=None):
     })
 
 
-def downloads_month(request, month=None):
-    downloads = Download.objects.filter(month=month).order_by("-count")
+def downloads_month(request, key=None, month=None):
+    downloads = Download.objects.filter(month=month)
+
+    if key:
+        organisation = Organisation.objects.get(organisation=key)
+        downloads = downloads.filter(attachment__page__organisations__organisation__contains=key)
+    else:
+        organisation = None
+
+    downloads = downloads.order_by("-count")
     counts = [d.count for d in downloads]
 
     return render(request, 'downloads_month.html', {
+        'organisation': organisation,
         'month': month,
         'downloads': downloads,
         'mean': int(round(gmean(counts))),
@@ -411,10 +479,18 @@ def attachment_tag(request, key=None, name=None):
     return HttpResponse(status=200)
 
 
-def attachments_tags(request, suffix=None):
-    tags = Tag.objects.all() \
-            .annotate(count=Count('pages_genericstringtaggeditem_items__id')) \
-            .order_by('-count', 'name')
+def attachments_tags(request, key=None, suffix=None):
+    if key:
+        organisation = Organisation.objects.get(organisation=key)
+    else:
+        organisation = None
+
+    tags = Tag.objects
+
+    if key:
+        tags = tags.filter(attachment__page__organisations__organisation__contains=key).distinct()
+
+    tags = tags.annotate(count=Count('pages_genericstringtaggeditem_items__id')).order_by('-count', 'name')
 
     if suffix == "tsv":
         response = HttpResponse(
@@ -430,8 +506,7 @@ def attachments_tags(request, suffix=None):
             writer.writerow([str(row[field]) for field in fields])
         return response
 
-    return render(request, 'attachments_tags.html', {'tags': tags})
-
+    return render(request, 'attachments_tags.html', {'organisation': organisation, 'tags': tags})
 
 
 def sample_attachments(request):

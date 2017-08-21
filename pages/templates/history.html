@@ -4,17 +4,8 @@
 {% block content %}
 <div class="grid-row">
   <div class="column-full">
-    <div class="breadcrumbs">
-      <ol>
-          <li><a href="/">Form explorer</a></li>
-          <li><a href="/pages">Pages</a></li>
-      </ol>
-    </div>
-
-    <h1 class="heading-xlarge">
-      <span class="heading-secondary">Pages</span>
-      History
-    </h1>
+  {% include '_breadcrumbs.html' %}
+    <h1 class="heading-xlarge">History</h1>
   </div>
 </div>
 
@@ -22,6 +13,12 @@
   <div class="column-one-third">
     <div class="data">
       <span class="data-item bold-xxlarge">{{ history|length }}</span>
+      <span class="data-item font-xsmall">Days</span>
+    </div>
+  </div>
+  <div class="column-one-third">
+    <div class="data">
+      <span class="data-item bold-xxlarge">{{ updates }}</span>
       <span class="data-item font-xsmall">Page updates</span>
     </div>
   </div>

@@ -1,0 +1,36 @@
+  <div class="breadcrumbs">
+  {% if organisation %}
+      <ol>
+          <li><a href="/organisations">Organisations</a></li>
+          <li><a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a></li>
+      </ol>
+  {% endif %}
+
+  {% if organisations %}
+    <ol>
+        <li><a href="/organisations">Organisations</a></li>
+        <li>
+          {% for organisation in organisations %}
+          <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
+          {% endfor %}
+        </li>
+    </ol>
+  {% endif %}
+
+  {% if attachment %}
+    <ol>
+        <li><a href="/pages">Pages</a></li>
+        <li><a href="/page/{{ attachment.page.page }}/">{{ attachment.page.name }}</a></li>
+    </ol>
+  {% endif %}
+
+  {% if tag %}
+    <ol>
+        <li><a href="/">Form explorer</a></li>
+        <li><a href="/attachments">Attachments</a></li>
+        <li><a href="/attachments/tags">Tags</a></li>
+        <li><a href="/attachments/tags/{{tag.slug}}">{{tag.name}}</a></li>
+    </ol>
+  {% endif %}
+
+  </div>

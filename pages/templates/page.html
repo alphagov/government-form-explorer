@@ -2,28 +2,13 @@
 {% load staticfiles %}
 
 {% block content %}
-  <div class="breadcrumbs">
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-        <li><a href="/organisations">Organisations</a></li>
-        <li>
-  {% for organisation in organisations %}
-      <a href="/organisation/{{ organisation.organisation }}/">{{ organisation.name }}</a>{% include "_comma.html" %}
-  {% endfor %}
-        </li>
-    </ol>
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-        <li><a href="/pages">Pages</a></li>
-    </ol>
-  </div>
+  {% include '_breadcrumbs.html' %}
 
 <h1 class="heading-xlarge">
   <span class="heading-secondary">Page</span>
-  {{page.name}}
+  <a href="{{ page.url }}/">{{ page.name }}</a>
 </h1>
 
-<p><a href="{{ page.url }}/">{{ page.url }}</a></p>
 
 <h2 class="heading-medium">Page attachments</h2>
 {% include "_attachments.html" %}
