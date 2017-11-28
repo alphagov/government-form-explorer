@@ -2,14 +2,9 @@
 
 {% block pages_active %} class="active"{% endblock %}
 {% block content %}
-  <div class="breadcrumbs">
-    <ol>
-        <li><a href="/">Form explorer</a></li>
-        <li><a href="/pages">Pages</a></li>
-        <li><a href="/pages/history">History</a></li>
-    </ol>
-  </div>
-
+<div class="grid-row">
+  <div class="column-full">
+  {% include '_breadcrumbs.html' %}
   <h1 class="heading-xlarge">
   <span class="heading-secondary">Pages</span>
     Changes on {{ date }}
