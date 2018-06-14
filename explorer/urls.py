@@ -78,4 +78,5 @@ urlpatterns = [
     url(r'^login-error$', pages.views.login_error, name='login_error'),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain"))
 ]
