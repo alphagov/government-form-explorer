@@ -22,6 +22,8 @@ content_type = {
     'tsv': 'text/plain'
 }
 
+
+@login_required
 def downloads_stats(organisation=None):
     downloads = Download.objects.values('month')
 
@@ -44,6 +46,7 @@ def downloads_stats(organisation=None):
     return { 'downloads': downloads, 'counts': counts, 'mean': mean, 'peak': peak }
 
 
+@login_required
 def count_pages(pages):
     return pages \
             .annotate(attachments=Count('attachment', distinct=True)) \
@@ -51,6 +54,7 @@ def count_pages(pages):
             .order_by('-attachments')
 
 
+@login_required
 def home(request):
     organisations = Organisation.objects.annotate(Count('page')).filter(page__count__gt=0)
     pages = Page.objects
@@ -73,7 +77,7 @@ def home(request):
     return render(request, 'home.html', {'count': count})
 
 
-
+@login_required
 def organisation(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     pages = Page.objects.filter(organisations__organisation__contains=key)
@@ -95,6 +99,7 @@ def organisation(request, key=None):
     return render(request, 'organisation.html', {'organisation': organisation, 'count': count})
 
 
+@login_required
 def organisation_pages(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     pages = count_pages(Page.objects.filter(organisations__organisation__contains=key))
@@ -103,6 +108,7 @@ def organisation_pages(request, key=None):
                    'pages': pages})
 
 
+@login_required
 def organisation_history_date(request, key=None, date=None):
     organisation = Organisation.objects.get(organisation=key)
     history = History.objects.filter(timestamp__startswith=date).filter(page__organisations__organisation__contains=key)
@@ -111,11 +117,13 @@ def organisation_history_date(request, key=None, date=None):
                    'history': history})
 
 
+@login_required
 def pages(request):
     pages = count_pages(Page.objects)
     return render(request, 'pages.html', {'pages': pages})
 
 
+@login_required
 def page(request, key=None):
     page = Page.objects.get(page=key)
     organisations = Organisation.objects.filter(
@@ -131,6 +139,7 @@ def page(request, key=None):
     })
 
 
+@login_required
 def attachment_sheets(attachment):
     sheets = []
     if attachment.page_count:
@@ -144,6 +153,7 @@ def attachment_sheets(attachment):
     return sheets
 
 
+@login_required
 def organisations(request):
     organisations = Organisation.objects \
         .annotate(pages=Count('page', distinct=True)) \
@@ -155,6 +165,7 @@ def organisations(request):
                   {'organisations': organisations})
 
 
+@login_required
 def attachments(request):
     attachments = Attachment.objects.all().order_by('-size')
     suffixes = attachments.values('suffix').distinct().count()
@@ -168,6 +179,7 @@ def attachments(request):
     })
 
 
+@login_required
 def organisation_attachments(request, key=None):
     organisation = Organisation.objects.get(organisation=key)
     attachments = Attachment.objects.filter(
@@ -183,6 +195,7 @@ def organisation_attachments(request, key=None):
     })
 
 
+@login_required
 def attachment(request, key=None):
     attachment = Attachment.objects.get(attachment=key)
     organisations = Organisation.objects.filter(
@@ -222,6 +235,7 @@ def attachment(request, key=None):
     })
 
 
+@login_required
 def attachment_downloads(request, key=None, suffix=None):
     attachment = Attachment.objects.get(attachment=key)
     organisations = Organisation.objects.filter(
@@ -245,6 +259,7 @@ def attachment_downloads(request, key=None, suffix=None):
     })
 
 
+@login_required
 def suffixes(request, key=None):
     attachments = Attachment.objects
 
@@ -259,6 +274,7 @@ def suffixes(request, key=None):
     return render(request, 'suffixes.html', {'organisation': organisation, 'suffixes': suffixes})
 
 
+@login_required
 def suffix(request, key=None):
     attachments = Attachment.objects.filter(suffix=key)
     return render(request, 'suffix.html',
@@ -266,6 +282,7 @@ def suffix(request, key=None):
                    'attachments': attachments})
 
 
+@login_required
 def refs(request, key=None):
     attachments = Attachment.objects
 
@@ -283,6 +300,7 @@ def refs(request, key=None):
     return render(request, 'refs.html', {'organisation': organisation, 'refs': refs})
 
 
+@login_required
 def ref(request, key=None):
     attachments = Attachment.objects.filter(ref=key)
     return render(request, 'ref.html',
@@ -290,6 +308,7 @@ def ref(request, key=None):
                    'attachments': attachments})
 
 
+@login_required
 def history(request, key=None, suffix=None):
     history = History.objects
     if key:
@@ -318,6 +337,7 @@ def history(request, key=None, suffix=None):
     return render(request, 'history.html', {'organisation': organisation, 'history': history, 'updates': updates})
 
 
+@login_required
 def history_date(request, date=None):
     history = History.objects.filter(timestamp__startswith=date)
     return render(request, 'history_date.html',
@@ -325,6 +345,7 @@ def history_date(request, date=None):
                    'history': history})
 
 
+@login_required
 def downloads(request, key=None, suffix=None):
     if key:
         organisation = Organisation.objects.get(organisation=key)
@@ -352,6 +373,7 @@ def downloads(request, key=None, suffix=None):
     })
 
 
+@login_required
 def downloads_month(request, key=None, month=None):
     downloads = Download.objects.filter(month=month)
 
@@ -375,6 +397,7 @@ def downloads_month(request, key=None, month=None):
     })
 
 
+@login_required
 def search(request):
     query = request.GET.get('q', '')
     page_index = int(request.GET.get('page-index', 1))
@@ -454,6 +477,7 @@ def login_error(request):
     return render(request, 'login-error.html', status=401)
 
 
+@login_required
 def attachment_tags(request, key=None, suffix=None):
     attachment = Attachment.objects.get(attachment=key)
 
@@ -479,6 +503,7 @@ def attachment_tag(request, key=None, name=None):
     return HttpResponse(status=200)
 
 
+@login_required
 def attachments_tags(request, key=None, suffix=None):
     if key:
         organisation = Organisation.objects.get(organisation=key)
@@ -509,6 +534,7 @@ def attachments_tags(request, key=None, suffix=None):
     return render(request, 'attachments_tags.html', {'organisation': organisation, 'tags': tags})
 
 
+@login_required
 def sample_attachments(request):
     attachments = Attachment.objects
 
@@ -523,10 +549,12 @@ def sample_attachments(request):
     return attachments
 
 
+@login_required
 def sample_tags():
     return [t[3:] for t in map(lambda o: o.slug, Tag.objects.all()) if t[0:3] == 'no-']
 
 
+@login_required
 def tags_adjacency(request, suffix=None):
     if suffix == "json":
         attachments = sample_attachments(request)
@@ -555,6 +583,7 @@ def tags_adjacency(request, suffix=None):
     return render(request, 'adjacency.html')
 
 
+@login_required
 def tags_splits(request):
 
     taglist = sample_tags()
@@ -582,6 +611,7 @@ def tags_splits(request):
     return render(request, 'splits.html', {'splits': splits})
 
 
+@login_required
 def attachments_tag(request, slug=None):
     try:
         tag = Tag.objects.get(slug=slug)
@@ -655,6 +685,7 @@ def snippet_create(request, key, n):
                    })
 
 
+@login_required
 def snippets(request, suffix=None):
     snippets = Snippet.objects.all()
 
@@ -682,11 +713,13 @@ def snippets(request, suffix=None):
     return render(request, 'snippets.html', { 'snippets': snippets })
 
 
+@login_required
 def snippet(request, key):
     snippet = Snippet.objects.get(id=int(key))
     return render(request, 'snippet.html', { 'snippet': snippet })
 
 
+@login_required
 def tagger(request):
     """
           tagger?keys=F:Form,G:Guidance,O:Other&tags=Form%20Analysis

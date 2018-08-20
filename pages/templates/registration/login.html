@@ -1,10 +1,13 @@
-{% extends 'base.html' %}
+<html>
+  <body>
+    <h1>You need to sign in</h1>
 
-{% block content %}
-  <h1 class="heading-xlarge">Login</h1>
+    <p>
+      <a href="{% url 'social:begin' 'google-oauth2' %}">Sign in with your GDS account</a>
+    </p>
 
-  <ul>
-  <li><a href="{% url 'social:begin' 'google-oauth2' %}">Login with your GDS account</a>
-  </ul>
-{% endblock %}
-
+    <p>
+      About this project: <a href="https://github.com/alphagov/government-form-explorer">https://github.com/alphagov/government-form-explorer</a>
+    </p>
+  </body>
+</html>
