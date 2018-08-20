@@ -23,7 +23,6 @@ content_type = {
 }
 
 
-@login_required
 def downloads_stats(organisation=None):
     downloads = Download.objects.values('month')
 
@@ -46,7 +45,6 @@ def downloads_stats(organisation=None):
     return { 'downloads': downloads, 'counts': counts, 'mean': mean, 'peak': peak }
 
 
-@login_required
 def count_pages(pages):
     return pages \
             .annotate(attachments=Count('attachment', distinct=True)) \
@@ -139,7 +137,6 @@ def page(request, key=None):
     })
 
 
-@login_required
 def attachment_sheets(attachment):
     sheets = []
     if attachment.page_count:
@@ -549,7 +546,6 @@ def sample_attachments(request):
     return attachments
 
 
-@login_required
 def sample_tags():
     return [t[3:] for t in map(lambda o: o.slug, Tag.objects.all()) if t[0:3] == 'no-']
 
